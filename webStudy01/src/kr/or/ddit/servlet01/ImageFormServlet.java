@@ -22,7 +22,8 @@ public class ImageFormServlet extends HttpServlet{
         StringBuffer html = new StringBuffer("<html><body>");
         html.append("<form action='image.do'><select name='image'>");
         for(String child : children){
-            html.append(String.format("<option>%s</option>",child));
+        	if(getServletContext().getMimeType(child).startsWith("image/"))
+        		html.append(String.format("<option>%s</option>",child));
         }
         html.append("</select><input type='submit' value='전송'></form></body></html>");
         PrintWriter out = resp.getWriter();

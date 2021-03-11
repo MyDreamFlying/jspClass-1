@@ -9,4 +9,23 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+   <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>kr.or.ddit.servlet01.ImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/image.do</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ImageFormServlet</servlet-name>
+    <servlet-class>kr.or.ddit.servlet01.ImageFormServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageFormServlet</servlet-name>
+    <url-pattern>/imageForm.do</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
