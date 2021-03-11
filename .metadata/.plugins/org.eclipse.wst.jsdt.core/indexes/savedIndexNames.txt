@@ -1,2 +1,0 @@
-INDEX VERSION 1.4+D:\A_TeachingMaterial\6.JspSpring\workspace\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-1540150723.index

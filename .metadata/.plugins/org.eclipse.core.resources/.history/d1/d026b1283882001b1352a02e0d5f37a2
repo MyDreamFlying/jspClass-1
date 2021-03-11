@@ -1,7 +1,0 @@
-package kr.or.ddit;
-
-import javax.servlet.http.HttpServlet;
-
-public class DummyServlet extends HttpServlet{
-
-}
