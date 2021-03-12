@@ -20,7 +20,6 @@ public class ImageServlet extends HttpServlet{
     	
     	String folder = "d:/contents";
     	String isMac = System.getProperty("os.name").substring(0, 3).toLowerCase();
-    	System.out.println(isMac);
     	if("mac".equals(isMac)) {
     		folder = System.getProperty("user.home")+"/Documents/GitHub/jspClass/images";
     	}
