@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// 과제 1. 이미지를 제외한 나머지는 리스트에 포함되지 않도록 변경하기
+// 과제1. 이미지를 제외한 나머지는 리스트에 포함되지 않도록 변경하기
 // 과제2. 개발환경 구축 완료 보고서
 
 public class ImageFormServlet extends HttpServlet{
