@@ -2,12 +2,15 @@ package kr.or.ddit.servlet01;
 
 import javax.servlet.http.*;
 import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+
 import java.io.*;
-import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
 
 // 한글 주석
 
+@WebServlet("/01/image.do")
 public class ImageServlet extends HttpServlet{
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) 

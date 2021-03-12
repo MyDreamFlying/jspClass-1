@@ -1,47 +1,50 @@
 package kr.or.ddit.servlet01;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import java.io.FilenameFilter;
+import java.util.Date;
+import javax.servlet.ServletContext;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// 과제1. 이미지를 제외한 나머지는 리스트에 포함되지 않도록 변경하기
-// 과제2. 개발환경 구축 완료 보고서
+// 1. 텍스트 파일만 옵션으로 제공 할것
+// 2. 텍스트 파일 체인지 이벤트로 , iframe에 그 내용이 출력 되도록
 
-public class ImageFormServlet extends HttpServlet{
+@WebServlet("/01/imageForm.tmpl")
+public class ImageFormServlet extends AbstractUseTmplServlet{
+	
+	@Override
+	protected void setContentType(HttpServletResponse resp) {
+		resp.setContentType("text/html; charset=utf-8");
+	}
 
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) 
-    throws IOException, ServletException{
-        String mime = "text/html; charset=utf-8";
-        resp.setContentType(mime);
+	@Override
+	protected void makeDate(HttpServletRequest req) {
 
-        String folder = "d:/contents";
-       	String isMac = System.getProperty("os.name").substring(0, 3).toLowerCase();
-    	if("mac".equals(isMac)) {
-    		folder = System.getProperty("user.home")+"/Documents/GitHub/jspClass/images";
-    	}
-    	
-        File contents = new File(folder);
-        String[] children = contents.list();
-        StringBuffer html = new StringBuffer("<html><body>");
-        html.append("<form action='image.do'><select name='image'>");
-        for(String child : children){
-        	if(getServletContext().getMimeType(child)!=null && getServletContext().getMimeType(child).startsWith("image/"))
-        		html.append(String.format("<option>%s</option>",child));
-        }
-        html.append("</select><input type='submit' value='전송'></form></body></html>");
-        PrintWriter out = resp.getWriter();
-        try {
-        	out.println(html);
-        }finally{
-        	if(out!=null) out.close();
-        }
-    }
+		String folder = "d:/contents";
+		String isMac = System.getProperty("os.name").substring(0, 3).toLowerCase();
+		if("mac".equals(isMac)) folder = System.getProperty("user.home")+"/Documents/GitHub/jspClass/images";
+		
+		File contents = new File(folder);
+		String[] children = contents.list(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				String mime = application.getMimeType(name);
+				return mime!=null && mime.startsWith("image/");
+			}
+		});
 
+		Date today = new Date();
+		req.setAttribute("today",today);
+		
+		StringBuffer options = new StringBuffer();
+		for(String child : children){
+			options.append(String.format("<option>%s</option>",child));
+		}
+		req.setAttribute("options",options);
+
+	}
 }
 
-//javac ImageFormServlet.java -d ../classes -encoding utf-8
