@@ -1,3 +1,4 @@
 .metadata/
 .Servers/
-webStudy01/.classpath
+webStudy01/build/
+*.classpath
