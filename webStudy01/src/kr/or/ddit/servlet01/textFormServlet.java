@@ -2,6 +2,7 @@ package kr.or.ddit.servlet01;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.net.URL;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -23,22 +24,20 @@ public class textFormServlet extends AbstractUseTmplServlet{
 	@Override
 	protected void makeDate(HttpServletRequest req) {
 		
-
-		File contents = new File("");
-		System.out.println(contents.getAbsolutePath());
-		System.out.println(contents.exists());
+		URL path = getClass().getResource("/datas");
+		File contents = new File(path.getFile());
+		
 		String[] children = contents.list(new FilenameFilter() {
 			
 			@Override
 			public boolean accept(File dir, String name) {
+				
 				String mime = application.getMimeType(name);
 				return mime!=null && mime.startsWith("text/");
+				
 			}
 		});
 
-		Date today = new Date();
-		req.setAttribute("today",today);
-		
 		StringBuffer options = new StringBuffer();
 		for(String child : children){
 			options.append(String.format("<option>%s</option>",child));

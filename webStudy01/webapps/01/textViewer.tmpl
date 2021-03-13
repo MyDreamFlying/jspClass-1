@@ -1,19 +1,19 @@
 <html>
 	<body>
 		<h4>Text file viewer</h4>
-		<h4>%today%</h4>
-		<form action = 'text.do'>
 		<select id='textFile' name='textFile'>
 			%options%
 		</select>
-		</form>
-		
+		<br><br>
 		<!-- src 속성의 주소값 : ex ) textView.do?textFile=filename(path?) -->
-		<iframe id="viewer" src=""></iframe>
+		<iframe id="viewer" src="text.do?textFile=RUNNING.txt" style="width:500px;height:500px"></iframe>
 <script type="text/javascript">
 	var select = document.querySelector("#textFile")
 	select.onchange = function(event){
-		event.target.form.submit();
+		var fileName = this.value;
+		var frm = document.getElementById("viewer");
+		frm.setAttribute("src","text.do?textFile="+fileName);
+		
 	}
 </script>		
 	</body>
