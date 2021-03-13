@@ -2,7 +2,6 @@
     <wb-module deploy-name="webStudy01">
         <wb-resource deploy-path="/" source-path="/webapps" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/res"/>
         <property name="context-root" value="webStudy01"/>
         <property name="java-output-path" value="/webStudy01/build/classes"/>
     </wb-module>
