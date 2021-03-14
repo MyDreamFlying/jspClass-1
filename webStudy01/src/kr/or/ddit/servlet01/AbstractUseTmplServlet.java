@@ -31,7 +31,7 @@ public abstract class AbstractUseTmplServlet extends HttpServlet {
 		// 1. tmpl 읽기
 		StringBuffer tmplSrc = readTmpl(req);
 		// 2. 데이터 만들기
-		makeDate(req);
+		makeData(req);
 		// 3. tmpl을 데이터로 치환
 		StringBuffer html = replaceData(tmplSrc,req);
 		// 4. 응답 데이터를 출력 try ~ with resource
@@ -59,7 +59,7 @@ public abstract class AbstractUseTmplServlet extends HttpServlet {
 		return html;
 	}
 
-	protected abstract void makeDate(HttpServletRequest req);
+	protected abstract void makeData(HttpServletRequest req);
 
 	// 후크메서드 : 끌여당겨져 사용됨
 	private StringBuffer readTmpl(HttpServletRequest req) throws IOException {

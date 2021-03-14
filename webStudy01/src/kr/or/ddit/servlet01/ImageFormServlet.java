@@ -20,7 +20,7 @@ public class ImageFormServlet extends AbstractUseTmplServlet{
 	}
 
 	@Override
-	protected void makeDate(HttpServletRequest req) {
+	protected void makeData(HttpServletRequest req) {
 
 		String folder = "d:/contents";
 		String isMac = System.getProperty("os.name").substring(0, 3).toLowerCase();
