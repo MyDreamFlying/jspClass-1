@@ -2,18 +2,20 @@
 	<body>
 		<h4>Text file viewer</h4>
 		<select id='textFile' name='textFile'>
+			<option>choose a file to read</option>
 			%options%
 		</select>
 		<br><br>
 		<!-- src 속성의 주소값 : ex ) textView.do?textFile=filename(path?) -->
-		<iframe id="viewer" src="text.do?textFile=RUNNING.txt" style="width:500px;height:500px"></iframe>
+		<iframe id="viewer" src="" style="width:500px;height:500px"></iframe>
 <script type="text/javascript">
 	var select = document.querySelector("#textFile")
 	select.onchange = function(event){
 		var fileName = this.value;
+		if(fileName == 'choose file to read')
+			return false;
 		var frm = document.getElementById("viewer");
 		frm.setAttribute("src","text.do?textFile="+fileName);
-		
 	}
 </script>		
 	</body>

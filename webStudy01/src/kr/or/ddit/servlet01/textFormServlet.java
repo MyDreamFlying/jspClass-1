@@ -2,10 +2,10 @@ package kr.or.ddit.servlet01;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
+import java.util.ArrayList;
 
-import javax.annotation.Resource;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,28 +15,21 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/01/textViewer.tmpl")
 public class textFormServlet extends AbstractUseTmplServlet{
-	
+
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void setContentType(HttpServletResponse resp) {
 		resp.setContentType("text/html; charset=utf-8");
 	}
 
 	@Override
-	protected void makeDate(HttpServletRequest req) {
-		
+	protected void makeData(HttpServletRequest req) {
+
 		URL path = getClass().getResource("/datas");
 		File contents = new File(path.getFile());
-		
-		String[] children = contents.list(new FilenameFilter() {
-			
-			@Override
-			public boolean accept(File dir, String name) {
-				
-				String mime = application.getMimeType(name);
-				return mime!=null && mime.startsWith("text/");
-				
-			}
-		});
+
+		ArrayList<String> children = getChildren(contents);
 
 		StringBuffer options = new StringBuffer();
 		for(String child : children){
@@ -45,5 +38,34 @@ public class textFormServlet extends AbstractUseTmplServlet{
 		req.setAttribute("options",options);
 
 	}
+
+	private ArrayList<String>  getChildren(File contents) {
+		ArrayList<String> list = new ArrayList<>();
+
+		File[] children = contents.listFiles();
+		
+		for(File child : children) {
+			if(child.isDirectory()) {
+				list.addAll(getChildren(child));
+			}else {
+				String mime = application.getMimeType(child.getName());
+				
+				if(mime!=null && mime.startsWith("text/"))
+					list.add(String.format("%s%s", getParent(child),child.getName()));
+			}
+		}
+		return list;
+	}
+	
+	private StringBuffer getParent(File file) {
+		StringBuffer parent = new StringBuffer();
+		if(!"datas".equals(file.getParentFile().getName())) {
+			parent.insert(0,getParent(file.getParentFile()) + file.getParentFile().getName());
+			parent.append("/");
+		}
+		return parent;
+		
+	}
+
 }
 
