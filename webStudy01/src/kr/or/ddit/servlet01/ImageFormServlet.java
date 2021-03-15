@@ -24,7 +24,7 @@ public class ImageFormServlet extends AbstractUseTmplServlet{
 
 		String folder = "d:/contents";
 		String isMac = System.getProperty("os.name").substring(0, 3).toLowerCase();
-		if("mac".equals(isMac)) folder = System.getProperty("user.home")+"/Documents/GitHub/jspClass/images";
+		if("mac".equals(isMac)) folder = System.getProperty("user.home")+"/Documents/GitHub/jspClass/contents";
 		
 		File contents = new File(folder);
 		String[] children = contents.list(new FilenameFilter() {
