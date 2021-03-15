@@ -1,16 +1,56 @@
 <html>
+<header>
+<style>
+img{
+	width : 50%;
+	height : 50%;
+}
+</style>
+	<script type ="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			const SRCPTRN = "%A?%N=%V";
+			const action = $("form")[0].action;
+			
+			$("#image").on('change',function(){
+// 				console.log(this.value)
+// 				console.log($(this).val());
+// 				this.form.submit();
+				$('#imageArea').empty();
+
+				// img 태그 생성
+				var name = this.name;
+				var values = $(this).val();
+				var imgs = [];
+				$(values).each(function(idx, value){
+					var src = SRCPTRN.replace("%A",action)
+									.replace("%N", name)
+									.replace("%V", value);
+					var img = $("<img>").attr("src",src);
+					imgs.push(img);
+					// imageArea에 img 태그를 삽입
+					$('#imageArea').html(imgs);
+					
+				})
+				
+			});
+ 		});
+	</script>
+</header>
 <body>
 <h4>%today%</h4>
 <form action = 'image.do'>
-<select name="image" id="image">
+<select multiple="multiple   " name="image" id="image">
+	<option disabled selected>choose a image to see</option>
 %options%
 </select>
 </form>
+<div id="imageArea"></div>
 <script type="text/javascript">
-	var select = document.querySelector("#image")
+/* 	var select = document.querySelector("#image")
 	select.onchange = function(event){
 		event.target.form.submit();
-	}
+	} */
 </script>
 </body>
 </html>

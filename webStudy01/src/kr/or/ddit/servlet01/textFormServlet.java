@@ -32,7 +32,7 @@ public class textFormServlet extends AbstractUseTmplServlet{
 		req.setAttribute("options",options);
 	}
 
-	private ArrayList<String>  getChildren(File contents) {
+	private ArrayList<String> getChildren(File contents) {
 		ArrayList<String> list = new ArrayList<>();
 		File[] children = contents.listFiles();
 		

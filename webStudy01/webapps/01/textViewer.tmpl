@@ -2,7 +2,7 @@
 	<body>
 		<h4>Text file viewer</h4>
 		<select id='textFile' name='textFile'>
-			<option>choose a file to read</option>
+			<option disabled selected>choose a file to read</option>
 			%options%
 		</select>
 		<br><br>
@@ -12,8 +12,6 @@
 	var select = document.querySelector("#textFile")
 	select.onchange = function(event){
 		var fileName = this.value;
-		if(fileName == 'choose a file to read')
-			return false;
 		var frm = document.getElementById("viewer");
 		frm.setAttribute("src","text.do?textFile="+fileName);
 	}
