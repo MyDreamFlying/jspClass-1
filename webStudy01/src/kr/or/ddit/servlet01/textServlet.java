@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/01/text.do")
-public class textServlet extends HttpServlet{
+public class TextServlet extends HttpServlet{
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) 
     throws IOException, ServletException{

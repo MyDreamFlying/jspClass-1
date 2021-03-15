@@ -1,8 +1,6 @@
 package kr.or.ddit.servlet01;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -11,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/01/textViewer.tmpl")
-public class textFormServlet extends AbstractUseTmplServlet{
+public class TextFormServlet extends AbstractUseTmplServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override

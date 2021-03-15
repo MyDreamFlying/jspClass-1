@@ -15,7 +15,7 @@ public class ImageServlet extends HttpServlet{
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) 
     throws IOException, ServletException{
-    	String imageFilename = req.getParameter("image");
+    	String imageFilename = req.getParameter("media");
     	if(imageFilename == null || imageFilename.isEmpty()) {
     		resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     		return;
@@ -45,7 +45,7 @@ public class ImageServlet extends HttpServlet{
 
         
         OutputStream os = resp.getOutputStream();
-        byte []buffer = new byte[1024];
+        byte []buffer = new byte[4096];
 
         int pointer = -1;
         while((pointer = fis.read(buffer)) != -1){
