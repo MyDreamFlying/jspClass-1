@@ -12,7 +12,7 @@
 	var select = document.querySelector("#textFile")
 	select.onchange = function(event){
 		var fileName = this.value;
-		if(fileName == 'choose file to read')
+		if(fileName == 'choose a file to read')
 			return false;
 		var frm = document.getElementById("viewer");
 		frm.setAttribute("src","text.do?textFile="+fileName);
