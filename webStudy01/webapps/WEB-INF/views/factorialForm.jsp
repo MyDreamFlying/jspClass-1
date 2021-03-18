@@ -13,7 +13,8 @@
 <form method="post">
 	<input type="number" name="single" />
 	<input type="submit" value="=">
-<%= request.getAttribute("factorial")%>
+<%= (String)request.getAttribute("result")==null? "":(String)request.getAttribute("result")
+%>
 </form>
 </body>
 </html>

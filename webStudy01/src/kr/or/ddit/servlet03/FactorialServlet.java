@@ -1,6 +1,7 @@
 package kr.or.ddit.servlet03;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,12 +17,13 @@ public class FactorialServlet extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int number = Integer.parseInt(req.getParameter("single"));
-		int factorial = 1;
+		double number = Double.parseDouble(req.getParameter("single"));
+		double factorial = 1;
 		for(int i=2; i<=number; i++) {
 			factorial *= i;
 		}
-		req.setAttribute("factorial", factorial);
+		String result = NumberFormat.getInstance().format(factorial);
+		req.setAttribute("result", result);
 		req.getRequestDispatcher("/WEB-INF/views/factorialForm.jsp").forward(req,resp);
 	}
 	
