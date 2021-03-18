@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.enumpkg.MimeType"%>
 <%@page import="kr.or.ddit.enumpkg.OperatorType"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -23,28 +24,48 @@
 <script type ="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	$(function(){
-		$("#calForm").on("submit",function(event){
+		var functionMap = {
+			json : function(resp){
+				$('#resultArea').text(resp.expression);
+			},
+			xml : function(resp){
+				$('#resultArea').text($(resp).find("expression").text());
+			},
+			html : function(resp){
+				$('#resultArea').html(resp);
+			},
+			plain : function(resp){
+				$('#resultArea').text(resp);
+			}
+		}
+		
+		var mimeKind = $("#mimeKind");
+		var resultArea = $('.result');
+		var calForm = $("#calForm").on("submit",function(event){
+			var dataType = mimeKind.val();
+			if(!dataType){
+				return true;
+			}
 			event.preventDefault();
 			var action = this.action;
 			var method = this.method;
 			var data = $(this).serialize();
-			console.log(data);
-			$.ajax({
+			var options = {
 				url : action,
 				method : method,
 				data : data,
-				dataType : "json",
-				success:function(resp){
-					$('.result').val(resp.result);
-				},
 				error:function(xhr, error, msg){
 					console.log(xhr);
 					console.log(error);
 					console.log(msg);
 				}
-			})
-		})
-	})
+			}
+			options.dataType = dataType;
+			options.success = functionMap[options.dataType]
+			$.ajax(options);
+			return false;
+		});
+	});
 </script>
 </head>
 <pre>
@@ -53,8 +74,18 @@
 3. 입력 데이터는 실수형.
 4. 파라미터 전송 : /03/calculator의 방향으로 전송.(전송 데이터는 비노출)
 5. 연산의 결과 : ex ) 3 * 4 = 12 와 같은 형태로 제공.
+
 </pre>
 <body>
+<select id="mimeKind">
+	<option value>dataType 선택</option>
+	<% for(MimeType tmp : MimeType.values()){
+			%>
+			<option value="<%=tmp.name().toLowerCase()%>"><%=tmp.name()%></option>
+			<%	
+		}
+	%>
+</select>
 	<form id="calForm" method="post" action="<%=request.getContextPath() %>/03/calculator">
 		<input name = "left" class="num" type=text>
 		<%
@@ -66,7 +97,7 @@
 		%>
 		<input name = "right" class="num" type=text>
 		<input type="submit" class="calc" value=" = ">
-		<br><input class="result" type=text>
+		<br><div id="resultArea"></div>
 	</form>
 </body>
 </html>

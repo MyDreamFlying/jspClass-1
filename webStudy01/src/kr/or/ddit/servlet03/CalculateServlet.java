@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.or.ddit.enumpkg.MimeType;
 import kr.or.ddit.enumpkg.OperatorType;
+import kr.or.ddit.servlet03.view.JsonView;
+import kr.or.ddit.servlet03.view.XmlView;
 import kr.or.ddit.vo.CalculateVO;
 
 @WebServlet("/03/calculator")
 public class CalculateServlet extends HttpServlet {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -35,7 +35,10 @@ public class CalculateServlet extends HttpServlet {
 		// 2. 연산
 		CalculateVO vo = (CalculateVO) req.getAttribute("vo");
 		OperatorType operator = vo.getOperator();
+		Double result = operator.operate(vo.getLeft(), vo.getRight());
 		String expr = operator.expression(vo);
+		vo.setResult(result);
+		vo.setExpression(expr);
 		
 		// 3. 응답전송
 		String accept = req.getHeader("accept");
@@ -44,27 +47,34 @@ public class CalculateServlet extends HttpServlet {
 		resp.setContentType(mimeType.getMime());
 		
 		StringBuffer respData = new StringBuffer();
+		String view = null;
 		
 		switch(mimeType) {
 		case JSON:
-			respData.append(String.format("{\"result\" : \"%s\"}",expr));
+			new JsonView().mergeModelAndView(vo, resp);
 			break;
 		case XML:
-			respData.append(String.format("<result>%s</result>",expr));
+			new XmlView().mergeModelAndView(vo, resp);
 			break;
 		case PLAIN:
 			respData.append(expr);
 			break;
 		default :
-			respData.append(String.format("<p>%s</p>",expr));
+			view = "/WEB-INF/views/calculatorView.jsp";
 			break;
 		}
 		
-		try (
-			PrintWriter out = resp.getWriter();
-		){
-			out.print(respData);
+		if(view != null) {
+			req.getRequestDispatcher(view).forward(req,resp);
+			
+		}else {
+			try (
+					PrintWriter out = resp.getWriter();
+					){
+				out.print(respData);
+			}
 		}
+		
 		
 	}
 

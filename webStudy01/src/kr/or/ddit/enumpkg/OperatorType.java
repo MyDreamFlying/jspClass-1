@@ -18,12 +18,14 @@ public enum OperatorType{
 			return left * right;
 		}
 	}), 
-	DIVIDE('/', new RealOperator() {
-		public double operate(double left, double right) {
-			return left / right;
-		}
-	}); 
+	DIVIDE('/', (left,right)->{
+		return left/right;
+	}), 
+	MODULAR('%', (left,right)->{
+		return left % right;
+	});
 	
+	@FunctionalInterface
 	private interface RealOperator{
 		double operate(double left, double right);
 	}

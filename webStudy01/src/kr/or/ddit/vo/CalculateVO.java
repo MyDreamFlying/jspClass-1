@@ -2,10 +2,18 @@ package kr.or.ddit.vo;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import kr.or.ddit.enumpkg.OperatorType;
 
+@XmlRootElement(name="data")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CalculateVO implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	public CalculateVO() {
 		super();
 	}
@@ -18,7 +26,26 @@ public class CalculateVO implements Serializable{
 	}
 	private double left;
 	private double right;
+	private double result;
+	private String expression;
 	private OperatorType operator;
+	
+	public double getResult() {
+		return result;
+	}
+
+	public void setResult(double result) {
+		this.result = result;
+	}
+
+	public String getExpression() {
+		return expression;
+	}
+
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+
 	public double getLeft() {
 		return left;
 	}
