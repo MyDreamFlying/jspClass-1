@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,13 +12,12 @@
 동기처리 연산 수행.
 비동기 처리 연산 수행(JSON, HTML)
 <form method="post">
-	<%
-		double number =request.getAttribute("number")==null? 0: (Double)request.getAttribute("number");
-	%>
-	<input type="number" name="single" value="<%=(int)number%>" />
+<%--
+	Map<String,Object> target = (Map)request.getAttribute("target");
+--%>
+	<input type="number" name="single" value="${target.op }" />
 	<input type="submit" value="=">
-<%= (String)request.getAttribute("result")==null? "":(String)request.getAttribute("result")
-%>
+	${target["result"] }
 </form>
 </body>
 </html>

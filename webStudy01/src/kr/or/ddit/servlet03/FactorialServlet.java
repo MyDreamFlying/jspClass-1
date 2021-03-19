@@ -24,6 +24,7 @@ public class FactorialServlet extends HttpServlet {
 		}
 		String result = NumberFormat.getInstance().format(factorial);
 		req.setAttribute("result", result);
+		req.setAttribute("number", number);
 		req.getRequestDispatcher("/WEB-INF/views/factorialForm.jsp").forward(req,resp);
 	}
 	
