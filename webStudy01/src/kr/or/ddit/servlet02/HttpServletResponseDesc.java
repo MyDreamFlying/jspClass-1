@@ -26,6 +26,11 @@ import javax.servlet.http.HttpServlet;
  *			response.setHeader(name, value) : setContentType이 추가 되기 이전
  *			response.setDateHeader(name, value(long type))
  *			response.setIntHeader(name, value(int))
+ *		
+ *		1) 캐시 제어
+ *		2) auto request(polling)
+ *		3) 흐름 제어(redirect / forward[include])
+ * 
  *	3. Response Body(message body, content body)
  *		response.getWrite(), reponse.getOutputStream() 으로 기록.
  *
