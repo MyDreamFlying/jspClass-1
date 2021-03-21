@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,29 +10,31 @@
 </head>
 <body>
 <select id="year">
-	<option disabled selected>year</option>
+<%! Date today = new Date(); %>
 <%
 	for(int i=2000; i<2025; i++){
+		String selVar="";
+		int yearNow = today.getYear()+1900;
+		if(i == yearNow)
+			selVar = "selected";
 		%>
-		<option><%=i%></option>
+		<option <%=selVar%>><%=i%></option>
 		<%
 	}
 %>
 </select>
 <select id="month">
-	<option disabled selected>month</option>
-	<option>1</option>
-	<option>2</option>
-	<option>3</option>
-	<option>4</option>
-	<option>5</option>
-	<option>6</option>
-	<option>7</option>
-	<option>8</option>
-	<option>9</option>
-	<option>10</option>
-	<option>11</option>
-	<option>12</option>
+<%
+	for(int i=1; i<=12; i++){
+		String selVar="";
+		int monthNow = today.getMonth()+1;
+		if(i == monthNow )
+			selVar = "selected";
+		%>
+		<option <%=selVar%>><%=i%></option>
+		<%
+	}
+%>
 </select>
 <div id="calendar"></div>
 </body>
@@ -51,15 +54,16 @@
 			}
 			printCalendar();
 		})
+		printCalendar();
 	})
 	
 	var printCalendar = function(){
 		const yearVal = $('#year').val();
 		const monthVal = $('#month').val();
-		console.log(year);
+		console.log(yearVal);
 		let newCalendar = `
 			<table border='1px solid black'>
-				<caption> ${yearVal} 년 ${monthVal} 월 달력</caption>
+				<caption> ${yearVal} year ${monthVal} month calendar</caption>
 				<tr>
 					<th>SUN</th>
 					<th>MON</th>
@@ -68,6 +72,15 @@
 					<th>THU</th>
 					<th>FRI</th>
 					<th>SAT</th>
+				</tr>
+				<tr>
+					<td><%=new Date().getDay()==0? "1" : " " %></td>
+					<td><%=new Date().getDay()==1? "1" : " " %></td>
+					<td><%=new Date().getDay()==2? "1" : " " %></td>
+					<td><%=new Date().getDay()==3? "1" : " " %></td>
+					<td><%=new Date().getDay()==4? "1" : " " %></td>
+					<td><%=new Date().getDay()==5? "1" : " " %></td>
+					<td><%=new Date().getDay()==6? "1" : " " %></td>
 				</tr>
 			</table>
 		`
