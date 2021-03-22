@@ -37,7 +37,8 @@ public class BTSServlet extends HttpServlet{
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getParameter("member");
-		
+		String member = req.getParameter("member");
+		String view = "/WEB-INF/views/bts/"+member+".jsp";
+		req.getRequestDispatcher(view).forward(req, resp);
 	}
 }
