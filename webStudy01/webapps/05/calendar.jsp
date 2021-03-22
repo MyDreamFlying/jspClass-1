@@ -1,3 +1,4 @@
+<%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -10,8 +11,13 @@
 </head>
 <body>
 <select id="year">
-<%! Date today = new Date(); %>
+<%! Date today = new Date(); 
+	Calendar cal = Calendar.getInstance();
+%>
 <%
+	cal.set(Calendar.DAY_OF_MONTH,1);
+	int dayOfFirst = cal.get(Calendar.DAY_OF_WEEK);
+
 	for(int i=2000; i<2025; i++){
 		String selVar="";
 		int yearNow = today.getYear()+1900;
@@ -74,13 +80,13 @@
 					<th>SAT</th>
 				</tr>
 				<tr>
-					<td><%=new Date().getDay()==0? "1" : " " %></td>
-					<td><%=new Date().getDay()==1? "1" : " " %></td>
-					<td><%=new Date().getDay()==2? "1" : " " %></td>
-					<td><%=new Date().getDay()==3? "1" : " " %></td>
-					<td><%=new Date().getDay()==4? "1" : " " %></td>
-					<td><%=new Date().getDay()==5? "1" : " " %></td>
-					<td><%=new Date().getDay()==6? "1" : " " %></td>
+					<td><%=dayOfFirst==0? "1" : " " %></td>
+					<td><%=dayOfFirst==1? "1" : " " %></td>
+					<td><%=dayOfFirst==2? "1" : " " %></td>
+					<td><%=dayOfFirst==3? "1" : " " %></td>
+					<td><%=dayOfFirst==4? "1" : " " %></td>
+					<td><%=dayOfFirst==5? "1" : " " %></td>
+					<td><%=dayOfFirst==6? "1" : " " %></td>
 				</tr>
 			</table>
 		`
