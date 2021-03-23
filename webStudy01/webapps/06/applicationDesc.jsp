@@ -27,7 +27,7 @@
 	5. ***** 웹 리소스 확보
 		file system path = getRealPath(resource URL-server side 방식)
 		URL = getResource(resource URL-server side 방식)
-		InputStream = getResource
+		InputStream = getResourceAsStream(resource URL-server side 방식)
 </pre>
 </body>
 </html>
