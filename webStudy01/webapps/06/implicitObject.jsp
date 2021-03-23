@@ -9,6 +9,10 @@
 <body>
 <h4>기본 객체(내장 객체)</h4>
 <pre>
+<%
+	if(1==1)
+		throw new RuntimeException("강제 발생 예외");
+%>
 *** jsp 컨테이너에 의해 서블릿 소스가 파싱되는 단계에서 정의되는 지역 변수들.
 1. request(HttpServletRequest)
 2. responst(HttpServletResonpose)
