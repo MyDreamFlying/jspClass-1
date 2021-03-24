@@ -9,9 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<%
-	pageContext.include("/includee/preScript.jsp");
-%>
+<jsp:include page="/includee/preScript.jsp"/>
 </head>
 <body>
 <form method="post">
