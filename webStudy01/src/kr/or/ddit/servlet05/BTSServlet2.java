@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//@WebServlet("/bts")
-public class BTSServletTeacher extends HttpServlet{
+@WebServlet("/bts")
+public class BTSServlet2 extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	@Override
@@ -29,7 +29,7 @@ public class BTSServletTeacher extends HttpServlet{
 		getServletContext().setAttribute("btsMap", btsMap);
 		
 		req.getSession().setAttribute("btsMap", btsMap);
-		String view = "/WEB-INF/views/btsFormTeacher.jsp";
+		String view = "/WEB-INF/views/btsForm2.jsp";
 		req.getRequestDispatcher(view).forward(req, resp);
 	}
 	@Override
@@ -47,6 +47,7 @@ public class BTSServletTeacher extends HttpServlet{
 		}
 		
 		String view = data.get(1);
+		req.setAttribute("result", view);
 		req.getRequestDispatcher(view).forward(req, resp);
 	}
 }
