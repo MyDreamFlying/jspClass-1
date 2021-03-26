@@ -1,3 +1,6 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
+<%@page import="java.io.Reader"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.io.FilenameFilter"%>
 <%@page import="java.io.File"%>
@@ -37,7 +40,7 @@ video{
 				
 				var selectedsVals = $('#media').val();
 				var jsonSelected = JSON.stringify(selectedsVals);
-				console.log(jsonSelected)
+				
 				// 선택된 목록 쿠키에 넣기 시작
 				$.ajax({
 					url : "<%=request.getContextPath()%>/02/MediaFormCookie.do",
@@ -92,6 +95,8 @@ video{
 		}
 	}
 	// 저장된 값 불러오기 끝
+	ObjectMapper objectMapper = new ObjectMapper();
+	String[] selecteds = objectMapper.readValue(selectedCookie, String[].class);
 	
 	String[] children = (String[])request.getAttribute("children");	
 	Date today = new Date();
@@ -100,7 +105,7 @@ video{
 		String selected = "";
 		String mime = application.getMimeType(child);
 		String type = mime.startsWith("image/")? "image" : "video";
-		if(selectedCookie.contains(child)){
+		if(Arrays.asList(selecteds).contains(child)){
 			selected = "selected";
 		}
 		options.append(String.format("<option %s class='%s'>%s</option>",selected,type,child));
