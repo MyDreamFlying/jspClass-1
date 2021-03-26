@@ -79,7 +79,6 @@ video{
 <body>
 <h4><%=new Date()%></h4>
 <select multiple="multiple" name="media" id="media">
-	<option disabled selected>choose a media to watch</option>
 <%
 	// 쿠키 저장된 값 불러오기
 	Cookie[] cookies = request.getCookies();
