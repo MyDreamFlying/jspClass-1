@@ -26,20 +26,25 @@ video{
 			
 			$("#media").on('change',function(){
 				$('#mediaArea').empty();
-				var mediaType = this.options[this.selectedIndex].getAttribute('class');
+				
 				var name = this.name;
-				var value = $(this).val();
-				var src = SRCPTRN.replace("%N", name)
-								.replace("%V", value);
-				if(mediaType == 'image'){
-					src = src.replace("%A",ImgAction)
-					var img = $("<img>").attr("src",src);
-					$('#mediaArea').html(img);
-				}else if(mediaType == 'video'){
-					src = src.replace("%A",VideoAction)
-					var video = $("<video autoplay controls>").attr("src",src);
-					$('#mediaArea').html(video);
-				}
+				var selecteds = $('#media :selected');
+				$(selecteds).each(function(idx, object){
+					console.log(object);
+					value = object.text;
+					var mediaType = object.getAttribute('class');
+					var src = SRCPTRN.replace("%N", name)
+									.replace("%V", value);
+					if(mediaType == 'image'){
+						src = src.replace("%A",ImgAction)
+						var img = $("<img>").attr("src",src);
+						$('#mediaArea').append(img);
+					}else if(mediaType == 'video'){
+						src = src.replace("%A",VideoAction)
+						var video = $("<video autoplay controls>").attr("src",src);
+						$('#mediaArea').append(video);
+					}
+				})
 				
 			});
  		});
@@ -47,7 +52,7 @@ video{
 </header>
 <body>
 <h4><%=new Date()%></h4>
-<select name="media" id="media">
+<select multiple="multiple" name="media" id="media">
 	<option disabled selected>choose a media to watch</option>
 <%
 	String[] children = (String[])request.getAttribute("children");	
