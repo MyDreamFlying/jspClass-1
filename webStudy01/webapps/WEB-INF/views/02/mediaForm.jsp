@@ -1,3 +1,4 @@
+<%@page import="java.net.URLDecoder"%>
 <%@page import="java.io.FilenameFilter"%>
 <%@page import="java.io.File"%>
 <%@page import="java.util.Date"%>
@@ -25,12 +26,33 @@ video{
 			const VideoAction = '<%=request.getContextPath()%>/01/video.do';
 			
 			$("#media").on('change',function(){
+				loadMedia();
+			});
+			
+			var loadMedia = function(){
 				$('#mediaArea').empty();
 				
-				var name = this.name;
+				var name = $('#media').attr("name");
 				var selecteds = $('#media :selected');
+				
+				var selectedsVals = $('#media').val();
+				var jsonSelected = JSON.stringify(selectedsVals);
+				console.log(jsonSelected)
+				// 선택된 목록 쿠키에 넣기 시작
+				$.ajax({
+					url : "<%=request.getContextPath()%>/02/MediaFormCookie.do",
+					method : "get",
+					data : {"data" : jsonSelected},
+					dataType : "text",
+					error : function(xhr, error, msg) {
+						console.log(xhr);
+						console.log(error);
+						console.log(msg);
+					}
+				})
+				// 선택된 목록 쿠키에 넣기 끝
+				
 				$(selecteds).each(function(idx, object){
-					console.log(object);
 					value = object.text;
 					var mediaType = object.getAttribute('class');
 					var src = SRCPTRN.replace("%N", name)
@@ -41,12 +63,13 @@ video{
 						$('#mediaArea').append(img);
 					}else if(mediaType == 'video'){
 						src = src.replace("%A",VideoAction)
-						var video = $("<video autoplay controls>").attr("src",src);
+						var video = $("<video autoplay muted controls>").attr("src",src);
 						$('#mediaArea').append(video);
 					}
 				})
-				
-			});
+			}
+			
+			loadMedia();
  		});
 	</script>
 </header>
@@ -55,14 +78,32 @@ video{
 <select multiple="multiple" name="media" id="media">
 	<option disabled selected>choose a media to watch</option>
 <%
+	// 쿠키 저장된 값 불러오기
+	Cookie[] cookies = request.getCookies();
+	Cookie searched = null;
+	String selectedCookie = "";
+	if(cookies != null){
+		for(Cookie tmp : cookies){
+			String value = URLDecoder.decode(tmp.getValue(),"utf-8");
+			if("selecteds".equals(tmp.getName())){
+				selectedCookie = URLDecoder.decode(tmp.getValue(),"utf-8");
+				break;
+			}
+		}
+	}
+	// 저장된 값 불러오기 끝
+	
 	String[] children = (String[])request.getAttribute("children");	
 	Date today = new Date();
-	
 	StringBuffer options = new StringBuffer();
 	for(String child : children){
+		String selected = "";
 		String mime = application.getMimeType(child);
 		String type = mime.startsWith("image/")? "image" : "video";
-		options.append(String.format("<option class='%s'>%s</option>",type,child));
+		if(selectedCookie.contains(child)){
+			selected = "selected";
+		}
+		options.append(String.format("<option %s class='%s'>%s</option>",selected,type,child));
 	}
 	out.println(options);
 %>
