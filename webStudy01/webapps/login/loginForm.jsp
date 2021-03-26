@@ -32,6 +32,7 @@
 	value="<%= Objects.toString(failedId, "")%>" 
 	name="mem_id" placeholder="id"/>
 	<input type="text" name="mem_pass" placeholder="password"/>
+	<input type="checkbox" name="saveId" value="saveId">아이디기억하기
 	<input type="submit" value="로그인"/>
 </form>
 </body>
