@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.utils.CookieUtils"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.util.Objects"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,6 +17,12 @@
 </head>
 <body>
 <%
+// 	CookieUtils utils = new CookieUtils(request);
+// 	String idCookie = null;
+// 	if(utils.exists("idCookie")){
+// 		idCookie = utils.getCookieValue("idCookie");
+// 	}
+
 	// 아이디 저장 관련 쿠키 검증부
 	Cookie[] cookies = request.getCookies();
 	String savedId = "";
