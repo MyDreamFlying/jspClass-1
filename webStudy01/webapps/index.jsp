@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,11 +10,20 @@
 <body>
 <h4>Welcome page!</h4>
 <%
-	String authId = (String) session.getAttribute("authId");
-	if(authId != null && !authId.isEmpty()){
+	MemberVO authMember = (MemberVO) session.getAttribute("authMember");
+	String authId = "";
+	String memName = "";
+	String email = "";
+	if(authMember != null){
+		authId = authMember.getMem_id();
+		memName = authMember.getMem_name();
+		email = authMember.getMem_mail();
+		if(authId != null && !authId.isEmpty()){
+	}
 		%>
 		<form name="logoutForm" method="post" action="<%=request.getContextPath() %>/login/logout.do"></form>
-		<%=authId %>님 로그인 성공!
+		<a href="<%=request.getContextPath() %>/mypage.do"><%=memName %></a>님 로그인 성공!
+		<a href="mailto:<%=email %>">이메일보내기</a>
 		<a href="#" onClick="clickHandler(event);">로그아웃</a>
 		<script type="text/javascript">
 			function clickHandler(event){
