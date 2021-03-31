@@ -7,7 +7,7 @@ import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
 
-public class MemberServiceImpl implements IMemberService {
+public class MemberServiceImplTeacher implements IMemberService {
 	private IMemberDAO dao = new MemberDAOImpl();
 	
 	@Override

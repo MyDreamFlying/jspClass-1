@@ -35,6 +35,17 @@ public class MemberVO implements Serializable {
 	private String mem_memorialday;
 	private Integer mem_mileage;
 	private String mem_delete;
+	
+	@Override
+	public String toString() {
+		return "MemberVO [mem_id=" + mem_id + ", mem_pass=" + mem_pass + ", mem_name=" + mem_name + ", mem_regno1="
+				+ mem_regno1 + ", mem_regno2=" + mem_regno2 + ", mem_bir=" + mem_bir + ", mem_zip=" + mem_zip
+				+ ", mem_add1=" + mem_add1 + ", mem_add2=" + mem_add2 + ", mem_hometel=" + mem_hometel + ", mem_comtel="
+				+ mem_comtel + ", mem_hp=" + mem_hp + ", mem_mail=" + mem_mail + ", mem_job=" + mem_job + ", mem_like="
+				+ mem_like + ", mem_memorial=" + mem_memorial + ", mem_memorialday=" + mem_memorialday
+				+ ", mem_mileage=" + mem_mileage + ", mem_delete=" + mem_delete + "]";
+	}
+
 	public String getMem_id() {
 		return mem_id;
 	}

@@ -9,7 +9,7 @@ import java.util.List;
 import kr.or.ddit.db.ConnectionFactory;
 import kr.or.ddit.vo.MemberVO;
 
-public class MemberDAOImpl implements IMemberDAO {
+public class MemberDAOImplTeacher implements IMemberDAO {
 
 	@Override
 	public MemberVO selectMemberForAuth(String mem_id) {
@@ -105,6 +105,7 @@ public class MemberDAOImpl implements IMemberDAO {
 				//				Statement stmt = conn.createStatement();
 				PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
 
+			ResultSet rs = pstmt.executeQuery();
 			int i=1;
 			pstmt.setString(i++, member.getMem_id());
 			pstmt.setString(i++, member.getMem_pass());
@@ -123,6 +124,8 @@ public class MemberDAOImpl implements IMemberDAO {
 			pstmt.setString(i++, member.getMem_like());
 			pstmt.setString(i++, member.getMem_memorial());
 			pstmt.setString(i++, member.getMem_memorialday());
+			pstmt.setInt(i++, member.getMem_mileage());
+			pstmt.setString(i++, member.getMem_delete());
 			
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {
