@@ -14,7 +14,7 @@ public class MemberServiceImpl implements IMemberService {
 	public MemberVO retrieveMember(String mem_id) {
 		MemberVO savedMember = dao.selectMemberDetail(mem_id);
 		if(savedMember == null) {
-			// custom exception 발생
+			throw new RuntimeException("아이디에 해당하는 회원이 존재하지 않음.");
 		}
 		return savedMember;
 	}
