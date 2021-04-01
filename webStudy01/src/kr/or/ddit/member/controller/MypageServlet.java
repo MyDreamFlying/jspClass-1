@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
@@ -22,8 +23,13 @@ public class MypageServlet extends HttpServlet {
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String mem_id = authMember.getMem_id();
 		
-		MemberVO detailMember = service.retrieveMember(mem_id);
-		req.setAttribute("member", detailMember);
+		try {
+			MemberVO detailMember = service.retrieveMember(mem_id);
+			req.setAttribute("member", detailMember);
+		}catch(UserNotFoundException e) {
+//			resp.sendError(400);
+			throw new IOException(e);
+		}
 		
 		String view = "/WEB-INF/views/member/mypage.jsp";
 		req.getRequestDispatcher(view).forward(req,resp);

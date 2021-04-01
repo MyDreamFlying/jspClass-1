@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import kr.or.ddit.db.ConnectionFactory;
+import kr.or.ddit.exception.DataAccessException;
 import kr.or.ddit.vo.MemberVO;
 
 public class MemberDAOImpl implements IMemberDAO {
@@ -35,7 +36,7 @@ public class MemberDAOImpl implements IMemberDAO {
 			
 			return member;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DataAccessException(e);
 		}
 
 	}
@@ -86,7 +87,7 @@ public class MemberDAOImpl implements IMemberDAO {
 			
 			return member;
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DataAccessException(e);
 		}
 	}
 
@@ -126,7 +127,7 @@ public class MemberDAOImpl implements IMemberDAO {
 			
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DataAccessException(e);
 		}
 	}
 
@@ -174,7 +175,7 @@ public class MemberDAOImpl implements IMemberDAO {
 			
 			return pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			throw new DataAccessException(e);
 		}
 	}
 

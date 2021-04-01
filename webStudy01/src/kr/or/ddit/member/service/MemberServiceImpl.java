@@ -3,6 +3,7 @@ package kr.or.ddit.member.service;
 import java.util.List;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
@@ -14,7 +15,7 @@ public class MemberServiceImpl implements IMemberService {
 	public MemberVO retrieveMember(String mem_id) {
 		MemberVO savedMember = dao.selectMemberDetail(mem_id);
 		if(savedMember == null) {
-			throw new RuntimeException("아이디에 해당하는 회원이 존재하지 않음.");
+			throw new UserNotFoundException("아이디에 해당하는 회원이 존재하지 않음.");
 		}
 		return savedMember;
 	}
