@@ -132,8 +132,50 @@ public class MemberDAOImpl implements IMemberDAO {
 
 	@Override
 	public int updateMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return 0;
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("UPDATE member             ");
+		sql.append("SET                       ");
+		sql.append("    MEM_NAME = ?,        ");
+		sql.append("    MEM_BIR = ?,         ");
+		sql.append("    MEM_ZIP = ?,         ");
+		sql.append("    MEM_ADD1 = ?,        ");
+		sql.append("    MEM_ADD2 = ?,        ");
+		sql.append("    MEM_HOMETEL = ?,     ");
+		sql.append("    MEM_COMTEL = ?,      ");
+		sql.append("    MEM_HP = ?,          ");
+		sql.append("    MEM_MAIL = ?,        ");
+		sql.append("    MEM_JOB = ?,         ");
+		sql.append("    MEM_LIKE = ?,        ");
+		sql.append("    MEM_MEMORIAL = ?,    ");
+		sql.append("    MEM_MEMORIALDAY = ? ");
+		sql.append("WHERE MEM_ID = ?         ");
+		
+		
+		try (Connection conn = ConnectionFactory.getConnection();
+				//				Statement stmt = conn.createStatement();
+				PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
+
+			int i=1;
+			pstmt.setString(i++, member.getMem_name());
+			pstmt.setString(i++, member.getMem_bir());
+			pstmt.setString(i++, member.getMem_zip());
+			pstmt.setString(i++, member.getMem_add1());
+			pstmt.setString(i++, member.getMem_add2());
+			pstmt.setString(i++, member.getMem_hometel());
+			pstmt.setString(i++, member.getMem_comtel());
+			pstmt.setString(i++, member.getMem_hp());
+			pstmt.setString(i++, member.getMem_mail());
+			pstmt.setString(i++, member.getMem_job());
+			pstmt.setString(i++, member.getMem_like());
+			pstmt.setString(i++, member.getMem_memorial());
+			pstmt.setString(i++, member.getMem_memorialday());
+			pstmt.setString(i++, member.getMem_id());
+			
+			return pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

@@ -104,9 +104,11 @@ table, th, td {
 	<script type="text/javascript">
 		$(".controlBtn").on("click", function(){
 			//$(this).prop("id")
-			if(this.id == "updateBtn"){
-				window.location.href = "<%=request.getContextPath()%>/member/memberUpdate.do"
-			}else{
+			let btnId = this.id;
+			
+			if(btnId == "updateBtn"){
+				location.href = "<%=request.getContextPath()%>/member/memberUpdate.do"
+			}else if(btnId == "deleteBtn"){
 				alert("회원 탈퇴");
 			}
 			
