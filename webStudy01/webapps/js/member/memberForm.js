@@ -26,7 +26,7 @@ let idCheckBtn = $("#idCheck").on("click", function(){
 		},
 		dataType : "json",
 		success : function(resp) {
-			memberForm.data("idCheck","resp.result");
+			memberForm.data("idCheck",resp.result);
 			if(resp.result != "OK"){
 				let messageTag = $.generateMessage("아이디 중복");
 				idTag.after(messageTag);
@@ -43,13 +43,13 @@ let idCheckBtn = $("#idCheck").on("click", function(){
 });
 
 let memberForm = $('#memberForm').on("submit", function(){
-	let checked = $(this).data("idCheck") == "OK";
+	let checked = $(this).data("idCheck");
 	if(!checked){
 		let messageTag = idTag.next(".message:first")
 		if(!messageTag || messageTag.length==0){
 			messageTag = $.generateMessage();
 		}
-		messageTag.text("아이디 중복 체크 하세요");
+		messageTag.text("사용할 수 없는 아이디입니다.");
 		idTag.after(messageTag);
 	}
 	return $(this).data("idCheck") == "OK";

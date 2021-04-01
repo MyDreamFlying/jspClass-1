@@ -15,11 +15,11 @@
 <%
 	String message = (String) request.getAttribute("message");
 	if(message != null && !message.isEmpty()){
-		%>
+%>
 		<script type="text/javascript">
 			alert("<%=message %>");
 		</script>
-		<%
+<%
 	}
 %>
 </head>
@@ -38,7 +38,7 @@
 				<td><input type="text" name="mem_id" required
 					value="<%=Objects.toString(member.getMem_id(),"") %>" />
 					<span class="error"><%=Objects.toString(errors.get("mem_id"),"")%></span>
-					<button type="button" id="idCheck">아이디중복체크</button>
+					<button type="button" id="idCheck" hidden="hidden" >아이디중복체크</button>
 				</td>
 			</tr>
 	<%

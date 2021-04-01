@@ -109,7 +109,7 @@ table, th, td {
 			if(btnId == "updateBtn"){
 				location.href = "<%=request.getContextPath()%>/member/memberUpdate.do"
 			}else if(btnId == "deleteBtn"){
-				alert("회원 탈퇴");
+				location.href = "<%=request.getContextPath()%>/member/memberDelete.do"
 			}
 			
 		});

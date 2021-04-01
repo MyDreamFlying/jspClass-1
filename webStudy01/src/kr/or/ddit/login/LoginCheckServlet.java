@@ -22,7 +22,7 @@ public class LoginCheckServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+		req.setCharacterEncoding("utf-8");
 		HttpSession session = req.getSession();
 		if(session.isNew()) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
