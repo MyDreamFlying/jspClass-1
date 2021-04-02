@@ -62,7 +62,6 @@ public class MemberUpdateServlet extends HttpServlet{
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("erros", errors);
 		boolean valid = validate(member, errors);
-		boolean redirect = false;
 		String view = null;
 		String message = null;
 		
@@ -74,8 +73,7 @@ public class MemberUpdateServlet extends HttpServlet{
 				message = "비번 오류";
 				break;
 			case OK:
-				redirect = true;
-				view = "/mypage.do";
+				view = "redirect:/mypage.do";
 				break;
 			default :
 				view = "/WEB-INF/views/member/memberForm.jsp";
@@ -88,10 +86,12 @@ public class MemberUpdateServlet extends HttpServlet{
 		
 		req.setAttribute("message", message);
 		
+		boolean redirect = view.startsWith("redirect:");
 		if(redirect) {
-			resp.sendRedirect(req.getContextPath()+view);
+			view = view.substring("rediret:".length());
+			resp.sendRedirect(req.getContextPath() + view);
 		}else {
-			req.getRequestDispatcher(view).forward(req,resp);
+			req.getRequestDispatcher(view).forward(req,resp);		
 		}
 		
 	}

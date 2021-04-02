@@ -11,6 +11,18 @@ table, th, td {
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%
+	String message = (String)session.getAttribute("message");
+	session.removeAttribute("message");
+	
+	if(message != null && !message.isEmpty()){
+		%>
+		<script type="text/javascript">
+			alert("<%=message%>");
+		</script>
+		<%
+	}
+%>
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
@@ -99,9 +111,13 @@ table, th, td {
 			<td colspan="2"><input type="button" value="수정" class="controlBtn" id="updateBtn">
 			<button type="button" class="controlBtn" id="deleteBtn">탈퇴</button>
 	</table>
+	<form id="deleteForm" action="<%=request.getContextPath() %>/member/memberDelete.do" method="post">
+		<input type="hidden" name="password" />
+	</form>
 	<br />
 	<a href="<%=request.getContextPath()%>/index.jsp">처음으로 가기</a>
 	<script type="text/javascript">
+		let deleteForm = $("#deleteForm");
 		$(".controlBtn").on("click", function(){
 			//$(this).prop("id")
 			let btnId = this.id;
@@ -109,7 +125,13 @@ table, th, td {
 			if(btnId == "updateBtn"){
 				location.href = "<%=request.getContextPath()%>/member/memberUpdate.do"
 			}else if(btnId == "deleteBtn"){
-				location.href = "<%=request.getContextPath()%>/member/memberDelete.do"
+				let password = prompt("비번 입력");
+				if(!password){
+					return;
+				}
+				deleteForm.find("[name='password']").val(password);
+// 				deleteForm.trigger();
+				deleteForm.submit();
 			}
 			
 		});

@@ -53,7 +53,6 @@ public class MemberInsertServlet extends HttpServlet{
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("erros", errors);
 		boolean valid = validate(member, errors);
-		boolean redirect = false;
 		String view = null;
 		String message = null;
 		
@@ -65,8 +64,7 @@ public class MemberInsertServlet extends HttpServlet{
 				message = "아이디 중복";
 				break;
 			case OK:
-				redirect = true;
-				view = "/login/loginForm.jsp";
+				view = "redirect:/login/loginForm.jsp";
 				break;
 			default :
 				view = "/WEB-INF/views/member/memberForm.jsp";
@@ -79,10 +77,12 @@ public class MemberInsertServlet extends HttpServlet{
 		
 		req.setAttribute("message", message);
 		
+		boolean redirect = view.startsWith("redirect:");
 		if(redirect) {
-			resp.sendRedirect(req.getContextPath()+view);
+			view = view.substring("rediret:".length());
+			resp.sendRedirect(req.getContextPath() + view);
 		}else {
-			req.getRequestDispatcher(view).forward(req,resp);
+			req.getRequestDispatcher(view).forward(req,resp);		
 		}
 		
 	}

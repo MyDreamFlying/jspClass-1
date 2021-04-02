@@ -18,7 +18,7 @@ public class MemberDAOImpl implements IMemberDAO {
 		StringBuffer sql = new StringBuffer();
 		sql.append("select mem_id, mem_pass, mem_name, mem_mail");
 		sql.append(" from member");
-		sql.append(" where mem_id= ?");
+		sql.append(" where mem_id= ? AND MEM_DELETE is null ");
 		try(
 			Connection conn = ConnectionFactory.getConnection();
 			//				Statement stmt = conn.createStatement();
@@ -183,9 +183,10 @@ public class MemberDAOImpl implements IMemberDAO {
 	public int deleteMember(String mem_id) {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("DELETE FROM member");
-		sql.append(" WHERE mem_id = ?");
-
+		sql.append(" UPDATE MEMBER");
+		sql.append(" SET MEM_DELETE = 'Y' ");
+		sql.append(" WHERE MEM_ID = ?");
+	
 		try (Connection conn = ConnectionFactory.getConnection();
 				//				Statement stmt = conn.createStatement();
 				PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
@@ -197,7 +198,7 @@ public class MemberDAOImpl implements IMemberDAO {
 			throw new DataAccessException(e);
 		}
 	}
-		
+
 
 	@Override
 	public List<MemberVO> selectMemberList() {
