@@ -60,8 +60,11 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public ServiceResult removeMember(MemberVO member) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = null;
+		
+		int rowcnt = dao.deleteMember(member.getMem_id());
+		
+		return result;
 	}
 
 	@Override

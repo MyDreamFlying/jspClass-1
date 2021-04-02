@@ -181,9 +181,23 @@ public class MemberDAOImpl implements IMemberDAO {
 
 	@Override
 	public int deleteMember(String mem_id) {
-		// TODO Auto-generated method stub
-		return 0;
+		StringBuffer sql = new StringBuffer();
+
+		sql.append("DELETE FROM member");
+		sql.append(" WHERE mem_id = ?");
+
+		try (Connection conn = ConnectionFactory.getConnection();
+				//				Statement stmt = conn.createStatement();
+				PreparedStatement pstmt = conn.prepareStatement(sql.toString());) {
+
+			pstmt.setString(1, mem_id);
+			return pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}
 	}
+		
 
 	@Override
 	public List<MemberVO> selectMemberList() {

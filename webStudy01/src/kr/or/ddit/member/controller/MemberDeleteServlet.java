@@ -29,10 +29,15 @@ public class MemberDeleteServlet extends HttpServlet{
 		MemberVO authMember = (MemberVO)session.getAttribute("authMember");
 		
 		String authId = authMember.getMem_id();
-		MemberVO member = service.retrieveMember(authId);
 		
-		// 세션 아이디 이용해 아이디 탈퇴 
+		// 세션 이용해 회원 탈퇴 
+		service.removeMember(authMember);
 		
+		// 회원 세션 제거
+		
+		session.invalidate();
+		
+		// 첫 화면으로 redirect 시키기
 		String view = "../";
 		resp.sendRedirect(view);
 	}
