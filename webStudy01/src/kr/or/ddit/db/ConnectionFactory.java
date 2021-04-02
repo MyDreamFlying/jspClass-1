@@ -3,13 +3,14 @@ package kr.or.ddit.db;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import javax.sql.DataSource;
 
-import oracle.jdbc.pool.OracleDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
  * Factory Object[Method] Pattern
@@ -21,31 +22,51 @@ public class ConnectionFactory {
 	private static String url;
 	private static String user;
 	private static String password;
+	private static String connectionMessage;
 	private static DataSource ds;
 	
 	static {
-		Properties properties = new Properties();
-		try(
-			InputStream is = ConnectionFactory.class.getResourceAsStream("dbinfo.properties");
-		) {
-			properties.load(is);
-//			driverClassName = properties.getProperty("driverClassName");
-			url = properties.getProperty("url");
-			user = properties.getProperty("user");
-			password = properties.getProperty("password");
+//		Properties properties = new Properties();
+//		try(
+//			InputStream is = ConnectionFactory.class.getResourceAsStream("dbinfo.properties");
+//		) {
+//			properties.load(is);
+			ResourceBundle bundle = ResourceBundle.getBundle("kr.or.ddit.db.dbinfo");
+		
+			driverClassName = bundle.getString("driverClassName");
+			url = bundle.getString("url");
+			user = bundle.getString("user");
+			password = bundle.getString("password");
+			connectionMessage = bundle.getString("connectionMessage");
 			
-			ds = new OracleDataSource();
-			((OracleDataSource)ds).setURL(url);
-			((OracleDataSource)ds).setUser(user);
-			((OracleDataSource)ds).setPassword(password);
+			int initialSize = Integer.parseInt(bundle.getString("initialSize"));
+			int maxTotal = Integer.parseInt(bundle.getString("maxTotal"));
+			long maxWait = Integer.parseInt(bundle.getString("maxWait"));
+			
+			ds = new BasicDataSource();
+			((BasicDataSource)ds).setDriverClassName(driverClassName);
+			((BasicDataSource)ds).setUrl(url);
+			((BasicDataSource)ds).setUsername(user);
+			((BasicDataSource)ds).setPassword(password);
+			
+			// 풀링을 하려면 ( 칼국수 반죽을 미리 만들려면), 몇개를 만들지 셋팅을 해야함.
+			((BasicDataSource)ds).setMaxTotal(initialSize);
+			((BasicDataSource)ds).setInitialSize(maxTotal);
+			((BasicDataSource)ds).setMaxWaitMillis(maxWait);
+			
+//			ds = new OracleDataSource();
+//			((OracleDataSource)ds).setURL(url);
+//			((OracleDataSource)ds).setUser(user);
+//			((OracleDataSource)ds).setPassword(password);
 			
 //			Class.forName(driverClassName);
-		} catch ( IOException | SQLException e) {
-			throw new RuntimeException(e);
-		}
+//		} catch ( IOException e) {
+//			throw new RuntimeException(e);
+//		}
 	}
 	
 	public static Connection getConnection() throws SQLException{
+		System.out.println(connectionMessage);
 		return ds.getConnection();
 //		return DriverManager.getConnection(url, user, password);
 	}
