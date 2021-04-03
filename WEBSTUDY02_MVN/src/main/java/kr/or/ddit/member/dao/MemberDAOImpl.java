@@ -224,6 +224,7 @@ public class MemberDAOImpl implements IMemberDAO {
 				member.setMem_mail(rs.getString("MEM_MAIL"));
 				member.setMem_hp(rs.getString("MEM_HP"));
 				member.setMem_mileage(rs.getInt("MEM_MILEAGE"));
+				member.setMem_delete(rs.getString("MEM_DELETE"));
 				memberList.add(member);
 			}
 			return memberList;
