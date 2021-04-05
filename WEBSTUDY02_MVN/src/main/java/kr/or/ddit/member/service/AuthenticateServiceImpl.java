@@ -6,11 +6,11 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.dao.IMemberDAO;
-import kr.or.ddit.member.dao.MemberDAOImpl;
+import kr.or.ddit.member.dao.MemberDaoImpl;
 import kr.or.ddit.vo.MemberVO;
 
 public class AuthenticateServiceImpl implements IAuthenticateService {
-	private IMemberDAO dao = new MemberDAOImpl();
+	private IMemberDAO dao = MemberDaoImpl.getInstance();
 
 	@Override
 	public ServiceResult authenticate(MemberVO member) {

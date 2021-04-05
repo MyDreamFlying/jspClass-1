@@ -47,6 +47,7 @@
 		%>
 		<div class="error"><%=message %></div>
 		<%
+		session.removeAttribute("message");
 	}
 %>
 <form action="<%=request.getContextPath() %>/login/loginCheck.do" method="post">

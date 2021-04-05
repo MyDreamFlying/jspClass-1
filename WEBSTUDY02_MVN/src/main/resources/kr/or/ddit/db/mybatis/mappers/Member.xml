@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.member.dao.IMemberDAO">
+	<select id="selectMemberForAuth" parameterType="String" resultType="MemberVO">
+		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL
+		 FROM MEMBER
+		 WHERE MEM_ID= #{mem_id} AND MEM_DELETE IS NULL
+	</select>
+	
+	<select id="selectMemberDetail" parameterType="string" resultType="MemberVO">
+		SELECT
+			MEM_ID,    MEM_PASS,    MEM_NAME,
+		    MEM_REGNO1,   MEM_REGNO2,   TO_CHAR(MEM_BIR, 'YYYY-MM-DD') AS MEM_BIR,
+		    MEM_ZIP,    MEM_ADD1,    MEM_ADD2,
+		    MEM_HOMETEL,    MEM_COMTEL,    MEM_HP,
+		    MEM_MAIL,    MEM_JOB,    MEM_LIKE,
+		    MEM_MEMORIAL,    TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') AS MEM_MEMORIALDAY, MEM_MILEAGE,
+		    MEM_DELETE
+		FROM MEMBER
+		WHERE MEM_ID= #{mem_id}
+	</select>
+	<update id="updateMember" parameterType="MemberVO">
+		UPDATE member           
+		SET                     
+		    MEM_NAME 	=	#{mem_name, jdbcType=VARCHAR},       
+		    MEM_BIR		=	TO_DATE(#{mem_bir, jdbcType=DATE}, 'YYYY-MM-DD'),        
+		    MEM_ZIP		=	#{mem_zip, jdbcType=VARCHAR},        
+	 		MEM_ADD1	=	#{mem_add1, jdbcType=VARCHAR},       
+		    MEM_ADD2	=	#{mem_add2, jdbcType=VARCHAR},       
+		    MEM_HOMETEL	=	#{mem_hometel, jdbcType=VARCHAR},    
+		    MEM_COMTEL	=	#{mem_comtel, jdbcType=VARCHAR},     
+		    MEM_HP		=	#{mem_hp, jdbcType=VARCHAR},         
+		    MEM_MAIL	=	#{mem_mail, jdbcType=VARCHAR},       
+		    MEM_JOB		=	#{mem_job,jdbcType=VARCHAR},        
+		    MEM_LIKE	=	#{mem_like,jdbcType=VARCHAR},       
+		    MEM_MEMORIAL	=	#{mem_memorial, jdbcType=VARCHAR},   
+		    MEM_MEMORIALDAY	=	TO_DATE(#{mem_memorialday, jdbcType=DATE}, 'YYYY-MM-DD')
+		WHERE MEM_ID		=	#{mem_id,jdbcType=VARCHAR}        
+	</update>
+	
+	<update id="insertMember" parameterType="MemberVO">
+		INSERT INTO MEMBER 
+			(MEM_ID,	MEM_PASS,	MEM_NAME,
+			MEM_REGNO1,	MEM_REGNO2,	MEM_BIR,
+			MEM_ZIP,	MEM_ADD1,	MEM_ADD2,
+			MEM_HOMETEL,MEM_COMTEL,	MEM_HP,
+			MEM_MAIL,	MEM_JOB,	MEM_LIKE,
+			MEM_MEMORIAL,	MEM_MEMORIALDAY,	MEM_MILEAGE)
+		VALUES (
+			#{mem_id,jdbcType=VARCHAR}, 
+			#{mem_pass,jdbcType=VARCHAR}, 
+			#{mem_name,jdbcType=VARCHAR}, 
+			#{mem_regno1,jdbcType=VARCHAR}, 
+			#{mem_regno2,jdbcType=VARCHAR},
+			TO_DATE(#{mem_bir, jdbcType=DATE}, 'YYYY-MM-DD'),
+			#{mem_zip, jdbcType=VARCHAR},      
+			#{mem_add1, jdbcType=VARCHAR},     
+			#{mem_add2, jdbcType=VARCHAR},     
+			#{mem_hometel, jdbcType=VARCHAR},      
+			#{mem_comtel, jdbcType=VARCHAR},       
+			#{mem_hp, jdbcType=VARCHAR},           
+			#{mem_mail, jdbcType=VARCHAR},         
+			#{mem_job,jdbcType=VARCHAR},           
+			#{mem_like,jdbcType=VARCHAR},          
+			#{mem_memorial, jdbcType=VARCHAR}, 
+			TO_DATE(#{mem_memorialday, jdbcType=DATE}, 'YYYY-MM-DD'),
+			3000
+		)
+	</update>
+	
+	<update id="deleteMember" parameterType="string">
+		UPDATE MEMBER
+		SET MEM_DELETE = 'Y'
+		WHERE MEM_ID = #{mem_id}
+	</update>
+	
+	<select id="selectMemberList" resultType="MemberVO">
+		SELECT MEM_ID, MEM_NAME, MEM_MAIL, MEM_HP, MEM_MILEAGE, MEM_DELETE
+		FROM MEMBER
+	</select>
+</mapper>
