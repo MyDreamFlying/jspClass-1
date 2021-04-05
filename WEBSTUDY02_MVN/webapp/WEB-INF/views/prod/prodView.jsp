@@ -22,6 +22,30 @@ table, th, td{
 		<td><%=prod.getProd_id() %></td>
 	</tr>
 	<tr>
+		<th>상품명</th>
+		<td><%=prod.getProd_name() %></td>
+	</tr>
+	<tr>
+		<th>상품가격</th>
+		<td><%=prod.getProd_price() %></td>
+	</tr>
+	<tr>
+		<th>상품간단설명</th>
+		<td><%=prod.getProd_outline() %></td>
+	</tr>
+	<tr>
+		<th>상품상세설명</th>
+		<td><%=prod.getProd_detail() %></td>
+	</tr>
+	<tr>
+		<th>상품재고</th>
+		<td><%=prod.getProd_totalstock() %></td>
+	</tr>
+	<tr>
+		<th>상품주의</th>
+		<td><%=prod.getProd_delivery() %></td>
+	</tr>
+	<tr>
 		<th>거래처 정보</th>
 		<td>
 			<table>

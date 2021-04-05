@@ -121,13 +121,13 @@ table, th, td {
 					<table>
 						<thead>
 							<tr>
-								<th>상품코드v</th>
-								<th>상품명v</th>
+								<th>상품코드</th>
+								<th>상품명</th>
 								<th>상품분류명</th>
 								<th>거래처명</th>
-								<th>구매가v</th>
-								<th>판매가v</th>
-								<th>마일리지v</th>
+								<th>구매가</th>
+								<th>판매가</th>
+								<th>마일리지</th>
 							</tr>
 						</thead>
 						<tbody>

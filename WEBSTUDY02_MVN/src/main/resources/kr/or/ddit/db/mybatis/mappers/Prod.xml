@@ -7,7 +7,9 @@
 		<association property="buyer" javaType="BuyerVO" autoMapping="true"></association>
 	</resultMap>
 	<select id="selectProd" parameterType="String" resultMap="prodMap">
-		SELECT PROD_ID, BUYER_NAME, BUYER_CHARGER, BUYER_COMTEL, BUYER_ADD1
+		SELECT PROD_ID, PROD_NAME, PROD_PRICE, PROD_OUTLINE
+		,PROD_DETAIL, PROD_TOTALSTOCK, PROD_DELIVERY
+		,BUYER_NAME, BUYER_CHARGER, BUYER_COMTEL, BUYER_ADD1
 		FROM PROD LEFT OUTER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
 		WHERE PROD_ID = #{PROD_ID}
 	</select>
