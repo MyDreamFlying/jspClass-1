@@ -4,11 +4,11 @@ import java.util.List;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.UserNotFoundException;
 import kr.or.ddit.member.dao.IMemberDAO;
-import kr.or.ddit.member.dao.MemberDaoImpl;
+import kr.or.ddit.member.dao.MemberDAOImpl;
 import kr.or.ddit.vo.MemberVO;
 
 public class MemberServiceImpl implements IMemberService {
-	private IMemberDAO dao = MemberDaoImpl.getInstance();
+	private IMemberDAO dao = MemberDAOImpl.getInstance();
 	private IAuthenticateService authService = new AuthenticateServiceImpl();
 	
 	@Override

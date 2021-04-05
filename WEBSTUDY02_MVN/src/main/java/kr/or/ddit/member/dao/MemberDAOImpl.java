@@ -8,12 +8,12 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.MemberVO;
 
-public class MemberDaoImpl implements IMemberDAO {
-	private static MemberDaoImpl self;
-	private MemberDaoImpl() {}
+public class MemberDAOImpl implements IMemberDAO {
+	private static MemberDAOImpl self;
+	private MemberDAOImpl() {}
 	
-	public static MemberDaoImpl getInstance() {
-		if(self == null) self = new MemberDaoImpl();
+	public static MemberDAOImpl getInstance() {
+		if(self == null) self = new MemberDAOImpl();
 		return self;
 	}
 	

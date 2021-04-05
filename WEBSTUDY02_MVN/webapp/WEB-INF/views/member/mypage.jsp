@@ -1,3 +1,6 @@
+<%@page import="java.util.Set"%>
+<%@page import="kr.or.ddit.vo.ProdVO"%>
+<%@page import="java.util.List"%>
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -110,6 +113,56 @@ table, th, td {
 		<tr>
 			<td colspan="2"><input type="button" value="수정" class="controlBtn" id="updateBtn">
 			<button type="button" class="controlBtn" id="deleteBtn">탈퇴</button>
+		<tr>
+		
+		<tr>
+				<th>구매목록</th>
+				<td>
+					<table>
+						<thead>
+							<tr>
+								<th>상품코드v</th>
+								<th>상품명v</th>
+								<th>상품분류명</th>
+								<th>거래처명</th>
+								<th>구매가v</th>
+								<th>판매가v</th>
+								<th>마일리지v</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%
+							Set<ProdVO> prodList = member.getProdList();
+							if(prodList.size() >0){
+								for(ProdVO prod : prodList){
+								%>
+								<tr>
+									<td><%=prod.getProd_id() %></td>
+									<td><a href="<%=request.getContextPath()%>/prod/prodView.do?what=<%=prod.getProd_id()%>"><%=prod.getProd_name() %></a></td>
+									<td><%=prod.getLprod_nm() %></td>
+									<td><%=prod.getBuyer().getBuyer_name() %></td>
+									<td><%=prod.getProd_cost() %></td>
+									<td><%=prod.getProd_price() %></td>
+									<td><%=prod.getProd_mileage() %></td>
+								</tr>
+								<%
+								}
+							}else{
+								%>
+								<tr>
+									<td colspan="7">
+										구매 기록이 없음.
+									</td>
+								</tr>
+								<%
+							}
+						%>											
+						
+						</tbody>
+					</table>
+				</td>
+		</tr>
+		
 	</table>
 	<form id="deleteForm" action="<%=request.getContextPath() %>/member/memberDelete.do" method="post">
 		<input type="hidden" name="password" />

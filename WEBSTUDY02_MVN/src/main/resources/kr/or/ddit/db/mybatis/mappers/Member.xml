@@ -7,7 +7,29 @@
 		 WHERE MEM_ID= #{mem_id} AND MEM_DELETE IS NULL
 	</select>
 	
-	<select id="selectMemberDetail" parameterType="string" resultType="MemberVO">
+	<resultMap type="MemberVO" id="memberMap" autoMapping="true">
+		<id property="mem_id" column="MEM_ID"/>
+		
+		<collection property="prodList" ofType="ProdVO" javaType="java.util.Set" autoMapping="true">
+			<id property="prod_id" column="PROD_ID"/>
+			<association property="buyer" javaType="BuyerVO" autoMapping="true">
+			</association>
+		</collection>
+		
+	</resultMap>
+	<select id="selectMemberDetail" parameterType="string" resultMap="memberMap">
+		WITH CARTPROD AS (
+			SELECT DISTINCT CART_MEMBER, CART_PROD
+			FROM CART
+		), PRODALL AS(
+			SELECT
+				PROD.*
+				, LPROD_NM
+				, BUYER.*
+			FROM PROD INNER JOIN LPROD ON (PROD_LGU = LPROD_GU)
+					  INNER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+		)
+		
 		SELECT
 			MEM_ID,    MEM_PASS,    MEM_NAME,
 		    MEM_REGNO1,   MEM_REGNO2,   TO_CHAR(MEM_BIR, 'YYYY-MM-DD') AS MEM_BIR,
@@ -16,7 +38,11 @@
 		    MEM_MAIL,    MEM_JOB,    MEM_LIKE,
 		    MEM_MEMORIAL,    TO_CHAR(MEM_MEMORIALDAY, 'YYYY-MM-DD') AS MEM_MEMORIALDAY, MEM_MILEAGE,
 		    MEM_DELETE
-		FROM MEMBER
+		    , PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE, PROD_MILEAGE
+		    , LPROD_NM
+		    , BUYER_NAME, BUYER_ADD1
+		FROM MEMBER LEFT OUTER JOIN CARTPROD ON(MEM_ID = CART_MEMBER)
+					LEFT OUTER JOIN PRODALL ON(CART_PROD = PROD_ID)
 		WHERE MEM_ID= #{mem_id}
 	</select>
 	<update id="updateMember" parameterType="MemberVO">

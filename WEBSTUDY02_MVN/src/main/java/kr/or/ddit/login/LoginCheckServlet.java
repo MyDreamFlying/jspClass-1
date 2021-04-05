@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.AuthenticateServiceImpl;
 import kr.or.ddit.member.service.IAuthenticateService;
@@ -19,6 +22,7 @@ import kr.or.ddit.vo.MemberVO;
 public class LoginCheckServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	private IAuthenticateService service = new AuthenticateServiceImpl();
+	private static final Logger logger = LoggerFactory.getLogger(LoginCheckServlet.class);
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,10 +55,14 @@ public class LoginCheckServlet extends HttpServlet{
 		String message = null;
 		MemberVO member = new MemberVO(mem_id, mem_pass);
 		
+		if(logger.isDebugEnabled())
+			logger.debug("인증 전 MemberVO : {}",member);
+		
 		if(valid) {
 		// 인증 (id == password)
 			ServiceResult result = service.authenticate(member);
-			
+			if(logger.isInfoEnabled())
+				logger.info("인증 후 MemberVO : {}",member);
 			switch(result) {
 			case OK:
 				redirect = true;

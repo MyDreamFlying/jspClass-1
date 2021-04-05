@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.prod.dao.IProdDAO">
+
+	<resultMap type="prodVO" id="prodMap" autoMapping="true">
+		<id property="prod_id" column="PROD_ID"/>
+		<association property="buyer" javaType="BuyerVO" autoMapping="true"></association>
+	</resultMap>
+	<select id="selectProd" parameterType="String" resultMap="prodMap">
+		SELECT PROD_ID, BUYER_NAME, BUYER_CHARGER, BUYER_COMTEL, BUYER_ADD1
+		FROM PROD LEFT OUTER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+		WHERE PROD_ID = #{PROD_ID}
+	</select>
+	
+</mapper>

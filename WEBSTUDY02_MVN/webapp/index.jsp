@@ -40,6 +40,6 @@
 		<%
 	}
 %>
-<a href="http://localhost/webStudy01/login/loginForm.jsp">로그인 페이지로 돌아가기</a>
+<a href="<%=request.getContextPath() %>/login/loginForm.jsp">로그인 페이지로 돌아가기</a>
 </body>
 </html>
