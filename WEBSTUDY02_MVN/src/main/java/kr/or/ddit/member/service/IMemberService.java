@@ -52,7 +52,8 @@ public interface IMemberService {
 	public List<MemberVO> retrieveMemberList(PagingVO pagingVO);
 	/**
 	 * 페이징 처리를 위한 회원수 조회
+	 * @param pagingVO TODO
 	 * @return
 	 */
-	public int retrieveMemberCount();
+	public int retrieveMemberCount(PagingVO<MemberVO> pagingVO);
 }

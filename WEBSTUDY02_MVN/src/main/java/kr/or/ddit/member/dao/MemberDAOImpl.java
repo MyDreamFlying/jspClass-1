@@ -89,14 +89,16 @@ public class MemberDAOImpl implements IMemberDAO {
 	}
 
 	@Override
-	public int selectTotalRecord() {
+	public int selectTotalRecord(PagingVO<MemberVO> pagingVO) {
 		try(
 				SqlSession session = sessionFactory.openSession();
 			){
 				IMemberDAO mapper = session.getMapper(IMemberDAO.class);
-				return mapper.selectTotalRecord();
-			}
+				return mapper.selectTotalRecord(pagingVO);
+		}
 	}
+
+
 	
 	
 

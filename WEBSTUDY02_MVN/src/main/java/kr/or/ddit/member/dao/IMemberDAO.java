@@ -50,7 +50,7 @@ public interface IMemberDAO {
 	 * @param pagingVO TODO
 	 * @return 조건에 맞는 회원이 없다면, size()==0
 	 */
-	public List<MemberVO> selectMemberList(PagingVO pagingVO);
+	public List<MemberVO> selectMemberList(PagingVO<MemberVO> pagingVO);
 	
-	public int selectTotalRecord();
+	public int selectTotalRecord(PagingVO<MemberVO> pagingVO);
 }

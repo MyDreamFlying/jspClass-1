@@ -78,8 +78,8 @@ public class MemberServiceImpl implements IMemberService {
 	}
 
 	@Override
-	public int retrieveMemberCount() {
-		return dao.selectTotalRecord();
+	public int retrieveMemberCount(PagingVO<MemberVO> pagingVO) {
+		return dao.selectTotalRecord(pagingVO);
 	}
 
 }

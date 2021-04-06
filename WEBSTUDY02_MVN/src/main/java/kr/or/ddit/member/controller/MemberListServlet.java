@@ -13,6 +13,7 @@ import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
 
 @WebServlet("/member/memberList.do")
 public class MemberListServlet extends HttpServlet{
@@ -20,14 +21,23 @@ public class MemberListServlet extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("UTF-8");
+		String searchType = req.getParameter("searchType");
+		String searchWord = req.getParameter("searchWord");
 		String pageParam = req.getParameter("page");
+		
+		SearchVO searchVO = new SearchVO(searchType, searchWord);
+		
 		int currentPage = 1;
 		if(pageParam != null && pageParam.matches("\\d+")) {
 			currentPage = Integer.parseInt(pageParam);
 		}
 		PagingVO<MemberVO> pagingVO = new PagingVO(7, 2);
 		pagingVO.setCurrentPage(currentPage);
-		int totalRecord = service.retrieveMemberCount();
+		// 검색 조건
+		pagingVO.setSimpleSearch(searchVO);
+		
+		int totalRecord = service.retrieveMemberCount(pagingVO);
 		pagingVO.setTotalRecord(totalRecord);
 		
 		List<MemberVO> memberList = service.retrieveMemberList(pagingVO);

@@ -29,6 +29,7 @@ public class PagingVO<T> implements Serializable{
 	private int startPage;
 	private int endPage;
 	private List<T> dataList;
+	private SearchVO simpleSearch;
 	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;
@@ -45,7 +46,7 @@ public class PagingVO<T> implements Serializable{
 		
 	}
 	
-	private static String aPattern = "<a href='?page=%d'>[%s]</a>";
+	private static String aPattern = "<a href='#' data-page='%d'>[%s]</a>";
 	private static String currentPagePtrn = "<a href='#'>[%s]</a>";
 	
 	public String getPagingHTML() {
