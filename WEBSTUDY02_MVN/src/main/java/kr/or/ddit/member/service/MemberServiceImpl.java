@@ -76,4 +76,9 @@ public class MemberServiceImpl implements IMemberService {
 		return memberList;
 	}
 
+	@Override
+	public int retrieveMemberCount() {
+		return dao.selectTotalRecord();
+	}
+
 }

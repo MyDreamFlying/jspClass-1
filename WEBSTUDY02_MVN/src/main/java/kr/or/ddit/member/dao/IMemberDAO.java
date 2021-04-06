@@ -49,4 +49,6 @@ public interface IMemberDAO {
 	 * @return 조건에 맞는 회원이 없다면, size()==0
 	 */
 	public List<MemberVO> selectMemberList();
+	
+	public int selectTotalRecord();
 }

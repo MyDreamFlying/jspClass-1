@@ -6,11 +6,16 @@
 		<id property="prod_id" column="PROD_ID"/>
 		<association property="buyer" javaType="BuyerVO" autoMapping="true"></association>
 	</resultMap>
+	
 	<select id="selectProd" parameterType="String" resultMap="prodMap">
 		SELECT PROD_ID, PROD_NAME, PROD_PRICE, PROD_OUTLINE
 			,PROD_DETAIL, PROD_TOTALSTOCK, PROD_DELIVERY
+			,PROD_COST, PROD_IMG, PROD_INSDATE, PROD_SIZE, PROD_COLOR
+			,LPROD_NM
 			,BUYER_NAME, BUYER_CHARGER, BUYER_COMTEL, BUYER_ADD1
-		FROM PROD LEFT OUTER JOIN BUYER ON (PROD_BUYER = BUYER_ID)
+		FROM PROD 
+		    INNER JOIN LPROD ON PROD_LGU = LPROD_GU
+		    INNER JOIN BUYER ON PROD_BUYER = BUYER_ID
 		WHERE PROD_ID = #{PROD_ID}
 	</select>
 	

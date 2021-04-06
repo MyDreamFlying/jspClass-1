@@ -100,8 +100,22 @@
 		WHERE MEM_ID = #{mem_id}
 	</update>
 	
-	<select id="selectMemberList" resultType="MemberVO">
-		SELECT MEM_ID, MEM_NAME, MEM_MAIL, MEM_HP, MEM_MILEAGE, MEM_DELETE
+	<select id="selectMemberList" resultType="MemberVO" parameterType="PagingVO">
+		SELECT B.*
+		(SELECT A.*, ROWNUM RNUM
+		FROM(
+		SELECT ROWID RID, MEM_ID, MEM_NAME, MEM_MAIL, MEM_HP, MEM_MILEAGE, MEM_DELETE
+		FROM MEMBER
+		ORDER BY RID DESC
+		) A
+		) B
+		<![CDATA[
+			WHERE RNUM >= #{} AND RNUM <= #{}
+		]]>
+	</select>
+	
+	<select id="selectTotalRecord" resultType="int">
+		SELECT COUNT(*)
 		FROM MEMBER
 	</select>
 </mapper>

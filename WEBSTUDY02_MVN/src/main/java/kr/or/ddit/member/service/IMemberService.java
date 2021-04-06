@@ -48,4 +48,9 @@ public interface IMemberService {
 	 * @return 조건에 맞는 회원이 없으면, size()==0
 	 */
 	public List<MemberVO> retrieveMemberList();
+	/**
+	 * 페이징 처리를 위한 회원수 조회
+	 * @return
+	 */
+	public int retrieveMemberCount();
 }

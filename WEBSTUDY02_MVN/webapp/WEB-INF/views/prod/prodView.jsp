@@ -26,8 +26,32 @@ table, th, td{
 		<td><%=prod.getProd_name() %></td>
 	</tr>
 	<tr>
+		<th>상품분류명</th>
+		<td><%=prod.getLprod_nm() %></td>
+	</tr>
+	<tr>
+		<th>상품매입가격</th>
+		<td><%=prod.getProd_cost() %></td>
+	</tr>
+	<tr>
 		<th>상품가격</th>
 		<td><%=prod.getProd_price() %></td>
+	</tr>
+	<tr>
+		<th>상품이미지</th>
+		<td><%=prod.getProd_img() %></td>
+	</tr>
+	<tr>
+		<th>상품입고일</th>
+		<td><%=prod.getProd_insdate() %></td>
+	</tr>
+	<tr>
+		<th>사이즈</th>
+		<td><%=prod.getProd_size() %></td>
+	</tr>
+	<tr>
+		<th>색상</th>
+		<td><%=prod.getProd_color() %></td>
 	</tr>
 	<tr>
 		<th>상품간단설명</th>

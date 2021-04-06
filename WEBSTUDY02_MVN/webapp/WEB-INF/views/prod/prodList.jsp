@@ -14,6 +14,7 @@ table, th, td{
 <title>Insert title here</title>
 </head>
 <body>
+<button type="button" onClick="window.reload=<%=request.getContextPath()%>/prod/prodInsert.do">상품 추가</button>
 <table>
 	<thead>
 		<tr>
@@ -32,7 +33,7 @@ table, th, td{
 			for(ProdVO vo : prodList){
 				%>
 					<tr>
-						<td><%=vo.getProd_id() %></td>
+						<td><a href=""><%=vo.getProd_id() %></a></td>
 						<td><%=vo.getLprod_nm() %></td>
 						<td><%=vo.getProd_name() %></td>
 						<td><%=vo.getBuyer().getBuyer_name() %></td>

@@ -87,4 +87,16 @@ public class MemberDAOImpl implements IMemberDAO {
 			}
 	}
 
+	@Override
+	public int selectTotalRecord() {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IMemberDAO mapper = session.getMapper(IMemberDAO.class);
+				return mapper.selectTotalRecord();
+			}
+	}
+	
+	
+
 }
