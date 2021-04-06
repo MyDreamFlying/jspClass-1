@@ -2,6 +2,7 @@ package kr.or.ddit.prod.dao;
 
 import java.util.List;
 
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 /**
@@ -9,7 +10,7 @@ import kr.or.ddit.vo.ProdVO;
  */
 public interface IProdDAO {
 	public ProdVO selectProd(String prod_id);
-	public List<ProdVO> selectProdList();
+	public List<ProdVO> selectProdList(PagingVO pagingVO);
 	/**
 	 * @param prod
 	 * @return inserted row count
@@ -20,4 +21,6 @@ public interface IProdDAO {
 	 * @return updated row count
 	 */
 	public int updateProd(ProdVO prod);
+	
+	public int selectTotalRecord();
 }

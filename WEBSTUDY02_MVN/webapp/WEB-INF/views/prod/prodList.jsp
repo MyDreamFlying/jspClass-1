@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.vo.PagingVO"%>
 <%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -18,6 +19,7 @@ table, th, td{
 <table>
 	<thead>
 		<tr>
+			<th>No.</th>
 			<th>상품코드</th>
 			<th>상품분류명</th>
 			<th>상품명</th>
@@ -29,22 +31,41 @@ table, th, td{
 	</thead>
 	<tbody>
 		<%
-			List<ProdVO> prodList = (List) request.getAttribute("prodList");
-			for(ProdVO vo : prodList){
+			PagingVO<ProdVO> pagingVO = (PagingVO)request.getAttribute("pagingVO");
+		
+			List<ProdVO> prodList = pagingVO.getDataList();
+			
+			if(prodList.size() > 0){
+				for(ProdVO vo : prodList){
+					%>
+						<tr>
+							<td><%=vo.getRnum() %></a></td>
+							<td><a href=""><%=vo.getProd_id() %></a></td>
+							<td><%=vo.getLprod_nm() %></td>
+							<td><%=vo.getProd_name() %></td>
+							<td><%=vo.getBuyer().getBuyer_name() %></td>
+							<td><%=vo.getProd_cost() %></td>
+							<td><%=vo.getProd_price() %></td>
+							<td><%=vo.getProd_mileage() %></td>
+						</tr>
+					<%
+				}
+			}else{
 				%>
-					<tr>
-						<td><a href=""><%=vo.getProd_id() %></a></td>
-						<td><%=vo.getLprod_nm() %></td>
-						<td><%=vo.getProd_name() %></td>
-						<td><%=vo.getBuyer().getBuyer_name() %></td>
-						<td><%=vo.getProd_cost() %></td>
-						<td><%=vo.getProd_price() %></td>
-						<td><%=vo.getProd_mileage() %></td>
-					</tr>
+				<tr>
+					<td colspan="8"> 조회할 상품이 없습니다</td>
+				</tr>
 				<%
 			}
 		%>
 	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="8">
+				<%=pagingVO.getPagingHTML() %>
+			</td>
+		</tr>
+	</tfoot>
 	
 </table>
 </body>

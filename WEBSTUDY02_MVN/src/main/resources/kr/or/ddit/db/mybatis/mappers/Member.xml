@@ -102,6 +102,7 @@
 	
 	<select id="selectMemberList" resultType="MemberVO" parameterType="PagingVO">
 		SELECT B.*
+		FROM
 		(SELECT A.*, ROWNUM RNUM
 		FROM(
 		SELECT ROWID RID, MEM_ID, MEM_NAME, MEM_MAIL, MEM_HP, MEM_MILEAGE, MEM_DELETE
@@ -110,7 +111,7 @@
 		) A
 		) B
 		<![CDATA[
-			WHERE RNUM >= #{} AND RNUM <= #{}
+			WHERE RNUM >= #{startRow} AND RNUM <= #{endRow}
 		]]>
 	</select>
 	

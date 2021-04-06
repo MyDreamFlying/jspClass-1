@@ -1,16 +1,34 @@
 package kr.or.ddit.vo;
 
-public class PagingVO {
-	private int totalRecord;
-	private int screenSize;
-	private int blockSize;
-	private int currentPage;
+import java.io.Serializable;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@NoArgsConstructor
+public class PagingVO<T> implements Serializable{
 	
+	public PagingVO(int screenSize, int blockSize) {
+		super();
+		this.screenSize = screenSize;
+		this.blockSize = blockSize;
+	}
+
+	private int screenSize = 10 ;
+	private int blockSize = 5;
+
+	private int totalRecord;
+	private int currentPage;
 	private int totalPage;
 	private int startRow;
 	private int endRow;
 	private int startPage;
 	private int endPage;
+	private List<T> dataList;
 	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;
@@ -25,6 +43,28 @@ public class PagingVO {
 		endPage = (currentPage + (blockSize -1)) / blockSize * blockSize;
 		startPage = endPage - (blockSize - 1);
 		
+	}
+	
+	private static String aPattern = "<a href='?page=%d'>[%s]</a>";
+	private static String currentPagePtrn = "<a href='#'>[%s]</a>";
+	
+	public String getPagingHTML() {
+		StringBuffer html = new StringBuffer();
+		if(startPage > 1 ) {
+			html.append(String.format(aPattern, (startPage-1), "이전"));
+		}
+		endPage = endPage < totalPage ? endPage : totalPage;
+		for(int page = startPage; page<=endPage; page++) {
+			if(page == currentPage) {
+				html.append(String.format(currentPagePtrn, page+""));
+			}else {
+				html.append(String.format(aPattern, page, page+""));
+			}
+		}
+		if(endPage < totalPage) {
+			html.append(String.format(aPattern, (endPage+1), "다음"));
+		}
+		return html.toString();
 	}
 	
 }

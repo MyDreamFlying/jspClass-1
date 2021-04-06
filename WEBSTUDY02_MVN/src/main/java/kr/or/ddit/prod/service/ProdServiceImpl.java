@@ -7,6 +7,7 @@ import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.prod.ProdNotFoundException;
 import kr.or.ddit.prod.dao.IProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
+import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdServiceImpl implements IProdService {
@@ -28,8 +29,8 @@ public class ProdServiceImpl implements IProdService {
 		return prod;
 	}
 	@Override
-	public List<ProdVO> retrieveProdList() {
-		List<ProdVO> list = dao.selectProdList();
+	public List<ProdVO> retrieveProdList(PagingVO pagingVO) {
+		List<ProdVO> list = dao.selectProdList(pagingVO);
 		return list;
 	}
 	@Override
@@ -53,6 +54,10 @@ public class ProdServiceImpl implements IProdService {
 		}catch (Exception e) {
 			throw new CustomException(e);
 		}
+	}
+	@Override
+	public int retrieveProdCount() {
+		return dao.selectTotalRecord();
 	}
 
 }

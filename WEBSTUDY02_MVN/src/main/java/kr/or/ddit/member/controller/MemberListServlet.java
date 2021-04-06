@@ -25,14 +25,15 @@ public class MemberListServlet extends HttpServlet{
 		if(pageParam != null && pageParam.matches("\\d+")) {
 			currentPage = Integer.parseInt(pageParam);
 		}
-		PagingVO pagingVO = new PagingVO();
+		PagingVO<MemberVO> pagingVO = new PagingVO(7, 2);
 		pagingVO.setCurrentPage(currentPage);
 		int totalRecord = service.retrieveMemberCount();
 		pagingVO.setTotalRecord(totalRecord);
 		
-		List<MemberVO> memberList = service.retrieveMemberList();
+		List<MemberVO> memberList = service.retrieveMemberList(pagingVO);
+		pagingVO.setDataList(memberList);
 		
-		req.setAttribute("memberList", memberList);
+		req.setAttribute("pagingVO", pagingVO);
 		String view = "/WEB-INF/views/member/memberList.jsp";
 		req.getRequestDispatcher(view).forward(req, resp);
 		

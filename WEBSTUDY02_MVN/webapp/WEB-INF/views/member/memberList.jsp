@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.vo.PagingVO"%>
 <%@page import="java.util.Objects"%>
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@page import="java.util.List"%>
@@ -19,6 +20,7 @@ table, th, td{
 <table>
 	<thead>
 		<tr>
+			<th>No.</th>
 			<th>회원아이디</th>
 			<th>회원명</th>
 			<th>이메일</th>
@@ -29,12 +31,13 @@ table, th, td{
 	</thead>
 	<tbody>
 		<%
-			List<MemberVO> memberList = 
-				(List<MemberVO>)request.getAttribute("memberList");
+			PagingVO<MemberVO> pagingVO = (PagingVO)request.getAttribute("pagingVO");
+			List<MemberVO> memberList = pagingVO.getDataList();
 			if(memberList.size() >0){
 				for(MemberVO member : memberList){
 					%>
 					<tr>
+						<td><%=member.getRnum() %></td>
 						<td><%=member.getMem_id() %></td>
 						<td><%=member.getMem_name() %></td>
 						<td><%=member.getMem_mail() %></td>
@@ -49,13 +52,20 @@ table, th, td{
 			}else{
 				%>
 				<tr>
-					<td colspan="5">멤버 없음.</td>
+					<td colspan="6">멤버 없음.</td>
 				</tr>
 				<%
 			}
 		
 		%>
 	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="6">
+				<%=pagingVO.getPagingHTML() %>
+			</td>
+		</tr>
+	</tfoot>
 </table>
 </body>
 </html>
