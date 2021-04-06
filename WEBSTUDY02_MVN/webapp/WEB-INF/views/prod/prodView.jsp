@@ -66,6 +66,11 @@ table, th, td{
 			</table>
 		</td>
 	</tr>
+	<tr>
+		<td colspan="2">
+			<button type="button" onClick="window.location='<%=request.getContextPath()%>/prod/prodList.do'">상품목록으로</button>
+		</td>
+	</tr>
 </table>
 </body>
 </html>

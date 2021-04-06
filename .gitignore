@@ -4,3 +4,4 @@ webStudy01/build/
 *.classpath
 WEBSTUDY02_MVN/src/main/resources/kr/or/ddit/db/dbinfo.properties
 WEBSTUDY02_MVN/src/main/resources/kr/or/ddit/db/dbinfo_en.properties
+languageLab/res/kr/or/ddit/dbinfo.properties

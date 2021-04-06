@@ -1,4 +1,4 @@
-package kr.or.ddit.member;
+package kr.or.ddit.prod;
 
 public class ProdNotFoundException extends RuntimeException{
 

@@ -1,5 +1,7 @@
 package kr.or.ddit.prod.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -25,6 +27,36 @@ public class ProdDAOImpl implements IProdDAO {
 			IProdDAO mapper = session.getMapper(IProdDAO.class);
 			return mapper.selectProd(prod_id);
 		}
+	}
+
+	@Override
+	public List<ProdVO> selectProdList() {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IProdDAO mapper = session.getMapper(IProdDAO.class);
+				return mapper.selectProdList();
+			}
+	}
+
+	@Override
+	public int insert(ProdVO prod) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IProdDAO mapper = session.getMapper(IProdDAO.class);
+				return mapper.insert(prod);
+			}
+	}
+
+	@Override
+	public int updateProd(ProdVO prod) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IProdDAO mapper = session.getMapper(IProdDAO.class);
+				return mapper.updateProd(prod);
+			}
 	}
 
 }
