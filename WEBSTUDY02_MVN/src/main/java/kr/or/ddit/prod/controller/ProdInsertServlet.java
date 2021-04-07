@@ -2,6 +2,7 @@ package kr.or.ddit.prod.controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,10 +38,9 @@ public class ProdInsertServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		addAttribute(req);
 		
-		
 		String view = "/WEB-INF/views/prod/prodForm.jsp";
-		boolean redirect = view.startsWith("redirect:");
 		
+		boolean redirect = view.startsWith("redirect:");
 		if(redirect) {
 			view = view.substring("redirect:".length());
 			resp.sendRedirect(req.getContextPath() + view);
@@ -61,10 +61,28 @@ public class ProdInsertServlet extends HttpServlet{
 			throw new RuntimeException(e);
 		}
 		
-		ServiceResult result = service.createProd(prod);
+		Map<String, String> errors = new LinkedHashMap<>();
+		req.setAttribute("errors", errors);
 		
-		String newProdId = prod.getProd_id();
-		String view = "redirect:/prod/prodView.do?what="+newProdId;
+		boolean valid = validate(prod, errors);
+		
+		String view = null;
+		String message = null;
+		
+		if(valid) {
+			ServiceResult result = service.createProd(prod);
+			if(ServiceResult.OK.equals(result)) {
+				String newProdId = prod.getProd_id();
+				view = "redirect:/prod/prodView.do?what="+newProdId;
+			}else {
+				message = "서버 오류. 잠시후 다시 시도하세요";
+				view = "/WEB-INF/views/prod/prodForm.jsp";
+			}
+			req.setAttribute("message", message);
+		}else {
+			view = "/WEB-INF/views/prod/prodForm.jsp";
+		}
+		
 		
 		boolean redirect = view.startsWith("redirect:");
 		
@@ -75,6 +93,12 @@ public class ProdInsertServlet extends HttpServlet{
 			req.getRequestDispatcher(view).forward(req,resp);		
 		}	
 		
+	}
+
+	private boolean validate(ProdVO prod, Map<String, String> errors) {
+		boolean valid = true;
+		
+		return valid;
 	}
 }
 

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="kr.or.ddit.vo.BuyerVO"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
@@ -9,10 +10,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp"/>
+<%
+	String message = (String)request.getAttribute("message");
+	if(StringUtils.isNotBlank(message)){
+		%>
+		<script type="text/javascript">
+			alert("<%=message%>");
+		</script>
+		<%
+	}
+%>
 </head>
 <body>
 <h4>PROD FORM</h4>
 <jsp:useBean id="prod" class="kr.or.ddit.vo.ProdVO" scope="request"></jsp:useBean>
+<jsp:useBean id="errors" class="java.util.LinkedHashMap" scope="request"></jsp:useBean>
 <form method="post" id="prodForm">
 	<table>
 		<tr>
@@ -38,9 +50,10 @@
 			</td>
 		</tr>
 		<tr>
-			<th>구입처</th>
+			<th>거래처</th>
 			<td>
 				<select name="prod_buyer">
+					<option value>거래처 선택</option>
 					<%
 						List<BuyerVO> buyerList = (List<BuyerVO>)request.getAttribute("buyerList");
 						for(BuyerVO buyer : buyerList){
@@ -156,6 +169,19 @@
 		</tr>
 	</table>
 </form>
+<script type="text/javascript">
+	let prod_buyerTag = $("[name='prod_buyer']");
+	$("[name='prod_lgu']").on("change", function(){
+		let selectedLgu = $(this).val();
+		if(selectedLgu){
+			prod_buyerTag.find("option").hide();
+			prod_buyerTag.find("option."+selectedLgu).show();
+		}else{
+			prod_buyerTag.find("option").show();
+		}
+		prod_buyerTag.find("option:first").show();
+	});
+</script>
 
 </body>
 </html>
