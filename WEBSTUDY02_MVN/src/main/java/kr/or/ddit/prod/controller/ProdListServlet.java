@@ -42,10 +42,11 @@ public class ProdListServlet extends HttpServlet {
 		String prod_lgu = req.getParameter("prod_lgu");
 		String prod_buyer = req.getParameter("prod_buyer");
 		String prod_name = req.getParameter("prod_name");
-		ProdVO detailSearch = new ProdVO();
-		detailSearch.setProd_lgu(prod_lgu);
-		detailSearch.setProd_buyer(prod_buyer);
-		detailSearch.setProd_name(prod_name);
+		ProdVO detailSearch = ProdVO.builder()
+								.prod_lgu(prod_lgu)
+								.prod_buyer(prod_buyer)
+								.prod_name(prod_name)
+								.build();
 		
 		String pageParam = req.getParameter("page");
 		int currentPage = 1;
