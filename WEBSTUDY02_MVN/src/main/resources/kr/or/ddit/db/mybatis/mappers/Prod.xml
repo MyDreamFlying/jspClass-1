@@ -60,4 +60,58 @@
 		<include refid="searchFrag" />
 	</select>
 	
+	<insert id="insert" parameterType="ProdVO">
+		<selectKey resultType="string" order="BEFORE" keyProperty="prod_id">
+			SELECT #{prod_lgu} || LPAD(TO_NUMBER(SUBSTR(NVL(MAX(PROD_ID), LPAD('0', 10, '0')), LENGTH(#{prod_lgu})+1))+1, 6, '0')
+			FROM PROD
+			WHERE PROD_LGU = #{prod_lgu}
+		</selectKey>
+		INSERT INTO PROD
+			(
+				PROD_ID
+				,PROD_NAME
+				,PROD_LGU
+				,PROD_BUYER
+				,PROD_COST
+				,PROD_PRICE
+				,PROD_SALE
+				,PROD_OUTLINE
+				,PROD_DETAIL
+				,PROD_IMG
+				,PROD_TOTALSTOCK
+				,PROD_INSDATE
+				,PROD_PROPERSTOCK
+				,PROD_SIZE
+				,PROD_COLOR
+				,PROD_DELIVERY
+				,PROD_UNIT
+				,PROD_QTYIN
+				,PROD_QTYSALE
+				,PROD_MILEAGE
+			)
+		VALUES(
+			#{prod_id, jdbcType=VARCHAR},
+			#{prod_name, jdbcType=VARCHAR},
+			#{prod_lgu, jdbcType=VARCHAR},
+			#{prod_buyer, jdbcType=VARCHAR},
+			#{prod_cost, jdbcType=VARCHAR},
+			#{prod_price, jdbcType=VARCHAR},
+			#{prod_sale, jdbcType=VARCHAR},
+			#{prod_outline, jdbcType=VARCHAR},
+			#{prod_detail, jdbcType=VARCHAR},
+			#{prod_img, jdbcType=VARCHAR},
+			#{prod_totalstock, jdbcType=VARCHAR},
+			TO_DATE(#{prod_insdate, jdbcType=DATE}, 'YYYY-MM-DD'),
+			#{prod_properstock, jdbcType=VARCHAR},
+			#{prod_size, jdbcType=VARCHAR},
+			#{prod_color, jdbcType=VARCHAR},
+			#{prod_delivery, jdbcType=VARCHAR},
+			#{prod_unit, jdbcType=VARCHAR},
+			#{prod_qtyin, jdbcType=VARCHAR},
+			#{prod_qtysale, jdbcType=VARCHAR},
+			#{prod_mileage, jdbcType=VARCHAR}
+		)
+		
+	</insert>
+	
 </mapper>

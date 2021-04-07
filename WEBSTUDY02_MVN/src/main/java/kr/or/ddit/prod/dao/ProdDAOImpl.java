@@ -46,7 +46,9 @@ public class ProdDAOImpl implements IProdDAO {
 				SqlSession session = sessionFactory.openSession();
 			){
 				IProdDAO mapper = session.getMapper(IProdDAO.class);
-				return mapper.insert(prod);
+				int cnt =  mapper.insert(prod); 
+				session.commit();
+				return cnt;
 			}
 	}
 
