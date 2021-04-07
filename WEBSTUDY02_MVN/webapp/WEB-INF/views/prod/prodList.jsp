@@ -1,3 +1,5 @@
+<%@page import="kr.or.ddit.vo.BuyerVO"%>
+<%@page import="java.util.Map"%>
 <%@page import="kr.or.ddit.vo.PagingVO"%>
 <%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@page import="java.util.List"%>
@@ -13,9 +15,37 @@ table, th, td{
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/includee/preScript.jsp"/>
+<script defer type="text/javascript" src="<%=request.getContextPath() %>/js/prod/prodList.js"></script>
 </head>
 <body>
-<button type="button" onClick="window.reload=<%=request.getContextPath()%>/prod/prodInsert.do">상품 추가</button>
+<form id="searchForm">
+	<select name="prod_lgu">
+		<option value>상품분류</option>
+	<%
+		List<Map<String, Object>> lprodList = (List<Map<String, Object>> )request.getAttribute("lprodList");
+		for(Map<String,Object> lprod : lprodList){
+			%>
+				<option value="<%=lprod.get("lprod_gu")%>"><%=lprod.get("lprod_nm")%></option>
+			<%
+		}
+	%>
+	</select>
+	<select name="prod_buyer">
+		<option value>거래처선택</option>
+	<%
+		List<BuyerVO> buyerList = (List<BuyerVO>)request.getAttribute("buyerList");
+		for(BuyerVO buyer : buyerList){
+			%>
+				<option class="<%=buyer.getBuyer_lgu() %>" value=<%=buyer.getBuyer_id() %>><%=buyer.getBuyer_name() %></option>
+			<%
+		}
+	%>
+	</select>
+	<input type="text" name="prod_name"/>
+	<input type="text" name="page"/>
+	<input type="submit" value="검색"/>
+</form>
 <table>
 	<thead>
 		<tr>
@@ -29,44 +59,21 @@ table, th, td{
 			<th>마일리지</th>
 		</tr>
 	</thead>
-	<tbody>
-		<%
-			PagingVO<ProdVO> pagingVO = (PagingVO)request.getAttribute("pagingVO");
+	<tbody id="listBody">
 		
-			List<ProdVO> prodList = pagingVO.getDataList();
-			
-			if(prodList.size() > 0){
-				for(ProdVO vo : prodList){
-					%>
-						<tr>
-							<td><%=vo.getRnum() %></a></td>
-							<td><a href=""><%=vo.getProd_id() %></a></td>
-							<td><%=vo.getLprod_nm() %></td>
-							<td><%=vo.getProd_name() %></td>
-							<td><%=vo.getBuyer().getBuyer_name() %></td>
-							<td><%=vo.getProd_cost() %></td>
-							<td><%=vo.getProd_price() %></td>
-							<td><%=vo.getProd_mileage() %></td>
-						</tr>
-					<%
-				}
-			}else{
-				%>
-				<tr>
-					<td colspan="8"> 조회할 상품이 없습니다</td>
-				</tr>
-				<%
-			}
-		%>
 	</tbody>
 	<tfoot>
 		<tr>
-			<td colspan="8">
-				<%=pagingVO.getPagingHTML() %>
+			<td colspan="8" id="pagingArea">
 			</td>
 		</tr>
 	</tfoot>
-	
 </table>
 </body>
 </html>
+
+
+
+
+
+

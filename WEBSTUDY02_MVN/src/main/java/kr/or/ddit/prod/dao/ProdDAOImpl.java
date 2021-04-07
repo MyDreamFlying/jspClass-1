@@ -61,12 +61,12 @@ public class ProdDAOImpl implements IProdDAO {
 	}
 
 	@Override
-	public int selectTotalRecord() {
+	public int selectTotalRecord(PagingVO<ProdVO> pagingVO) {
 		try(
 				SqlSession session = sessionFactory.openSession();
 			){
 				IProdDAO mapper = session.getMapper(IProdDAO.class);
-				return mapper.selectTotalRecord();
+				return mapper.selectTotalRecord(pagingVO);
 			}
 	}
 

@@ -56,8 +56,8 @@ public class ProdServiceImpl implements IProdService {
 		}
 	}
 	@Override
-	public int retrieveProdCount() {
-		return dao.selectTotalRecord();
+	public int retrieveProdCount(PagingVO<ProdVO> pagingVO) {
+		return dao.selectTotalRecord(pagingVO);
 	}
 
 }

@@ -22,5 +22,5 @@ public interface IProdDAO {
 	 */
 	public int updateProd(ProdVO prod);
 	
-	public int selectTotalRecord();
+	public int selectTotalRecord(PagingVO<ProdVO> pagingVO);
 }

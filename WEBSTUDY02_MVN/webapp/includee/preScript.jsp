@@ -2,3 +2,9 @@
     pageEncoding="UTF-8"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type=text/javascript src="<%=request.getContextPath() %>/js/myJqueryPlugin.js"></script>
+<script type=text/javascript src="<%=request.getContextPath() %>/js/jquery.form.min.js"></script>
+<script type="text/javascript">
+	$.getContextPath = function(){
+		return "<%=request.getContextPath()%>";
+	}
+</script>

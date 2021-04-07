@@ -29,7 +29,10 @@ public class PagingVO<T> implements Serializable{
 	private int startPage;
 	private int endPage;
 	private List<T> dataList;
+	
 	private SearchVO simpleSearch;
+	
+	private T detailSearch;
 	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;
