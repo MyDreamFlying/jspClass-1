@@ -93,6 +93,7 @@ table, th, td{
 	<tr>
 		<td colspan="2">
 			<button type="button" onClick="window.location='<%=request.getContextPath()%>/prod/prodList.do'">상품목록으로</button>
+			<button type="button" onClick="window.location='<%=request.getContextPath()%>/prod/prodUpdate.do?what=<%=prod.getProd_id()%>'">상품수정</button>
 		</td>
 	</tr>
 </table>

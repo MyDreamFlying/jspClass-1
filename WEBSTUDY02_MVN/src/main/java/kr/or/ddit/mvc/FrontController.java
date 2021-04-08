@@ -22,11 +22,13 @@ public class FrontController extends HttpServlet{
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		handlerMapping = new HandlerMapping("kr.or.ddit");
+		String packageParam = config.getInitParameter("basePackages");
+		String[] basePackages = packageParam.split("\\s+");
+		handlerMapping = new HandlerMapping(basePackages);
 		handlerAdapter = new HandlerAdapter();
 		viewResolver = new ViewResolver();
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
+		viewResolver.setPrefix(config.getInitParameter("prefix"));
+		viewResolver.setSuffix(config.getInitParameter("suffix"));
 	}
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

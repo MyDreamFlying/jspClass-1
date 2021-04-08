@@ -3,9 +3,7 @@ package kr.or.ddit.login;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,21 +14,22 @@ import org.slf4j.LoggerFactory;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.AuthenticateServiceImpl;
 import kr.or.ddit.member.service.IAuthenticateService;
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.vo.MemberVO;
 
-@WebServlet("/login/loginCheck.do")
-public class LoginCheckServlet extends HttpServlet{
-	private static final long serialVersionUID = 1L;
+@Controller
+public class LoginCheckController{
 	private IAuthenticateService service = new AuthenticateServiceImpl();
-	private static final Logger logger = LoggerFactory.getLogger(LoginCheckServlet.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginCheckController.class);
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
+	@RequestMapping(value="/login/loginCheck.do", method=RequestMethod.POST)
+	public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		if(session.isNew()) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
+			return null;
 		}
 		
 		String mem_id = req.getParameter("mem_id");
@@ -50,7 +49,6 @@ public class LoginCheckServlet extends HttpServlet{
 		}
 		
 		String view = null;
-		boolean redirect = false;
 		boolean valid = validate(mem_id, mem_pass);
 		String message = null;
 		MemberVO member = new MemberVO(mem_id, mem_pass);
@@ -65,20 +63,17 @@ public class LoginCheckServlet extends HttpServlet{
 				logger.info("인증 후 MemberVO : {}",member);
 			switch(result) {
 			case OK:
-				redirect = true;
-				view = "/";
+				view = "redirect:/";
 				session.setAttribute("authMember", member);
 				session.setAttribute("message", "");
 				break;
 			case NOTEXIST:
-				redirect = true;
-				view = "/login/loginForm.jsp";
+				view = "redirect:/login/loginForm.jsp";
 				message = "아이디 오류";
 				break;
 			case INVALIDPASSWORD:
-				redirect = true;
 				// 인증 실패시 loginForm.jsp로 이동
-				view = "/login/loginForm.jsp";
+				view = "redirect:/login/loginForm.jsp";
 				// 2) 인증 실패
 				message = "비번 오류";
 				break;
@@ -86,23 +81,14 @@ public class LoginCheckServlet extends HttpServlet{
 			
 		}else {
 			// 1)검증
-			redirect = true;
-			view = "/login/loginForm.jsp";
+			view = "redirect:/login/loginForm.jsp";
 			message = "아이디나 비번 누락";
 			req.getSession().setAttribute("message", message);
 		}
 		
-		if(message != null) {
-			session.setAttribute("message", message);
-		}
+		session.setAttribute("message", message);
 		
-		// view로 이동
-		if(redirect) {
-			resp.sendRedirect(req.getContextPath() + view);
-		}else {
-			req.setAttribute("message", message);
-			req.getRequestDispatcher(view).forward(req,resp);
-		}
+		return view;
 		
 	}
 
