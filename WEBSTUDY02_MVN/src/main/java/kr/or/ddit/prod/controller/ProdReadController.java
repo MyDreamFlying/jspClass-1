@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.or.ddit.mvc.annotation.Controller;
+import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -23,8 +25,8 @@ import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
-@WebServlet("/prod/prodList.do")
-public class ProdListServlet extends HttpServlet {
+@Controller
+public class ProdReadController{
 	private IProdService service = ProdServiceImpl.getInstance();
 	private IOthersDAO othersDAO = OthersDAOImpl.getInstance();
 	
@@ -35,9 +37,8 @@ public class ProdListServlet extends HttpServlet {
 		req.setAttribute("buyerList", buyerList);
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
+	@RequestMapping("/prod/prodList.do")
+	public String list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String prod_lgu = req.getParameter("prod_lgu");
 		String prod_buyer = req.getParameter("prod_buyer");
@@ -65,7 +66,7 @@ public class ProdListServlet extends HttpServlet {
 		addAttribute(req);
 
 		String accept = req.getHeader("Accept");
-		
+		String view = null;
 		if(StringUtils.containsIgnoreCase(accept, "json")) {
 			resp.setContentType("application/json;charset=UTF-8");
 			ObjectMapper mapper = new ObjectMapper();
@@ -77,9 +78,24 @@ public class ProdListServlet extends HttpServlet {
 			
 		}else {
 			req.setAttribute("pagingVO", pagingVO);
-			String view = "/WEB-INF/views/prod/prodList.jsp";
-			req.getRequestDispatcher(view).forward(req, resp);
+			view = "prod/prodList";
+		}
+		return view;
+		
+	}
+	
+	@RequestMapping("/prod/prodView.do")
+	public String view(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String prodId = req.getParameter("what");
+		if(StringUtils.isBlank(prodId)) {
+			resp.sendError(400);
+			return null;
 		}
 		
+		ProdVO prod = service.retrieveProd(prodId);
+		req.setAttribute("prod", prod);
+		
+		String view = "prod/prodView";
+		return view;
 	}
 }
