@@ -61,7 +61,6 @@ public class HandlerMapping implements IHandlerMapping{
 		String uri = req.getRequestURI();
 		uri = uri.substring(req.getContextPath().length()).split(";")[0];
 		RequestMethod method = RequestMethod.valueOf(req.getMethod().toUpperCase());
-		req.getMethod();
 		RequestMappingCondition key = new RequestMappingCondition(uri, method);
 		return handlerMap.get(key);
 	}
