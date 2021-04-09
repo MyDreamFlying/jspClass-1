@@ -16,6 +16,8 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -40,16 +42,19 @@ public class ProdController {
 	}
 	
 	@RequestMapping("/prod/prodInsert.do")
-	public String prodInsertForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String prodInsertForm(
+			HttpServletRequest req) throws ServletException, IOException {
 		addAttribute(req);
 		return "prod/prodForm";
 	}
 	
 	@RequestMapping("/prod/prodUpdate.do")
-	public String prodUpdateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String prodUpdateForm(
+			@RequestParam(value="what") String prodId 
+			,HttpServletRequest req
+			) throws ServletException, IOException {
 		addCommandAttribute(req);
 		addAttribute(req);
-		String prodId = req.getParameter("what");
 		
 		ProdVO prod = service.retrieveProd(prodId);
 		req.setAttribute("prod", prod);
@@ -58,16 +63,11 @@ public class ProdController {
 	}
 	
 	@RequestMapping(value="/prod/prodUpdate.do", method=RequestMethod.POST)
-	public String prodUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String prodUpdate(
+			@ModelAttribute("prod") ProdVO prod
+			,HttpServletRequest req) throws ServletException, IOException {
 		
-		ProdVO prod = new ProdVO();
 		req.setAttribute("prod", prod);
-		
-		try {
-			BeanUtils.populate(prod, req.getParameterMap());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
 		
 		// 데이터 검증
 		Map<String, String> errors = new LinkedHashMap<>();
@@ -97,15 +97,10 @@ public class ProdController {
 	}
 	
 	@RequestMapping(value="/prod/prodInsert.do", method=RequestMethod.POST)
-	public String prodInsert(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ProdVO prod = new ProdVO();
+	public String prodInsert(
+			@ModelAttribute("prod") ProdVO prod
+			,HttpServletRequest req) throws ServletException, IOException {
 		req.setAttribute("prod", prod);
-		
-		try {
-			BeanUtils.populate(prod, req.getParameterMap());
-		}catch(IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
 		
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
@@ -128,7 +123,6 @@ public class ProdController {
 		}else {
 			view = "prod/prodForm";
 		}
-		
 		return view;
 		
 	}

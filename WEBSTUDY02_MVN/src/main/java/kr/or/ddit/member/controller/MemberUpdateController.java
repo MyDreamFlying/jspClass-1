@@ -1,16 +1,12 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
@@ -18,6 +14,7 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.vo.MemberVO;
 
 @Controller
@@ -29,9 +26,12 @@ public class MemberUpdateController {
 	}
 	
 	@RequestMapping("/member/memberUpdate.do")
-	public String memberUpdateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String memberUpdateForm(
+			HttpSession session
+			,HttpServletRequest req) throws ServletException, IOException {
+		
 		addCommandAttribute(req);
-		HttpSession session = req.getSession();
+		
 		MemberVO authMember = (MemberVO)session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
 		MemberVO member = service.retrieveMember(authId);
@@ -40,23 +40,20 @@ public class MemberUpdateController {
 	}
 
 	@RequestMapping(value="/member/memberUpdate.do", method=RequestMethod.POST )
-	public String memberUpdate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String memberUpdate(
+			@ModelAttribute("member") MemberVO member
+			,HttpSession session
+			,HttpServletRequest req) throws ServletException, IOException {
+		
 		addCommandAttribute(req);
 		
 		// 1. 요청 접수
-		MemberVO member = new MemberVO();
-		HttpSession session = req.getSession();
 		MemberVO authMember = (MemberVO)session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
+		
 		member.setMem_id(authId);
 		req.setAttribute("member", member);
 		
-		try {
-			BeanUtils.populate(member, req.getParameterMap());
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-
 		// 2. 검증
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("erros", errors);

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,20 +17,17 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 
 @Controller
 public class IdCheckController {
 	private IMemberService service = new MemberServiceImpl();
 	
 	@RequestMapping(value="/member/idCheck.do", method=RequestMethod.POST)
-	 public String idCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	 public String idCheck(
+			 @RequestParam(value="mem_id") String mem_id
+			 ,HttpServletResponse resp) throws ServletException, IOException {
 		Map<String, Object> resultMap = new HashMap<>();
-		String mem_id = req.getParameter("mem_id");
-		
-		if(mem_id == null || mem_id.isEmpty()) {
-			resp.sendError(400);
-			return null;
-		}
 		
 		try {
 			service.retrieveMember(mem_id);

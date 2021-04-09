@@ -64,7 +64,6 @@ public class ProdReadController{
 			){
 				mapper.writeValue(out, pagingVO);
 			}
-			
 		}else {
 			req.setAttribute("pagingVO", pagingVO);
 			view = "prod/prodList";
@@ -74,13 +73,13 @@ public class ProdReadController{
 	}
 	
 	@RequestMapping("/prod/prodView.do")
-	public String view(@RequestParam(value="what", required=true, defaultValue="1") String prod_id
+	public String view(
+			@RequestParam(value="what", required=true, defaultValue="1") String prod_id
 			, HttpServletRequest req){
 		
 		ProdVO prod = service.retrieveProd(prod_id);
 		req.setAttribute("prod", prod);
 		
-		String view = "prod/prodView";
-		return view;
+		return "prod/prodView";
 	}
 }

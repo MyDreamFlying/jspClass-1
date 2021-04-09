@@ -1,16 +1,11 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.beanutils.BeanUtils;
-
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
@@ -22,8 +17,7 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberInsertController{
-	private IMemberService service = 
-			new MemberServiceImpl();
+	private IMemberService service = new MemberServiceImpl();
 	
 	@RequestMapping("/member/memberInsert.do")
 	public String form() throws ServletException, IOException {
@@ -33,11 +27,9 @@ public class MemberInsertController{
 	@RequestMapping(value="/member/memberInsert.do", method=RequestMethod.POST)
 	public String process(
 			@ModelAttribute("member") MemberVO member
-			, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			, HttpServletRequest req) throws ServletException, IOException {
 		
-		// 1. 요청 접수
-
-		// 2. 검증
+		// 검증
 		Map<String, String> errors = new LinkedHashMap<>();
 		req.setAttribute("erros", errors);
 		boolean valid = validate(member, errors);
