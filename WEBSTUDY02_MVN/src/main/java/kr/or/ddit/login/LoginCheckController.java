@@ -25,8 +25,7 @@ public class LoginCheckController{
 	private static final Logger logger = LoggerFactory.getLogger(LoginCheckController.class);
 
 	@RequestMapping(value="/login/loginCheck.do", method=RequestMethod.POST)
-	public String doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession();
+	public String doPost(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException, IOException {
 		if(session.isNew()) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return null;

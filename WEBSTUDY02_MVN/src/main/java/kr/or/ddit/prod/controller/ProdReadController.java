@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -38,22 +38,11 @@ public class ProdReadController{
 	}
 	
 	@RequestMapping("/prod/prodList.do")
-	public String list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public String list(
+			@ModelAttribute("detailSearch") ProdVO detailSearch
+			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
+			,HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		String prod_lgu = req.getParameter("prod_lgu");
-		String prod_buyer = req.getParameter("prod_buyer");
-		String prod_name = req.getParameter("prod_name");
-		ProdVO detailSearch = ProdVO.builder()
-								.prod_lgu(prod_lgu)
-								.prod_buyer(prod_buyer)
-								.prod_name(prod_name)
-								.build();
-		
-		String pageParam = req.getParameter("page");
-		int currentPage = 1;
-		if(pageParam != null && pageParam.matches("\\d+")) {
-			currentPage = Integer.parseInt(pageParam);
-		}
 		PagingVO<ProdVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);
 		pagingVO.setDetailSearch(detailSearch);
@@ -85,14 +74,10 @@ public class ProdReadController{
 	}
 	
 	@RequestMapping("/prod/prodView.do")
-	public String view(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String prodId = req.getParameter("what");
-		if(StringUtils.isBlank(prodId)) {
-			resp.sendError(400);
-			return null;
-		}
+	public String view(@RequestParam(value="what", required=true, defaultValue="1") String prod_id
+			, HttpServletRequest req){
 		
-		ProdVO prod = service.retrieveProd(prodId);
+		ProdVO prod = service.retrieveProd(prod_id);
 		req.setAttribute("prod", prod);
 		
 		String view = "prod/prodView";

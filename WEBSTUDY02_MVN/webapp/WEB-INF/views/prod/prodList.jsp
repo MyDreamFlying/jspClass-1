@@ -43,7 +43,7 @@ table, th, td{
 	%>
 	</select>
 	<input type="text" name="prod_name"/>
-	<input type="text" name="page"/>
+	<input type="hidden" name="page"/>
 	<input type="submit" value="검색"/>
 	<input type="button" onclick="location.href='prodInsert.do'"value="신규등록" id="newBtn"/>
 </form>

@@ -39,9 +39,7 @@ public class HandlerMapping implements IHandlerMapping{
 					= ReflectionUtils.getMethodsWithAnnotationAtClass(
 							controllerClass
 							, RequestMapping.class
-							, String.class
-							, HttpServletRequest.class
-							,HttpServletResponse.class);
+							, String.class);
 			
 			if(handlerMethods.size() == 0 ) continue;
 			Iterator<Method> it = handlerMethods.keySet().iterator();
