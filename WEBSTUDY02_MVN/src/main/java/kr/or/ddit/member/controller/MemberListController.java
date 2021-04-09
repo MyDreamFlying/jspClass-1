@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
@@ -20,12 +22,9 @@ public class MemberListController {
 	
 	@RequestMapping("/member/memberList.do")
 	public String memberList(
-			@RequestParam(value="page", required=false, defaultValue="1") int currentPage
-			,@RequestParam(value="searchType", required=false, defaultValue="") String searchType
-			,@RequestParam(value="searchWord", required=false, defaultValue="") String searchWord
+			@ModelAttribute(value = "SearchVO") SearchVO searchVO
+			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
 			,HttpServletRequest req) throws ServletException, IOException {
-		
-		SearchVO searchVO = new SearchVO(searchType, searchWord);
 		
 		PagingVO<MemberVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);
