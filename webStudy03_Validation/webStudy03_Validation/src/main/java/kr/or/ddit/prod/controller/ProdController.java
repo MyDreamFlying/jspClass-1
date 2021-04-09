@@ -22,6 +22,8 @@ import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
 import kr.or.ddit.prod.service.ProdServiceImpl;
+import kr.or.ddit.validator.CommonValidator;
+import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.ProdVO;
 
@@ -48,6 +50,38 @@ public class ProdController {
 		return "prod/prodForm";
 	}
 	
+	@RequestMapping(value="/prod/prodInsert.do", method=RequestMethod.POST)
+	public String prodInsert(
+			@ModelAttribute("prod") ProdVO prod
+			,HttpServletRequest req) throws ServletException, IOException {
+		req.setAttribute("prod", prod);
+		
+		Map<String, List<String>> errors = new LinkedHashMap<>();
+		req.setAttribute("errors", errors);
+		
+		boolean valid = new CommonValidator<ProdVO>()
+						.validate(prod, errors, InsertGroup.class);
+		
+		String view = null;
+		String message = null;
+		
+		if(valid) {
+			ServiceResult result = service.createProd(prod);
+			if(ServiceResult.OK.equals(result)) {
+				String newProdId = prod.getProd_id();
+				view = "redirect:/prod/prodView.do?what="+newProdId;
+			}else {
+				message = "서버 오류. 잠시후 다시 시도하세요";
+				view = "prod/prodForm";
+			}
+			req.setAttribute("message", message);
+		}else {
+			view = "prod/prodForm";
+		}
+		return view;
+		
+	}
+	
 	@RequestMapping("/prod/prodUpdate.do")
 	public String prodUpdateForm(
 			@RequestParam(value="what") String prodId 
@@ -70,9 +104,10 @@ public class ProdController {
 		req.setAttribute("prod", prod);
 		
 		// 데이터 검증
-		Map<String, String> errors = new LinkedHashMap<>();
+		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
-		boolean valid = validate(prod, errors);
+		boolean valid = new CommonValidator<ProdVO>()
+				.validate(prod, errors, InsertGroup.class);
 		String view = null;
 		String message = null;
 		
@@ -94,41 +129,6 @@ public class ProdController {
 		req.setAttribute("message", message);
 		return view;
 		
-	}
-	
-	@RequestMapping(value="/prod/prodInsert.do", method=RequestMethod.POST)
-	public String prodInsert(
-			@ModelAttribute("prod") ProdVO prod
-			,HttpServletRequest req) throws ServletException, IOException {
-		req.setAttribute("prod", prod);
-		
-		Map<String, String> errors = new LinkedHashMap<>();
-		req.setAttribute("errors", errors);
-		
-		boolean valid = validate(prod, errors);
-		
-		String view = null;
-		String message = null;
-		
-		if(valid) {
-			ServiceResult result = service.createProd(prod);
-			if(ServiceResult.OK.equals(result)) {
-				String newProdId = prod.getProd_id();
-				view = "redirect:/prod/prodView.do?what="+newProdId;
-			}else {
-				message = "서버 오류. 잠시후 다시 시도하세요";
-				view = "prod/prodForm";
-			}
-			req.setAttribute("message", message);
-		}else {
-			view = "prod/prodForm";
-		}
-		return view;
-		
-	}
-	
-	private boolean validate(ProdVO prod, Map<String,String> errors) {
-		return true;
 	}
 	
 	
