@@ -20,12 +20,15 @@ import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.vo.MemberVO;
 
 @Controller
-public class LoginCheckController{
+public class LoginOutController{
 	private IAuthenticateService service = new AuthenticateServiceImpl();
-	private static final Logger logger = LoggerFactory.getLogger(LoginCheckController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginOutController.class);
 
 	@RequestMapping(value="/login/loginCheck.do", method=RequestMethod.POST)
-	public String doPost(HttpServletRequest req, HttpServletResponse resp, HttpSession session) throws ServletException, IOException {
+	public String loginCheck(
+			HttpServletRequest req
+			, HttpServletResponse resp
+			, HttpSession session) throws ServletException, IOException {
 		if(session.isNew()) {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return null;
@@ -89,6 +92,20 @@ public class LoginCheckController{
 		
 		return view;
 		
+	}
+	
+	@RequestMapping(value="/login/logout.do", method = RequestMethod.POST)
+	public String logout(
+			HttpSession session
+			, HttpServletResponse resp) throws ServletException, IOException {
+		
+		if(session.isNew()) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return null;
+		}
+		
+		session.invalidate();
+		return "redirect:/";
 	}
 
 
