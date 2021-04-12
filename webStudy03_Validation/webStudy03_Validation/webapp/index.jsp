@@ -22,7 +22,7 @@
 	}
 		%>
 		<form name="logoutForm" method="post" action="<%=request.getContextPath() %>/login/logout.do"></form>
-		<a href="<%=request.getContextPath() %>/mypage.do"><%=memName %></a>님 로그인 성공!
+		<a href="<%=request.getContextPath() %>/mypage.do"><%=memName %></a>님[<%=authMember.getMem_role() %>] 로그인 성공!
 		<a href="mailto:<%=email %>">이메일보내기</a>
 		<a href="#" onClick="clickHandler(event);">로그아웃</a>
 		<script type="text/javascript">
