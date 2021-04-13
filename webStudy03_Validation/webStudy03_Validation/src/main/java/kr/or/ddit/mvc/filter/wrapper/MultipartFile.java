@@ -1,5 +1,6 @@
-package kr.or.ddit.filter.wrapper;
+package kr.or.ddit.mvc.filter.wrapper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 import javax.servlet.http.Part;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class MultipartFile {
@@ -60,6 +62,16 @@ public class MultipartFile {
 	
 	public boolean isEmpty() {
 		return empty;
+	}
+	
+	public byte[] getBytes() throws IOException {
+		try(
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			InputStream is = getInputStream();
+		){
+			IOUtils.copy(is, os);
+			return os.toByteArray();
+		}
 	}
 	
 	

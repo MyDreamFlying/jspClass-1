@@ -30,7 +30,7 @@
 		out.println(String.format("%s 제품의 정보를 수정합니다.",prod.getProd_id()));
 	}
 %>
-<form method="post" id="prodForm">
+<form method="post" id="prodForm" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<th>제품명</th>
@@ -112,7 +112,7 @@
 		<tr>
 			<th>사진</th>
 			<td>
-				<input type="text" name="prod_img" value="<%=prod.getProd_img()%>"/>
+				<input type="file" name="prod_image"/>
 			</td>
 		</tr>
 		<tr>

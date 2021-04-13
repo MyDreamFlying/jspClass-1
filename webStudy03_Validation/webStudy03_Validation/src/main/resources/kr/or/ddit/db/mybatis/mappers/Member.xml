@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.member.dao.IMemberDAO">
 	<select id="selectMemberForAuth" parameterType="String" resultType="MemberVO">
-		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL, MEM_ROLE
+		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL, MEM_ROLE, MEM_IMG
 		 FROM MEMBER
 		 WHERE MEM_ID= #{mem_id} AND MEM_DELETE IS NULL
 	</select>
@@ -40,7 +40,7 @@
 		    MEM_DELETE
 		    , PROD_ID, PROD_NAME, PROD_COST, PROD_PRICE, PROD_MILEAGE
 		    , LPROD_NM
-		    , BUYER_NAME, BUYER_ADD1, MEM_ROLE
+		    , BUYER_NAME, BUYER_ADD1, MEM_ROLE, MEM_IMG
 		FROM MEMBER LEFT OUTER JOIN CARTPROD ON(MEM_ID = CART_MEMBER)
 					LEFT OUTER JOIN PRODALL ON(CART_PROD = PROD_ID)
 		WHERE MEM_ID= #{mem_id}
@@ -61,6 +61,9 @@
 		    MEM_LIKE	=	#{mem_like,jdbcType=VARCHAR},       
 		    MEM_MEMORIAL	=	#{mem_memorial, jdbcType=VARCHAR},   
 		    MEM_MEMORIALDAY	=	TO_DATE(#{mem_memorialday, jdbcType=DATE}, 'YYYY-MM-DD')
+		    <if test="mem_img!=null">
+		    , MEM_IMG = #{mem_img, jdbcType=BLOB}
+		    </if>
 		WHERE MEM_ID		=	#{mem_id,jdbcType=VARCHAR}        
 	</update>
 	
@@ -71,7 +74,9 @@
 			MEM_ZIP,	MEM_ADD1,	MEM_ADD2,
 			MEM_HOMETEL,MEM_COMTEL,	MEM_HP,
 			MEM_MAIL,	MEM_JOB,	MEM_LIKE,
-			MEM_MEMORIAL,	MEM_MEMORIALDAY,	MEM_MILEAGE, MEM_ROLE)
+			MEM_MEMORIAL,	MEM_MEMORIALDAY,	MEM_MILEAGE, MEM_ROLE
+			,MEM_IMG
+			)
 		VALUES (
 			#{mem_id,jdbcType=VARCHAR}, 
 			#{mem_pass,jdbcType=VARCHAR}, 
@@ -92,6 +97,7 @@
 			TO_DATE(#{mem_memorialday, jdbcType=DATE}, 'YYYY-MM-DD'),
 			3000,
 			'ROLE_USER'
+			,#{mem_img, jdbcType=BLOB}
 		)
 	</update>
 	

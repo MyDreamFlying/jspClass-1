@@ -2,14 +2,15 @@ package kr.or.ddit.mvc.annotation.resolvers;
 
 import java.io.IOException;
 import java.lang.reflect.Parameter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
+import kr.or.ddit.mvc.filter.wrapper.MultipartHttpServletRequest;
+
 
 public class RequestPartArgumentResolver implements IHandlerMethodArgumentResolver {
 
@@ -17,39 +18,43 @@ public class RequestPartArgumentResolver implements IHandlerMethodArgumentResolv
 	public boolean isSupported(Parameter parameter) {
 		Class<?> parameterType = parameter.getType();
 		RequestPart annotation = parameter.getAnnotation(RequestPart.class);
-		boolean supported = annotation != null
-				&&!(
-						String.class.equals(parameterType)
-						|| ClassUtils.isPrimitiveOrWrapper(parameterType)
-				);
-		return supported;
+		return annotation != null && 
+				(MultipartFile.class.equals(parameterType)
+					|| (parameterType.isArray() && MultipartFile.class.equals(parameterType.getComponentType())));
 	}
 
 	@Override
 	public Object argumentResolve(Parameter parameter, HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Class<?> parameterType = parameter.getType();
+		if(!(req instanceof MultipartHttpServletRequest)){
+			throw new ServletException("현재 요청은 multipart 요청이 아님");
+		}
+		
 		RequestPart annotation = parameter.getAnnotation(RequestPart.class);
 		
-		String reqPartName = annotation.value();
-		String reqPartValue = req.getParameter(reqPartName);
+		String partName = annotation.value();
 		boolean required = annotation.required();
-		if(required && StringUtils.isBlank(reqPartValue)){
-			throw new BadRequestException("필수 파라미터 누락");
-		}else if(!required && StringUtils.isBlank(reqPartValue)) {
-	
+		
+		MultipartHttpServletRequest wrapper = (MultipartHttpServletRequest)req;
+		List<MultipartFile> files = wrapper.getFiles(partName);
+		if(required && files==null) {
+			throw new BadRequestException(partName+"에 해당하는 파일이 업로되지 않았음.");
 		}
 		
-		try {
-			Object parameterValue = parameterType.newInstance();
-			String attributeName = annotation.value();
-			req.setAttribute(attributeName, parameterValue);
-			BeanUtils.populate(parameterValue, req.getParameterMap());
-			return parameterValue;
-		}catch (Exception e) {
-			throw new ServletException(e);
+		Class<?> parameterType = parameter.getType();
+		
+		Object retValue = null;
+		
+		if(files != null && files.size() > 0) {
+			if(parameterType.isArray()) {
+				MultipartFile[] array = new MultipartFile[files.size()];
+				retValue = files.toArray(array);
+			}else {
+				retValue = files.get(0);
+			}
 		}
 		
+		return retValue;
 	}
 
 }

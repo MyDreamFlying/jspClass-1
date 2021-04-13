@@ -29,7 +29,7 @@
 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" />
 	<jsp:useBean id="errors" class="java.util.LinkedHashMap"
 		scope="request" />
-	<form method="post" id="memberForm">
+	<form method="post" id="memberForm" enctype="multipart/form-data">
 		<table>
 			<%
 				String command = (String) request.getAttribute("command");
@@ -58,6 +58,14 @@
 					value="<%=member.getMem_name()%>" />
 				<span class="error"><%=errors.get("mem_name")%></span></td>
 			</tr>
+			
+			<tr>
+				<th>프로필</th>
+				<td>
+					<input type="file" name="mem_image" accept="image/*"/>
+				</td>
+			</tr>
+			
 			<tr>
 				<th>주민번호1</th>
 				<td><input type="text" name="mem_regno1"

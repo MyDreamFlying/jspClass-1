@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kr.or.ddit.filter.wrapper.MultipartHttpServletRequest;
+import kr.or.ddit.mvc.filter.wrapper.MultipartHttpServletRequest;
+
 
 /**
  *	1. 파일이 포함된 multipart 요청인지 식별.

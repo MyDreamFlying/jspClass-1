@@ -1,16 +1,13 @@
 package kr.or.ddit.prod.controller;
 
+import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.mvc.annotation.Controller;
@@ -18,6 +15,8 @@ import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
+import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
@@ -53,11 +52,18 @@ public class ProdController {
 	@RequestMapping(value="/prod/prodInsert.do", method=RequestMethod.POST)
 	public String prodInsert(
 			@ModelAttribute("prod") ProdVO prod
+			, @RequestPart("prod_image") MultipartFile prod_image
 			,HttpServletRequest req) throws ServletException, IOException {
 		req.setAttribute("prod", prod);
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
+		String saveFolderUrl = "/prodImages";
+		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
+		if(!prod_image.isEmpty()) {
+			prod_image.saveTo(saveFolder);
+			prod.setProd_img(prod_image.getUniqueSaveName());
+		}
 		
 		boolean valid = new CommonValidator<ProdVO>()
 						.validate(prod, errors, InsertGroup.class);
@@ -98,12 +104,19 @@ public class ProdController {
 	
 	@RequestMapping(value="/prod/prodUpdate.do", method=RequestMethod.POST)
 	public String prodUpdate(
-			@ModelAttribute("prod") ProdVO prod
-			,HttpServletRequest req) throws ServletException, IOException {
+			@ModelAttribute("prod") ProdVO prod,
+			@RequestPart(value="prod_image", required=false) MultipartFile prod_image,
+			HttpServletRequest req) throws ServletException, IOException {
 		
 		req.setAttribute("prod", prod);
 		
-		// 데이터 검증
+		String saveFolderUrl = "/prodImages";
+		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
+		if(prod_image!=null && !prod_image.isEmpty()) {
+			prod_image.saveTo(saveFolder);
+			prod.setProd_img(prod_image.getUniqueSaveName());
+		}
+		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
 		boolean valid = new CommonValidator<ProdVO>()

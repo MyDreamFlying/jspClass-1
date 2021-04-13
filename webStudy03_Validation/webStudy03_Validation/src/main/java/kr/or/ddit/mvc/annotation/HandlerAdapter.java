@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -26,6 +27,10 @@ public class HandlerAdapter implements IHandlerAdapter {
 		argumentResolvers.add(new ModelAttributeArgumentResolver());
 		argumentResolvers.add(new RequestParamArgumentResolver());
 		argumentResolvers.add(new RequestPartArgumentResolver());
+	}
+	
+	public void addHandlerMethodArgumentResolver(IHandlerMethodArgumentResolver... resolvers) {
+		argumentResolvers.addAll(Arrays.asList(resolvers));
 	}
 	
 	private IHandlerMethodArgumentResolver findArgumentResolver(Parameter parameter) {

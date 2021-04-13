@@ -39,7 +39,7 @@ table, th, td{
 	</tr>
 	<tr>
 		<th>상품이미지</th>
-		<td><%=prod.getProd_img() %></td>
+		<td><img src="<%=request.getContextPath()%>/prodImages/<%=prod.getProd_img() %>"></td>
 	</tr>
 	<tr>
 		<th>상품입고일</th>

@@ -1,4 +1,4 @@
-package kr.or.ddit.filter.wrapper;
+package kr.or.ddit.mvc.filter.wrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
