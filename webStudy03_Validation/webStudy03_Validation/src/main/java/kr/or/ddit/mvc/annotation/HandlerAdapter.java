@@ -15,6 +15,7 @@ import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
 import kr.or.ddit.mvc.annotation.resolvers.IHandlerMethodArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttributeArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParamArgumentResolver;
+import kr.or.ddit.mvc.annotation.resolvers.RequestPartArgumentResolver;
 import kr.or.ddit.mvc.annotation.resolvers.ServletSpecArgumentResolver;
 
 public class HandlerAdapter implements IHandlerAdapter {
@@ -24,6 +25,7 @@ public class HandlerAdapter implements IHandlerAdapter {
 		argumentResolvers.add(new ServletSpecArgumentResolver());
 		argumentResolvers.add(new ModelAttributeArgumentResolver());
 		argumentResolvers.add(new RequestParamArgumentResolver());
+		argumentResolvers.add(new RequestPartArgumentResolver());
 	}
 	
 	private IHandlerMethodArgumentResolver findArgumentResolver(Parameter parameter) {
