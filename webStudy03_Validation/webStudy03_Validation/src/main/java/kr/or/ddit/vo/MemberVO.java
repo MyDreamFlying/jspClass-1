@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.util.Base64;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 
+import kr.or.ddit.Constants;
 import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.validator.UpdateGroup;
@@ -44,7 +48,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberVO implements Serializable {
+public class MemberVO implements Serializable, HttpSessionBindingListener {
 	public MemberVO(String mem_id, String mem_pass) {
 		super();
 		this.mem_id = mem_id;
@@ -95,6 +99,29 @@ public class MemberVO implements Serializable {
 		if(mem_img != null)
 			encoded = Base64.getEncoder().encodeToString(mem_img);
 		return encoded;
+	}
+
+	@Override
+	public void valueBound(HttpSessionBindingEvent event) {
+    	if("authMember".equals(event.getName())){
+    		ServletContext application = event.getSession().getServletContext();
+    		Set<MemberVO> userList = (Set<MemberVO>) application.getAttribute(Constants.USER_LIST_ATTR_NAME);
+    		userList.add(this);
+    	}
+		
+	}
+
+	@Override
+	public void valueUnbound(HttpSessionBindingEvent event) {
+    	if("authMember".equals(event.getName())){
+    		ServletContext application = event.getSession().getServletContext();
+    		Set<MemberVO> userList = (Set<MemberVO>) application.getAttribute(Constants.USER_LIST_ATTR_NAME);
+    		userList.remove(this);
+    	}
+	}
+	
+	public String getTest() {
+		return "test";
 	}
 	
 }

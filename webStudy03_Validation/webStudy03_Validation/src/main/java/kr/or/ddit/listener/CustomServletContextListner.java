@@ -1,16 +1,16 @@
 package kr.or.ddit.listener;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kr.or.ddit.Constants;
+import kr.or.ddit.vo.MemberVO;
 
 /**
  * Application Lifecycle Listener implementation class CustomServletContextListner
@@ -26,7 +26,7 @@ public class CustomServletContextListner implements ServletContextListener {
     	logger.info("{}에서 어플리케이션 초기화 이벤트 처리", getClass().getName());
     	application = sce.getServletContext();
     	application.setAttribute(Constants.SESSION_COUNT_ATTR_NAME, 0);
-    	application.setAttribute(Constants.SESSION_CONNECT_LIST, new ArrayList<HttpSession>());
+    	application.setAttribute(Constants.USER_LIST_ATTR_NAME, new LinkedHashSet<MemberVO>());
     }
 
 	/**

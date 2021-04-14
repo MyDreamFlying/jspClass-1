@@ -4,6 +4,7 @@
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,23 +14,13 @@
 <body>
 <h4>Welcome page!</h4>
 <pre>
-	총 방문자수 : <%=application.getAttribute(Constants.SESSION_COUNT_ATTR_NAME) %>
-	<%
-		ArrayList<HttpSession> conList = 
-			(ArrayList<HttpSession>) application.getAttribute(Constants.SESSION_CONNECT_LIST);
-		int cnt = 0;
-		for(HttpSession se : conList){
-			MemberVO mem = (MemberVO) se.getAttribute("authMember");
-			if(mem != null){
-				%>
-				접속자 <%=++cnt %> : <%= mem.getMem_id() %>
-				<%
-			}
-		}
-		out.println("총 동시접속자 수 : " + cnt);
-
-	%>
+	누적 방문자수 : <%=application.getAttribute(Constants.SESSION_COUNT_ATTR_NAME) %>
 </pre>
+<ul>
+	<c:forEach items="${userList}" var="user">
+		<li>${user.mem_name}</li>
+	</c:forEach>
+</ul>
 <%
 	MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 	String authId = "";
