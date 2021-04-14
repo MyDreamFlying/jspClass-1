@@ -117,8 +117,8 @@ video{
 %>
 </select>
 <div id="mediaArea"></div>
-<form>
-	<input type="file" name="uploadImage"/>
+<form method="post" enctype="multipart/form-data">
+	<input type="file" name="uploadMedia"/>
 	<input type="submit" value="업로드" />
 </form>
 </body>

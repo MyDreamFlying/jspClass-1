@@ -58,6 +58,9 @@ public class ProdController {
 		
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);
+		
+		//EDD : Event Driven Development  TDD : Test Driven Development
+		
 		String saveFolderUrl = "/prodImages";
 		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
 		if(!prod_image.isEmpty()) {

@@ -17,6 +17,10 @@
 		<param-value>/Users/shane/Documents/GitHub/jspClass/contents</param-value>
 	</context-param>
 	
+	<listener>
+		<listener-class>kr.or.ddit.listener.CustomServletContextListner</listener-class>
+	</listener>
+	
 	<!-- Filter -->
 	
 	<filter>
