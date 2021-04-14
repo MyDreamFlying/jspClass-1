@@ -27,6 +27,7 @@ public class CustomServletContextListner implements ServletContextListener {
     	application = sce.getServletContext();
     	application.setAttribute(Constants.SESSION_COUNT_ATTR_NAME, 0);
     	application.setAttribute(Constants.USER_LIST_ATTR_NAME, new LinkedHashSet<MemberVO>());
+    	application.setAttribute("cPath", application.getContextPath());
     }
 
 	/**

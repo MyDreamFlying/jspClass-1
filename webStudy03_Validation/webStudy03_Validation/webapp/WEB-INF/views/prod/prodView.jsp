@@ -1,4 +1,3 @@
-<%@page import="kr.or.ddit.vo.ProdVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,61 +12,58 @@ table, th, td{
 <title>Insert title here</title>
 </head>
 <body>
-<%
-	ProdVO prod = (ProdVO)request.getAttribute("prod");
-%>
 <table>
 	<tr>
 		<th>상품코드</th>
-		<td><%=prod.getProd_id() %></td>
+		<td>${prod.prod_id}</td>
 	</tr>
 	<tr>
 		<th>상품명</th>
-		<td><%=prod.getProd_name() %></td>
+		<td>${prod.prod_name}</td>
 	</tr>
 	<tr>
 		<th>상품분류명</th>
-		<td><%=prod.getLprod_nm() %></td>
+		<td>${prod.lprod_nm}</td>
 	</tr>
 	<tr>
 		<th>상품매입가격</th>
-		<td><%=prod.getProd_cost() %></td>
+		<td>${prod.prod_cost}</td>
 	</tr>
 	<tr>
 		<th>상품가격</th>
-		<td><%=prod.getProd_price() %></td>
+		<td>${prod.prod_price}</td>
 	</tr>
 	<tr>
 		<th>상품이미지</th>
-		<td><img src="<%=request.getContextPath()%>/prodImages/<%=prod.getProd_img() %>"></td>
+		<td><img src="${cPath}/prodImages/${prod.prod_img}"></td>
 	</tr>
 	<tr>
 		<th>상품입고일</th>
-		<td><%=prod.getProd_insdate() %></td>
+		<td>${prod.prod_insdate}</td>
 	</tr>
 	<tr>
 		<th>사이즈</th>
-		<td><%=prod.getProd_size() %></td>
+		<td>${prod.prod_size}</td>
 	</tr>
 	<tr>
 		<th>색상</th>
-		<td><%=prod.getProd_color() %></td>
+		<td>${prod.prod_color}</td>
 	</tr>
 	<tr>
 		<th>상품간단설명</th>
-		<td><%=prod.getProd_outline() %></td>
+		<td>${prod.prod_outline}</td>
 	</tr>
 	<tr>
 		<th>상품상세설명</th>
-		<td><%=prod.getProd_detail() %></td>
+		<td>${prod.prod_detail}</td>
 	</tr>
 	<tr>
 		<th>상품재고</th>
-		<td><%=prod.getProd_totalstock() %></td>
+		<td>${prod.prod_totalstock}</td>
 	</tr>
 	<tr>
 		<th>상품주의</th>
-		<td><%=prod.getProd_delivery() %></td>
+		<td>${prod.prod_delivery}</td>
 	</tr>
 	<tr>
 		<th>거래처 정보</th>
@@ -81,10 +77,10 @@ table, th, td{
 						<th>주소1</th>
 					</tr>
 					<tr>
-						<td><%=prod.getBuyer().getBuyer_name() %></td>
-						<td><%=prod.getBuyer().getBuyer_charger() %></td>
-						<td><%=prod.getBuyer().getBuyer_comtel() %></td>
-						<td><%=prod.getBuyer().getBuyer_add1() %></td>
+						<td>${prod.buyer.buyer_name }</td>
+						<td>${prod.buyer.buyer_charger }</td>
+						<td>${prod.buyer.buyer_comtel }</td>
+						<td>${prod.buyer.buyer_add1 }</td>
 					</tr>
 				</thead>
 			</table>
@@ -92,8 +88,8 @@ table, th, td{
 	</tr>
 	<tr>
 		<td colspan="2">
-			<button type="button" onClick="window.location='<%=request.getContextPath()%>/prod/prodList.do'">상품목록으로</button>
-			<button type="button" onClick="window.location='<%=request.getContextPath()%>/prod/prodUpdate.do?what=<%=prod.getProd_id()%>'">상품수정</button>
+			<button type="button" onClick="window.location='${cPath}/prod/prodList.do'">상품목록으로</button>
+			<button type="button" onClick="window.location='${cPath}/prod/prodUpdate.do?what=${prod.prod_id}'">상품수정</button>
 		</td>
 	</tr>
 </table>
