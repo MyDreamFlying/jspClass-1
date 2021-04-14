@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 
 <html>
-<header>
+<head>
 <style>
 img{
 	width : 50%;
@@ -75,7 +75,7 @@ video{
 			loadMedia();
  		});
 	</script>
-</header>
+</head>
 <body>
 <h4><%=new Date()%></h4>
 <select multiple="multiple" name="media" id="media">
@@ -83,7 +83,7 @@ video{
 	// 쿠키 저장된 값 불러오기
 	Cookie[] cookies = request.getCookies();
 	Cookie searched = null;
-	String selectedCookie = "";
+	String selectedCookie = null;
 	if(cookies != null){
 		for(Cookie tmp : cookies){
 			String value = URLDecoder.decode(tmp.getValue(),"utf-8");
@@ -94,8 +94,12 @@ video{
 		}
 	}
 	// 저장된 값 불러오기 끝
+	
 	ObjectMapper objectMapper = new ObjectMapper();
-	String[] selecteds = objectMapper.readValue(selectedCookie, String[].class);
+	String[] selecteds = new String[0];
+	if(selectedCookie != null){
+		selecteds = objectMapper.readValue(selectedCookie, String[].class);
+	}
 	
 	String[] children = (String[])request.getAttribute("children");	
 	Date today = new Date();
@@ -113,5 +117,9 @@ video{
 %>
 </select>
 <div id="mediaArea"></div>
+<form>
+	<input type="file" name="uploadImage"/>
+	<input type="submit" value="업로드" />
+</form>
 </body>
 </html>
