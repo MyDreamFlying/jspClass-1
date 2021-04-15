@@ -1,8 +1,10 @@
+<%@page import="java.util.Date"%>
 <%@ page import="java.util.Locale"  %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,8 +95,21 @@
 			parsing : parseNumber, parseDate
 			formatting : formatNumber ( type : number, currency)
 						, formatDate
-			<fmt:formatNumber value="30000" type="currency" />
+			<fmt:formatNumber value="30000" type="currency" var="money"/>
+			<fmt:parseNumber value="${money}" type="currency" var="number" />
+			${number * 10}
+			
+			<fmt:formatDate value="<%=new Date() %>" type="both" dateStyle="short" var="datestr"/>
+			${datestr }
+			<fmt:parseDate value="${datestr}" type="both" dateStyle="short" var="dateObj"/>
+			${dateObj }
+			${dateObj.time }
+			
 	3. fn
+		${fn:indexOf("abc", "a") }
+		<c:set var="array" value='${fn:split("test1,test2,test3",",") }'/>
+		${fn:join(array, "|") }
+		
 </pre>
 2단 부터 9단 까지의 구구단 출력 --> el 과 core tag 만 이용해서
 <table>
