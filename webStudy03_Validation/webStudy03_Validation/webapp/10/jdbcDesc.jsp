@@ -73,7 +73,7 @@ table, th, tr, td{
 						for(Entry<String,Object> entry : record.entrySet()){
 							String entryValue = (String)entry.getValue();
 							if("PROPERTY_NAME".equals(entry.getKey())){
-								entryValue = entryValue.replace(property_name,String.format("<span class='keyword'>%s</span>",property_name));
+								//entryValue = entryValue.replace(property_name,String.format("<span class='keyword'>%s</span>",property_name));
 							}
 							%>
 							<td><%=entryValue%></td>

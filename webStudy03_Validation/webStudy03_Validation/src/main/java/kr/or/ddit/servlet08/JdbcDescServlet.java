@@ -33,7 +33,7 @@ public class JdbcDescServlet extends HttpServlet{
 		req.setAttribute("headers", headers);
 		req.setAttribute("dataList", dataList);
 		
-		String view = "/WEB-INF/views/10/jdbcDesc.jsp";
+		String view = "/10/jdbcDesc.jsp";
 		req.getRequestDispatcher(view).forward(req,resp);
 		
 	}
