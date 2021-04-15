@@ -40,4 +40,14 @@ public class MemberListController {
 		return "member/memberList";
 		
 	}
+	
+	@RequestMapping("/member/memberView.do")
+	public String memberView(
+			@RequestParam(value="who") String mem_id
+			,HttpServletRequest req){
+		
+		MemberVO detailMember = service.retrieveMember(mem_id);
+		req.setAttribute("member", detailMember);
+		return "member/mypage";
+	}
 }

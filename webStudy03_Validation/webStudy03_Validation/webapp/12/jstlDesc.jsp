@@ -1,6 +1,8 @@
+<%@ page import="java.util.Locale"  %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +19,13 @@
 </head>
 <body>
 <h4>JSTL(Jsp Standard Tag Library)</h4>
+<select onchange="location.href='?lang='+this.value;">
+<c:forEach items="${Locale.getAvailableLocales()}" var="tmp">
+		<option value="${tmp.toLanguageTag() }">
+			${tmp.displayLanguage }[${tmp.displayCountry }]
+		</option>
+</c:forEach>
+</select>
 <pre>
 	: 커스텀 태그 라이브러리(server side)
 	&lt;prefix:tagname attributes/&gt;
@@ -61,11 +70,30 @@
 		</c:url>
 		<a href="${memberList}">회원목록의 2페이지</a>
 		4) 기타 : import, out
+<%-- 		<c:import url="http://www.playddit.net" var="playddit"/> --%>
+<%-- 		<c:out value="${playddit}" escapeXml="false"></c:out> --%>
 	2. fmt (locale 지원)
 		1) 언어처리 : setLocale, message
+			- 언어 결정(한글, 영문)
+			- 메시지 번들 작성(properties)
+			- locale 결정
+			<c:if test="${empty param.lang }">
+				<c:set var="locale" value="${pageContext.request.locale }"></c:set>
+			</c:if>
+			<c:if test="${not empty param.lang }">
+				<c:set var="locale" value="${param.lang }"></c:set>
+			</c:if>
+			<fmt:setLocale value="${param.lang}"/>
+			- 메시지 출력 : 번들 로딩, 메시지 사용.
+			<fmt:bundle basename="kr.or.ddit.messages.message">
+				<fmt:message key="bow"></fmt:message>
+			</fmt:bundle>
+			
 		2) 메시지 형식 처리
 			parsing : parseNumber, parseDate
-			formatting : formatNumber, formatDate
+			formatting : formatNumber ( type : number, currency)
+						, formatDate
+			<fmt:formatNumber value="30000" type="currency" />
 	3. fn
 </pre>
 2단 부터 9단 까지의 구구단 출력 --> el 과 core tag 만 이용해서
