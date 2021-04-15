@@ -16,10 +16,12 @@
 	<input type="submit" value="가져오기"/>
 </form>
 <div>
-<c:if test="not empty importURL"></c:if>
+<c:if test="${not empty importURL}">
+	<c:import url="${importURL}" var="web"/>
+	${web }
+	<c:out value="${web}" escapeXml="${not empty source? 'true' : 'false'}"/>
+</c:if>
 
-	${importURL}
-	${param.source}
 </div>
 </body>
 </html>
