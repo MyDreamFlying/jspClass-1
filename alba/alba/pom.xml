@@ -66,11 +66,6 @@
 	    <version>1.2</version>
 	</dependency>
   	<dependency>
-  		<groupId>com.oracle</groupId>
-  		<artifactId>ojdbc6</artifactId>
-  		<version>12.1.0.2</version>
-  	</dependency>
-  	<dependency>
   		<groupId>org.apache.ibatis</groupId>
   		<artifactId>ibatis-sqlmap</artifactId>
   		<version>2.3.4.726</version>
@@ -194,6 +189,11 @@
 	    <scope>test</scope>
 	</dependency>
 
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>8.0.23</version>
+	</dependency>
   </dependencies>
 
 </project>
