@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.board.dao.IBoardDAO">
+
+	<sql id="fromFrag">
+		FROM BOARD
+	</sql>
+	<sql id="searchFrag">
+		<trim prefix=" WHERE " prefixOverrides="AND">
+			<if test="simpleSearch!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.searchWord)">
+				<choose>
+					<when test="simpleSearch.searchType eq 'title'">
+						INSTR(BO_TITLE, #{simpleSearch.searchWord}) > 0 
+					</when>
+					<when test="simpleSearch.searchType eq 'writer'">
+						INSTR(BO_WRITER, #{simpleSearch.searchWord}) > 0 
+					</when>
+					<when test="simpleSearch.searchType eq 'content'">
+						INSTR(BO_CONTENT, #{simpleSearch.searchWord}) > 0 
+					</when>
+					<otherwise>
+						INSTR(BO_TITLE, #{simpleSearch.searchWord}) > 0 
+						OR
+						INSTR(BO_WRITER, #{simpleSearch.searchWord}) > 0 
+						OR
+						INSTR(BO_CONTENT, #{simpleSearch.searchWord}) > 0 
+					</otherwise>
+				</choose>
+
+			</if>
+		</trim>
+	</sql>
+
+	<select id="selectBoardList" parameterType="PagingVO" resultType="BoardVO">
+		SELECT B.*
+		FROM
+			(SELECT A.*, ROWNUM RNUM
+				FROM(
+					SELECT  *
+					FROM BOARDVIEW
+					<include refid="searchFrag"></include>
+				) A
+			) B
+		<![CDATA[
+			WHERE RNUM >= #{startRow} AND RNUM <= #{endRow}
+		]]>
+	</select>
+	
+	<select id="selectBoardCount" resultType="int" parameterType="pagingVO">
+		SELECT COUNT(*)
+		<include refid="fromFrag"/>
+		<include refid="searchFrag" />
+	</select>
+</mapper>
