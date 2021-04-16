@@ -14,8 +14,7 @@ public class Test03ConnectionFactory {
 		
 		try(
 			Connection conn = ConnectionFactory.getConnection();
-		) {
-			
+		){
 			String sql = "select * from alba";
 			Statement statement = conn.createStatement();
 			ResultSet result = statement.executeQuery(sql);
@@ -37,7 +36,6 @@ public class Test03ConnectionFactory {
 				String al_img = result.getString("al_img");
 				System.out.printf("%s %s %d %s %s %s %s %s %s %s %s %s %s %s \n",al_id,al_name,al_age,al_zip,al_addr1,al_addr2,al_hp,gr_code,al_gen,al_mail,al_career,al_spec,al_desc,al_img);
 			}
-			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
