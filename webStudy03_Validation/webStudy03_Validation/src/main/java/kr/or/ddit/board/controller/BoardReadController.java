@@ -1,8 +1,10 @@
 package kr.or.ddit.board.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.mvc.annotation.Controller;
@@ -23,6 +25,10 @@ public class BoardReadController {
 			@RequestParam(value="page", required=false, defaultValue="1") int currentPage,
 			HttpServletRequest req
 			) {
+		String startDate = req.getParameter("startDate");
+		String endDate = req.getParameter("endDate");
+		System.out.println("start : " + startDate);
+		System.out.println("END : " + endDate);
 		
 		PagingVO<BoardVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);

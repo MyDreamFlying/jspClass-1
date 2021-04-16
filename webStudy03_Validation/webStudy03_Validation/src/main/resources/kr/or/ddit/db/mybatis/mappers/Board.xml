@@ -3,11 +3,12 @@
 <mapper namespace="kr.or.ddit.board.dao.IBoardDAO">
 
 	<sql id="fromFrag">
-		FROM BOARD
+		FROM BOARDVIEW
 	</sql>
 	<sql id="searchFrag">
-		<trim prefix=" WHERE " prefixOverrides="AND">
+		<trim prefix=" WHERE " suffixOverrides="OR">
 			<if test="simpleSearch!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.searchWord)">
+				bo_sort=1 OR
 				<choose>
 					<when test="simpleSearch.searchType eq 'title'">
 						INSTR(BO_TITLE, #{simpleSearch.searchWord}) > 0 
@@ -34,15 +35,15 @@
 	<select id="selectBoardList" parameterType="PagingVO" resultType="BoardVO">
 		SELECT B.*
 		FROM
-			(SELECT A.*, ROWNUM RNUM
+			(SELECT A.*, ROWNUM-3 RNUM
 				FROM(
 					SELECT  *
-					FROM BOARDVIEW
+					<include refid="fromFrag"/>
 					<include refid="searchFrag"></include>
 				) A
 			) B
 		<![CDATA[
-			WHERE RNUM >= #{startRow} AND RNUM <= #{endRow}
+			WHERE bo_sort=1 or RNUM >= #{startRow} AND RNUM <= #{endRow}
 		]]>
 	</select>
 	

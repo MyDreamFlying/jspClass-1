@@ -2,6 +2,7 @@ package kr.or.ddit.vo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +32,8 @@ public class PagingVO<T> implements Serializable{
 	private List<T> dataList;
 	
 	private SearchVO simpleSearch;
-	
 	private T detailSearch;
+	private Map<String, Object> searchMap;
 	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;

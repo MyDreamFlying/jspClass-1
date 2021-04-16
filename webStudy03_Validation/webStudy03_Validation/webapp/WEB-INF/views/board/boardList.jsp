@@ -65,6 +65,8 @@ table, th, td{
 					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input type="hidden" name="page" />
+					<input type="hidden" name="startDate"/> 
+					<input type="hidden" name="endDate"/> 
 				</form>
 				<div id="searchUI">
 					<select name="searchType">
@@ -74,6 +76,8 @@ table, th, td{
 						<option value="content">글내용</option>
 					</select>
 					<input type="text" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
+					<input type="date" name="startDate"> ~ 
+					<input type="date" name="endDate"> 검색기간
 					<input id="searchBtn" type="button" value="검색"/>
 				</div>
 				
