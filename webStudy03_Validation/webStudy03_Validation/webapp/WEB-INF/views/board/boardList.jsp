@@ -5,9 +5,6 @@
 <html>
 <head>
 <style>
-table, th, td{
-	border : 1px solid black
-}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -15,7 +12,7 @@ table, th, td{
 </head>
 <body>
 <h4>게시판 목록 조회</h4>
-<table>
+<table class="table table-bordered">
 	<thead>
 		<tr>
 			<th>글 종류</th>
@@ -30,7 +27,7 @@ table, th, td{
 		</tr>
 	</thead>
 	
-	<tbody>
+	<tbody id="listBody">
 	
 	<c:choose>
 		<c:when test="${not empty pagingVO.dataList }">
@@ -38,7 +35,14 @@ table, th, td{
 				<tr>
 					<td>${board.bo_type}</td>
 					<td>${board.bo_no}</td>
-					<td>${board.bo_title}</td>
+					<td>
+						<c:url value="/board/boardView.do" var="viewURL">
+							<c:param name="what" value="${board.bo_no }"></c:param>
+						</c:url>
+						<a href="${viewURL}" data-toggle="popover" title="Popover title" >
+							${board.bo_title}
+						</a>
+					</td>
 					<td>${board.bo_writer}</td>
 					<td>${board.bo_content}</td>
 					<td>${board.bo_date}</td>
@@ -65,8 +69,8 @@ table, th, td{
 					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input type="hidden" name="page" />
-					<input type="hidden" name="startDate"/> 
-					<input type="hidden" name="endDate"/> 
+					<input type="text" hidden="hidden" name="startDate"/> 
+					<input type="text" hidden="hidden" name="endDate"/> 
 				</form>
 				<div id="searchUI">
 					<select name="searchType">
@@ -112,6 +116,32 @@ table, th, td{
 		}
 		return false;
 	})
+	
+	$(function(){
+		$("#listBody a").hover(function(){
+			$(this).popover({
+				html:true,
+				content:function(){
+					$.ajax({
+						url : "${cPath}/board/boardView.do",
+						dataType : "text",
+						success : function(resp) {
+							retValue=resp;
+						},
+						async : false,
+						cache : true,
+						error : function(xhr, error, msg) {
+							console.log(xhr);
+							console.log(error);
+							console.log(msg);
+						}
+					});
+					return retValue;
+				}
+				}).popover("toggle")
+			});
+		});
 </script>
+<jsp:include page="/includee/postScript.jsp"/>
 </body>
 </html>

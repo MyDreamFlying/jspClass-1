@@ -6,29 +6,45 @@
 		FROM BOARDVIEW
 	</sql>
 	<sql id="searchFrag">
-		<trim prefix=" WHERE " suffixOverrides="OR">
-			<if test="simpleSearch!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.searchWord)">
-				bo_sort=1 OR
-				<choose>
-					<when test="simpleSearch.searchType eq 'title'">
-						INSTR(BO_TITLE, #{simpleSearch.searchWord}) > 0 
-					</when>
-					<when test="simpleSearch.searchType eq 'writer'">
-						INSTR(BO_WRITER, #{simpleSearch.searchWord}) > 0 
-					</when>
-					<when test="simpleSearch.searchType eq 'content'">
-						INSTR(BO_CONTENT, #{simpleSearch.searchWord}) > 0 
-					</when>
-					<otherwise>
-						INSTR(BO_TITLE, #{simpleSearch.searchWord}) > 0 
-						OR
-						INSTR(BO_WRITER, #{simpleSearch.searchWord}) > 0 
-						OR
-						INSTR(BO_CONTENT, #{simpleSearch.searchWord}) > 0 
-					</otherwise>
-				</choose>
-
-			</if>
+		<trim prefix="WHERE" prefixOverrides="AND" suffixOverrides="OR"> 
+		    BO_SORT = 1 OR 1 = 1
+		    <if test="searchMap!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.searchWord)">
+		        <trim prefix="AND (" suffix=")">
+		            <choose>
+		                <when test="searchMap.searchType eq 'title'">
+		                    INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
+		                </when>
+		                <when test="searchMap.searchType eq 'writer'">
+		                    INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
+		                </when>
+		                <when test="searchMap.searchType eq 'content'">
+		                    INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
+		                </when>
+		                <when test="searchMap.searchType eq 'type'">
+		                    BO_TYPE = #{searchMap.searchWord}
+		                </when>
+		                <otherwise>
+		                    INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
+		                    OR 
+		                    INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
+		                    OR
+		                    INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
+		                    OR
+		                    BO_TYPE = #{searchMap.searchWord}
+		                </otherwise>
+		            </choose>
+		        </trim>
+		    </if>
+		    <trim prefix="AND (" suffix=")" prefixOverrides="AND">
+		        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.startDate)">
+		            AND BO_DATE >= TO_DATE(#{searchMap.startDate}, 'YYYY-MM-DD') 
+		        </if>
+		        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.endDate)">
+		            <![CDATA[
+		            AND BO_DATE <= TO_DATE(#{searchMap.endDate}, 'YYYY-MM-DD')
+		            ]]> 
+		        </if>
+		    </trim>	
 		</trim>
 	</sql>
 
