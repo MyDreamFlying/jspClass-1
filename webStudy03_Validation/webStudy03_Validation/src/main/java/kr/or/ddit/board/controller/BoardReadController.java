@@ -51,17 +51,49 @@ public class BoardReadController {
 		return "board/boardList";
 	}
 	
+	@RequestMapping("/board/boardRead.do")
+	public String boardRead(
+			@RequestParam(value="what") int bo_num,
+			HttpServletRequest req
+			) {
+		BoardVO board = new BoardVO();
+		board.setBo_no(bo_num);
+		board = service.retrieveBoard(board);
+		
+		req.setAttribute("board", board);
+		
+		String view = "board/boardView";
+		return view;
+	}
+	
 	@RequestMapping("/board/boardView.do")
 	public String viewForAjax(
-			@RequestParam(value="what", required=false) String bo_num,
-			HttpServletResponse resp
-		) throws IOException{
+			@RequestParam(value="idx") int bo_num,
+			HttpServletResponse resp) throws IOException{
+		
 		resp.setContentType("text/plain; charset=UTF-8");
+		
+		BoardVO board = new BoardVO();
+		board.setBo_no(bo_num);
+		board = service.retrieveBoard(board);
+		String content = board.getBo_content();
+		
 		try(
 			PrintWriter out = resp.getWriter();	
 			){
-			out.println("server side text"+bo_num);
+			out.println(content);
 		}
 		return null;
+		
 	}
 }
+
+
+
+
+
+
+
+
+
+

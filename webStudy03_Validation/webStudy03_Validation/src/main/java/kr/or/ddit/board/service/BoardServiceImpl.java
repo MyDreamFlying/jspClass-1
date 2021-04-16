@@ -41,8 +41,7 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public BoardVO retrieveBoard(BoardVO search) {
-		// TODO Auto-generated method stub
-		return null;
+		return boardDao.selectBoard(search);
 	}
 
 	@Override

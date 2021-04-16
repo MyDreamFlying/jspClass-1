@@ -49,8 +49,12 @@ public class BoardDAOImpl implements IBoardDAO {
 
 	@Override
 	public BoardVO selectBoard(BoardVO search) {
-		// TODO Auto-generated method stub
-		return null;
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+				return mapper.selectBoard(search);
+			}
 	}
 
 	@Override

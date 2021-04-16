@@ -68,4 +68,10 @@
 		<include refid="fromFrag"/>
 		<include refid="searchFrag" />
 	</select>
+	
+	<select id="selectBoard" parameterType="BoardVO" resultType="BoardVO">
+		SELECT * 
+		<include refid="fromFrag"/>
+		WHERE BO_NO = ${bo_no}
+	</select>
 </mapper>

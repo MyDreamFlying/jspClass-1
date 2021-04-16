@@ -36,10 +36,10 @@
 					<td>${board.bo_type}</td>
 					<td>${board.bo_no}</td>
 					<td>
-						<c:url value="/board/boardView.do" var="viewURL">
+						<c:url value="/board/boardRead.do" var="viewURL">
 							<c:param name="what" value="${board.bo_no }"></c:param>
 						</c:url>
-						<a href="${viewURL}" data-toggle="popover" title="Popover title" >
+						<a idx="${board.bo_no}" href="${viewURL}" data-toggle="popover" title="Popover title" >
 							${board.bo_title}
 						</a>
 					</td>
@@ -119,11 +119,13 @@
 	
 	$(function(){
 		$("#listBody a").hover(function(){
+			idx = $(this).attr("idx");
 			$(this).popover({
 				html:true,
 				content:function(){
 					$.ajax({
 						url : "${cPath}/board/boardView.do",
+						data : {'idx' : idx},
 						dataType : "text",
 						success : function(resp) {
 							retValue=resp;
