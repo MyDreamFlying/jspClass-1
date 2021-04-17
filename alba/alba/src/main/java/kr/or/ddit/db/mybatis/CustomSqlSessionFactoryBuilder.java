@@ -14,7 +14,7 @@ public class CustomSqlSessionFactoryBuilder {
 		String xmlRes = "mybatis/config.xml";
 		try(
 			Reader reader = Resources.getResourceAsReader(xmlRes);
-			// 한글을 읽을 수도 있으니 굳이 리더로 해야함.
+			// 한글을 읽을 수도 있으니 굳이 리더로 해야한다.
 		) {
 			sessionFactory = new SqlSessionFactoryBuilder().build(reader);
 		} catch (IOException e) {
