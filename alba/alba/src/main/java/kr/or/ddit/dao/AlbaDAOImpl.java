@@ -28,31 +28,46 @@ public class AlbaDAOImpl implements AlbaDAO {
 			AlbaDAO mapper = session.getMapper(AlbaDAO.class);
 			return mapper.selectAlbaList(pagingVO);
 		}
-		
 	}
 
 	@Override
 	public AlbaVO selectAlba(String al_id) {
-		// TODO Auto-generated method stub
-		return null;
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
+				return mapper.selectAlba(al_id);
+			}
 	}
 
 	@Override
 	public int insertAlba(AlbaVO alba) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
+				return mapper.insertAlba(alba);
+			}
 	}
 
 	@Override
 	public int updateAlba(AlbaVO alba) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
+				return mapper.updateAlba(alba);
+			}
 	}
 
 	@Override
 	public int selectTotalRecord(PagingVO<AlbaVO> pagingVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
+				return mapper.selectTotalRecord(pagingVO);
+			}
 	}
 
 }

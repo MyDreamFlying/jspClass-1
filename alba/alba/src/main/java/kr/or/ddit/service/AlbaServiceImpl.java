@@ -26,26 +26,24 @@ public class AlbaServiceImpl implements AlbaService {
 
 	@Override
 	public AlbaVO retrieveAlba(String al_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.selectAlba(al_id);
 	}
 
 	@Override
 	public ServiceResult insertAlba(AlbaVO alba) {
-		// TODO Auto-generated method stub
-		return null;
+		int result = dao.insertAlba(alba);
+		return result==1? ServiceResult.OK :ServiceResult.FAIL; 
 	}
 
 	@Override
 	public ServiceResult updateAlba(AlbaVO alba) {
-		// TODO Auto-generated method stub
-		return null;
+		int result = dao.insertAlba(alba);
+		return result==1? ServiceResult.OK :ServiceResult.FAIL; 
 	}
 
 	@Override
 	public int selectTotalRecord(PagingVO<AlbaVO> pagingVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.selectTotalRecord(pagingVO);
 	}
 
 }

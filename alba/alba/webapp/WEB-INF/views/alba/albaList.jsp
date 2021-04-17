@@ -4,6 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+body{
+	padding : 40px;
+}
+</style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
@@ -13,19 +18,12 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>아이디</th>
 			<th>이름</th>
-			<th>나이</th>
-			<th>우편번호</th>
 			<th>주소1</th>
-			<th>주소2</th>
 			<th>전화번호</th>
 			<th>학력</th>
 			<th>성별</th>
 			<th>이메일</th>
-			<th>경력</th>
-			<th>스펙</th>
-			<th>상세정보</th>
 			<th>사진</th>
 		</tr>
 	</thead>
@@ -34,48 +32,45 @@
 			<c:when test="${not empty pagingVO.dataList }">
 				<c:forEach items="${pagingVO.dataList }" var="alba">
 					<tr>
-						<td>${alba.al_id }</td>
-						<td>${alba.al_name }</td>
-						<td>${alba.al_age }</td>
-						<td>${alba.al_zip }</td>
+						<td>
+							<c:url value="/albaView.do" var="viewURL">
+								<c:param name="al_id" value="${alba.al_id}"></c:param>
+							</c:url>
+							<a href="${viewURL}">${alba.al_name }</a>
+						</td>
 						<td>${alba.al_addr1 }</td>
-						<td>${alba.al_addr2 }</td>
 						<td>${alba.al_hp }</td>
-						<td>${alba.gr_code }</td>
+						<td>${alba.gr_name }</td>
 						<td>${alba.al_gen }</td>
 						<td>${alba.al_mail }</td>
-						<td>${alba.al_career }</td>
-						<td>${alba.al_spec }</td>
-						<td>${alba.al_desc }</td>
 						<td>${alba.al_img }</td>
 					</tr>
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
 				<tr>
-					<td colspan="14">조회결과없음.</td>
+					<td colspan="7">조회결과없음.</td>
 				</tr>
 			</c:otherwise>
 		</c:choose>
 	</tbody>
 	<tfoot>
 		<tr>
-			<td colspan="14">
+			<td colspan="7">
 				<form id="searchForm">
 					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input type="hidden" name="page" />
-					<input type="text" hidden="hidden" name="startDate"/> 
-					<input type="text" hidden="hidden" name="endDate"/> 
 				</form>
 				<div id="searchUI">
-					<select name="searchType">
+					<button type="button" onclick="location.href='albaInsert.do';" class="btn btn-info">알바등록</button>
+					<select name="searchType" class="select">
 						<option value>전체</option>
 						<option value="name">이름</option>
 						<option value="address">지역</option>
 					</select>
-					<input type="text" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-					<input id="searchBtn" type="button" value="검색"/>
+					<input type="text" placeholder="검색어" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
+					<input id="searchBtn" class="btn btn-secondary" type="button" value="검색"/>
 				</div>
 				
 				<div id="pagingArea">

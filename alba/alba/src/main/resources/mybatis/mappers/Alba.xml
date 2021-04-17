@@ -3,7 +3,8 @@
 <mapper namespace="kr.or.ddit.dao.AlbaDAO">
 
 	<sql id="fromFrag">
-		FROM ALBA
+		from alba
+			inner join grade on (alba.gr_code = grade.gr_code)
 	</sql>
 	<sql id="searchFrag">
 	
@@ -19,5 +20,11 @@
 		SELECT COUNT(*)
 		<include refid="fromFrag"/>
 		<include refid="searchFrag"/>
+	</select>
+	
+	<select id="selectAlba" parameterType="string" resultType="AlbaVO">
+		SELECT *
+		<include refid="fromFrag"/>
+		WHERE AL_ID = #{al_id}
 	</select>
 </mapper>

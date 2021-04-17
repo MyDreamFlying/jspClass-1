@@ -21,8 +21,7 @@ public class AlbaReadController {
 	public String albaList(
 			@ModelAttribute("detailSearch") AlbaVO detailSearch
 			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
-			,HttpServletRequest req
-			) {
+			,HttpServletRequest req) {
 		
 		PagingVO<AlbaVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);
@@ -36,7 +35,25 @@ public class AlbaReadController {
 		
 		req.setAttribute("pagingVO", pagingVO);
 		return "alba/albaList";
+	}
+	
+	@RequestMapping("/albaView.do")
+	public String albaView(@RequestParam(value="al_id") String al_id
+			,HttpServletRequest req) {
 		
+		AlbaVO alba = service.retrieveAlba(al_id);
+		req.setAttribute("alba", alba);
+		
+		return "alba/albaView";
 	}
 	
 }
+
+
+
+
+
+
+
+
+
