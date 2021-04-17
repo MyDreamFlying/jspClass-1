@@ -1,9 +1,7 @@
 package kr.or.ddit.controller;
 
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;

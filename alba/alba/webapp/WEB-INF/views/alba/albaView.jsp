@@ -8,6 +8,12 @@
 body{
 	padding : 40px;
 }
+th{
+	width : 200px;
+}
+img{
+	height : 100px;
+}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -15,12 +21,20 @@ body{
 </head>
 <body>
 <button type="button" onclick="location.href='albaList.do';" class="btn btn-info">알바목록으로 돌아가기</button>
-<button type="button" class="btn btn-warning">알바정보 수정</button>
-<button type="button" class="btn btn-danger">알바 삭제</button>
+<button type="button" class="btn btn-warning">${alba.al_name} 정보수정</button>
+<button type="button" class="btn btn-danger">${alba.al_name} 삭제</button>
 <h4>
-	<br/>알바 상세 조회
+	<br/>알바 상세 정보
 </h4>
 <table class="table">
+		<tr>
+			<th>프로필</th>
+			<td>
+				<c:if test="${not empty alba.al_img}">
+					<img src="${cPath}/profile/${alba.al_img}">
+				</c:if>
+			</td>
+		</tr>
 		<tr>
 			<th>아이디</th>
 			<td>${alba.al_id }</td>
@@ -55,7 +69,7 @@ body{
 		</tr>
 		<tr>
 			<th>성별</th>
-			<td>${alba.al_gen }</td>
+			<td>${alba.al_gen eq "M" ? "남성" :"여성" }</td>
 		</tr>
 		<tr>
 			<th>이메일</th>
@@ -74,16 +88,11 @@ body{
 			<td>${alba.al_desc }</td>
 		</tr>
 		<tr>
-			<th>사진</th>
+			<th>보유자격증</th>
 			<td>
-				<button type="button" class="btn btn-primary">변경</button>
-				${alba.al_img }
-			</td>
-		</tr>
-		<tr>
-			<th>자격증</th>
-			<td>
-				<button type="button" class="btn btn-primary">추가</button>
+				   	<c:forEach items="${alba.licenseList}" var="license">
+						 ${license.lic_name }<br/>
+				   	</c:forEach>
 			</td>
 		</tr>
 </table>

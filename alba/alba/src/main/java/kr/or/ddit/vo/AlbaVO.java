@@ -43,6 +43,6 @@ public class AlbaVO {
 	private String al_desc;
 	private String al_img;
 	
-	private Set<LicenseVO> licenses;
+	private Set<LicenseVO> licenseList;
 	
 }

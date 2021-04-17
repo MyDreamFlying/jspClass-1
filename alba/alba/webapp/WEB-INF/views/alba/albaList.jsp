@@ -8,23 +8,29 @@
 body{
 	padding : 40px;
 }
+img{
+	height : 100px;
+}
+.profile{
+	width : 120px;
+}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<h4>알바 목록 조회</h4>
+<h4>알바 목록</h4>
 <table class="table">
 	<thead>
 		<tr>
+			<th class="profile">프로필</th>
 			<th>이름</th>
 			<th>주소1</th>
 			<th>전화번호</th>
 			<th>학력</th>
 			<th>성별</th>
 			<th>이메일</th>
-			<th>사진</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -32,6 +38,11 @@ body{
 			<c:when test="${not empty pagingVO.dataList }">
 				<c:forEach items="${pagingVO.dataList }" var="alba">
 					<tr>
+						<td>
+							<c:if test="${not empty alba.al_img}">
+								<img src="${cPath}/profile/${alba.al_img}">
+							</c:if>
+						</td>
 						<td>
 							<c:url value="/albaView.do" var="viewURL">
 								<c:param name="al_id" value="${alba.al_id}"></c:param>
@@ -41,9 +52,8 @@ body{
 						<td>${alba.al_addr1 }</td>
 						<td>${alba.al_hp }</td>
 						<td>${alba.gr_name }</td>
-						<td>${alba.al_gen }</td>
+						<td>${alba.al_gen eq "M" ? "남성" :"여성" }</td>
 						<td>${alba.al_mail }</td>
-						<td>${alba.al_img }</td>
 					</tr>
 				</c:forEach>
 			</c:when>
@@ -57,6 +67,13 @@ body{
 	<tfoot>
 		<tr>
 			<td colspan="7">
+				<div id="pagingArea">
+					${pagingVO.pagingHTML}
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="7">
 				<form id="searchForm">
 					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
@@ -64,17 +81,13 @@ body{
 				</form>
 				<div id="searchUI">
 					<button type="button" onclick="location.href='albaInsert.do';" class="btn btn-info">알바등록</button>
-					<select name="searchType" class="select">
+					<select name="searchType">
 						<option value>전체</option>
 						<option value="name">이름</option>
 						<option value="address">지역</option>
 					</select>
 					<input type="text" placeholder="검색어" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input id="searchBtn" class="btn btn-secondary" type="button" value="검색"/>
-				</div>
-				
-				<div id="pagingArea">
-					${pagingVO.pagingHTML}
 				</div>
 			</td>
 		</tr>

@@ -12,6 +12,17 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 	
+	<!-- Filter -->
+	<filter>
+		<filter-name>FileUploadRequestCheckFilter</filter-name>
+		<filter-class>kr.or.ddit.mvc.filter.FileUploadRequestCheckFilter</filter-class>
+	</filter>	
+	<filter-mapping>
+		<filter-name>FileUploadRequestCheckFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<!--  Filter End -->
+	
 	<servlet>
 		<servlet-name>FrontController</servlet-name>
 		<servlet-class>kr.or.ddit.mvc.FrontController</servlet-class>

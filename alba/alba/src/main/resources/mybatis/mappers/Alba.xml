@@ -5,12 +5,21 @@
 	<sql id="fromFrag">
 		from alba
 			inner join grade on (alba.gr_code = grade.gr_code)
+			left outer join lic_alba on (alba.al_id = lic_alba.al_id)
+			inner join license on (lic_alba.lic_code = license.lic_code)
 	</sql>
 	<sql id="searchFrag">
 	
 	</sql>
+	
+	<resultMap type="AlbaVO" id="albaMap" autoMapping="true">
+		<id property="al_id" column="AL_ID"/>
+		<collection property="licenseList" ofType="LicenseVO" javaType="java.util.Set" autoMapping="true">
+			<id property="lic_code" column="LIC_CODE"/>
+		</collection>
+	</resultMap>
 
-	<select id="selectAlbaList" parameterType="PagingVO" resultType="AlbaVO">
+	<select id="selectAlbaList" parameterType="PagingVO" resultMap="albaMap">
 		SELECT *
 		<include refid="fromFrag"/>
 		<include refid="searchFrag"/>
@@ -22,9 +31,9 @@
 		<include refid="searchFrag"/>
 	</select>
 	
-	<select id="selectAlba" parameterType="string" resultType="AlbaVO">
+	<select id="selectAlba" parameterType="string" resultMap="albaMap">
 		SELECT *
 		<include refid="fromFrag"/>
-		WHERE AL_ID = #{al_id}
+		WHERE alba.AL_ID = #{al_id}
 	</select>
 </mapper>
