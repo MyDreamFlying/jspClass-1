@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.dao.AlbaDAO">
+
+	<sql id="fromFrag">
+		FROM ALBA
+	</sql>
+	<sql id="searchFrag">
+	
+	</sql>
+
 	<select id="selectAlbaList" parameterType="PagingVO" resultType="AlbaVO">
 		SELECT *
-		FROM ALBA
+		<include refid="fromFrag"/>
+		<include refid="searchFrag"/>
+	</select>
+	
+	<select id="selectTotalRecord" parameterType="pagingVO" resultType="int">
+		SELECT COUNT(*)
+		<include refid="fromFrag"/>
+		<include refid="searchFrag"/>
 	</select>
 </mapper>
