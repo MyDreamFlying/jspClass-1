@@ -3,6 +3,7 @@ package kr.or.ddit.mvc;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ public class FrontController extends HttpServlet{
 	private IHandlerMapping handlerMapping;
 	private IHandlerAdapter handlerAdapter;
 	private IViewResolver viewResolver;
+	private ServletContext application;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -29,6 +31,8 @@ public class FrontController extends HttpServlet{
 		viewResolver = new ViewResolver();
 		viewResolver.setPrefix(config.getInitParameter("prefix"));
 		viewResolver.setSuffix(config.getInitParameter("suffix"));
+		application = config.getServletContext();
+		application.setAttribute("cPath", application.getContextPath());
 	}
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
