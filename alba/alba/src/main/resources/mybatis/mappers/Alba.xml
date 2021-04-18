@@ -12,6 +12,11 @@
 	
 	</sql>
 	
+	<delete id="deleteAlba" parameterType="String">
+		delete from alba
+		where al_id = #{al_id}
+	</delete>
+	
 	<insert id="insertAlba" parameterType="AlbaVO">
 		
 		<selectKey resultType="string" order="BEFORE" keyProperty="al_id">

@@ -27,6 +27,11 @@ public interface AlbaDAO {
 	 */
 	public int updateAlba(AlbaVO alba);
 	/**
+	 * @param al_id
+	 * @return deleted row count
+	 */
+	public int deleteAlba(String al_id);
+	/**
 	 * @param pagingVO
 	 * @return total record count
 	 */

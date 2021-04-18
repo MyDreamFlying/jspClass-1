@@ -21,8 +21,8 @@ img{
 </head>
 <body>
 <button type="button" onclick="location.href='albaList.do';" class="btn btn-info">알바목록으로 돌아가기</button>
-<button type="button" class="btn btn-warning">${alba.al_name} 정보수정</button>
-<button type="button" class="btn btn-danger">${alba.al_name} 삭제</button>
+<button type="button" onclick="location.href='albaUpdate.do?al_id=${alba.al_id }';"class="btn btn-warning">${alba.al_name} 정보수정</button>
+<button type="button" onclick="deleteAlba()" class="btn btn-danger">${alba.al_name} 삭제</button>
 <h4>
 	<br/>알바 상세 정보
 </h4>
@@ -97,5 +97,12 @@ img{
 		</tr>
 </table>
 <jsp:include page="/includee/postScript.jsp"/>
+<script type="text/javascript">
+	var deleteAlba = function(){
+		if (confirm('${alba.al_name}에 대한 정보를 정말로 삭제하겠습니까?')) {
+			location.href='albaDelete.do?al_id=${alba.al_id }';
+		}
+	}
+</script>
 </body>
 </html>

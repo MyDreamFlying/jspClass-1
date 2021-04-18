@@ -59,6 +59,7 @@ public class AlbaDAOImpl implements AlbaDAO {
 			){
 				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
 				int cnt = mapper.updateAlba(alba);
+				session.commit();
 				return cnt;
 			}
 	}
@@ -70,6 +71,18 @@ public class AlbaDAOImpl implements AlbaDAO {
 			){
 				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
 				return mapper.selectTotalRecord(pagingVO);
+			}
+	}
+
+	@Override
+	public int deleteAlba(String al_id) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				AlbaDAO mapper = session.getMapper(AlbaDAO.class);
+				int cnt = mapper.deleteAlba(al_id);
+				session.commit();
+				return cnt;
 			}
 	}
 

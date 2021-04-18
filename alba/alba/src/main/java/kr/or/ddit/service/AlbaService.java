@@ -27,5 +27,11 @@ public interface AlbaService {
 	 * @return OK, FAIL, NOTEXIST
 	 */
 	public ServiceResult updateAlba(AlbaVO alba);
+	/**
+	 * @param al_id
+	 * @return OK, FAIL, NOTEXIST
+	 */
+	public ServiceResult deleteAlba(String al_id);
+	
 	public int selectTotalRecord(PagingVO<AlbaVO> pagingVO);
 }

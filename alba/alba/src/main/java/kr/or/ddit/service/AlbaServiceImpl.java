@@ -46,4 +46,10 @@ public class AlbaServiceImpl implements AlbaService {
 		return dao.selectTotalRecord(pagingVO);
 	}
 
+	@Override
+	public ServiceResult deleteAlba(String al_id) {
+		int result = dao.deleteAlba(al_id);
+		return result==1? ServiceResult.OK :ServiceResult.FAIL; 
+	}
+
 }

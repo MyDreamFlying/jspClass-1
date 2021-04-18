@@ -15,6 +15,7 @@ import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
+import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
 import kr.or.ddit.service.AlbaService;
@@ -88,6 +89,20 @@ public class AlbaController {
 		}
 		
 		return view;
+	}
+	
+	@RequestMapping("/albaDelete.do")
+	public String albaDelete(
+			@RequestParam(value="al_id") String al_id
+			) {
+		ServiceResult result = service.deleteAlba(al_id);
+		switch(result) {
+		case OK:
+			break;
+		default:
+			throw new BadRequestException();
+		}
+		return "redirect:/albaList.do";
 	}
 	
 }
