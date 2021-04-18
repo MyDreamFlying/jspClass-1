@@ -42,11 +42,14 @@ img{
 							<c:param name="al_id" value="${alba.al_id}"></c:param>
 						</c:url>
 						<td>
-							<c:if test="${not empty alba.al_img}">
-								<a href="${viewURL}">
+							<c:choose>
+								<c:when test="${not empty alba.al_img}">
 									<img src="${cPath}/profile/${alba.al_img}">
-								</a>
-							</c:if>
+								</c:when>
+								<c:otherwise>
+									<img src="${cPath}/profile/default_${alba.al_gen}.jpg">
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td>
 							<a href="${viewURL}">${alba.al_name }</a>

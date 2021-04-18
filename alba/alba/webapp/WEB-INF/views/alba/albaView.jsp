@@ -33,9 +33,14 @@ img{
 		<tr>
 			<th>프로필</th>
 			<td>
-				<c:if test="${not empty alba.al_img}">
+			<c:choose>
+				<c:when test="${not empty alba.al_img}">
 					<img src="${cPath}/profile/${alba.al_img}">
-				</c:if>
+				</c:when>
+				<c:otherwise>
+					<img src="${cPath}/profile/default_${alba.al_gen}.jpg">
+				</c:otherwise>
+			</c:choose>
 			</td>
 		</tr>
 		<tr>

@@ -30,9 +30,14 @@ img{
 		<label for="profile">프로필 사진</label>
 		<input type="file" accept="image/*" class="form-control-file" name="profile" id="profile">
 		<div id="preview">
-			<c:if test="${not empty alba.al_img}">
-				<img src="${cPath}/profile/${alba.al_img}">
-			</c:if>
+			<c:choose>
+				<c:when test="${not empty alba.al_img}">
+					<img src="${cPath}/profile/${alba.al_img}">
+				</c:when>
+				<c:otherwise>
+					<img src="${cPath}/profile/default_${alba.al_gen}.jpg">
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 	<div class="form-group">
