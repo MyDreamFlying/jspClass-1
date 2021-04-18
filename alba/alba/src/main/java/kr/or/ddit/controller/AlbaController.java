@@ -77,7 +77,8 @@ public class AlbaController {
 					// If specipic license is checked as new member has, register on LIC_ALBA table.
 					LicenseVO license = new LicenseVO();
 					license.setAl_id(newAl_id);
-					// otherDao.insertLicense(license);
+					license.setLic_code(code);
+					otherDao.insertLicense(license);
 				}
 			}
 			

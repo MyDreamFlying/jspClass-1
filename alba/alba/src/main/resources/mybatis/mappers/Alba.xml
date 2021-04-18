@@ -62,10 +62,18 @@
 	</resultMap>
 
 	<select id="selectAlbaList" parameterType="PagingVO" resultMap="albaMap">
-		SELECT *
-		<include refid="fromFrag"/>
-		<include refid="searchFrag"/>
-		ORDER BY ALBA.AL_ID DESC
+		select B.*
+		from (
+			select @rownum:=@rownum+1 as no,A.*
+			from	(
+					select ALBA.AL_ID, AL_NAME, AL_ADDR1, AL_GEN, AL_MAIL,AL_IMG,GR_NAME
+					from alba
+							INNER JOIN GRADE ON (ALBA.GR_CODE = GRADE.GR_CODE)
+					<include refid="searchFrag"/>		
+					ORDER BY AL_ID desc
+					)A, (select @rownum:=0) temp
+			) B
+		LIMIT #{startRow},#{screenSize}
 	</select>
 	
 	<select id="selectTotalRecord" parameterType="pagingVO" resultType="int">

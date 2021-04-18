@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
+import kr.or.ddit.vo.LicenseVO;
 
 public class OtherDAOImpl implements OtherDAO {
 	private static OtherDAOImpl self;
@@ -35,6 +36,18 @@ public class OtherDAOImpl implements OtherDAO {
 			){
 				OtherDAO mapper = session.getMapper(OtherDAO.class);
 				return mapper.selectGradeList();
+			}
+	}
+
+	@Override
+	public int insertLicense(LicenseVO license) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				OtherDAO mapper = session.getMapper(OtherDAO.class);
+				int cnt =  mapper.insertLicense(license);
+				session.commit();
+				return cnt;
 			}
 	}
 
