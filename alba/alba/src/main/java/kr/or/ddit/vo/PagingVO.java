@@ -19,7 +19,7 @@ public class PagingVO<T> implements Serializable{
 		this.blockSize = blockSize;
 	}
 
-	private int screenSize = 10 ;
+	private int screenSize = 6 ;
 	private int blockSize = 5;
 
 	private int totalRecord;

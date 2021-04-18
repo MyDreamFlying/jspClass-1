@@ -2,8 +2,11 @@ package kr.or.ddit.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -59,7 +62,7 @@ public class AlbaController {
 		if(al_image != null && !al_image.isEmpty()) {
 			String mime = al_image.getContentType();
 			if(!mime.startsWith("image/")) {
-				throw new BadRequestException("프로필 사진은 이미지 파일만 등록 가능 합니다.");
+				throw new BadRequestException("You can only upload Image Files as your profile picture");
 			}
 			al_image.saveTo(saveFolder);
 			alba.setAl_img(al_image.getUniqueSaveName());
@@ -104,5 +107,73 @@ public class AlbaController {
 		}
 		return "redirect:/albaList.do";
 	}
+	
+	@RequestMapping("/albaUpdate.do")
+	public String albaUpdateForm(@RequestParam(value="al_id") String al_id
+			, HttpServletRequest req) {
+		addAttribute(req);
+		AlbaVO alba = service.retrieveAlba(al_id);
+		req.setAttribute("alba", alba);
+		
+		Set<LicenseVO> holdingLicenseSet = alba.getLicenseList();
+		List<String> holdingLicenseList = new ArrayList<>();
+		for(LicenseVO vo : holdingLicenseSet) {
+			holdingLicenseList.add(vo.getLic_code());
+		}
+		req.setAttribute("holdingLicenseList", holdingLicenseList);
+		
+		return "alba/albaForm";
+	}
+	
+	@RequestMapping(value="/albaUpdate.do", method=RequestMethod.POST)
+	public String albaUpdate(
+			@ModelAttribute("alba") AlbaVO alba,
+			@RequestPart(value="profile", required=false) MultipartFile al_image
+			, HttpServletRequest req) throws IOException {
+		req.setAttribute("alba", alba);
+		
+		String saveFolderUrl = "profile";
+		File saveFolder = new File(req.getServletContext().getRealPath(saveFolderUrl));
+		
+		if(al_image != null && !al_image.isEmpty()) {
+			String mime = al_image.getContentType();
+			if(!mime.startsWith("image/")) {
+				throw new BadRequestException("You can only upload Image Files as your profile picture");
+			}
+			al_image.saveTo(saveFolder);
+			alba.setAl_img(al_image.getUniqueSaveName());
+		}
+		
+		// Check what qualifications the alba has and what qualifications are added
+		AlbaVO originalAlba = service.retrieveAlba(alba.getAl_id());
+		Set<LicenseVO> oldLicenseSet = originalAlba.getLicenseList();
+		List<String> oldLicenseList = new ArrayList<>();
+		for(LicenseVO vo : oldLicenseSet) {
+			oldLicenseList.add(vo.getLic_code());
+		}
+		
+		String view = null;
+		ServiceResult result = service.updateAlba(alba);
+		if(ServiceResult.OK.equals(result)) {
+			
+			// Check licenses whether they are checked or not
+			for(Map<String, Object> map : licenseList) {
+				String code = map.get("lic_code").toString();
+				if("on".equals(req.getParameter(code)) && !oldLicenseList.contains(code) ) {
+					LicenseVO license = new LicenseVO();
+					license.setAl_id(alba.getAl_id());
+					license.setLic_code(code);
+					otherDao.insertLicense(license);
+				}
+			}
+			
+			view = "redirect:/albaView.do?al_id="+alba.getAl_id();
+		}else {
+			view = "alba/albaForm";
+		}
+		
+		return view;
+	}
+	
 	
 }

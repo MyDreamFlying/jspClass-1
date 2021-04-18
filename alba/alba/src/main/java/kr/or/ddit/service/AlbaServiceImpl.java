@@ -37,7 +37,7 @@ public class AlbaServiceImpl implements AlbaService {
 
 	@Override
 	public ServiceResult updateAlba(AlbaVO alba) {
-		int result = dao.insertAlba(alba);
+		int result = dao.updateAlba(alba);
 		return result==1? ServiceResult.OK :ServiceResult.FAIL; 
 	}
 

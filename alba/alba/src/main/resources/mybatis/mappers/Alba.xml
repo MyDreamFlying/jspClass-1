@@ -17,6 +17,27 @@
 		where al_id = #{al_id}
 	</delete>
 	
+	<update id="updateAlba" parameterType="AlbaVO">
+		UPDATE ALBA
+		SET
+			AL_NAME = #{al_name, jdbcType=VARCHAR},	
+			AL_AGE = #{al_age, jdbcType=NUMERIC},	
+			AL_ZIP = #{al_zip, jdbcType=VARCHAR},
+			AL_ADDR1 = #{al_addr1, jdbcType=VARCHAR},		
+			AL_ADDR2 = #{al_addr2, jdbcType=VARCHAR},		
+			AL_HP = #{al_hp, jdbcType=VARCHAR},			
+			GR_CODE = #{gr_code, jdbcType=VARCHAR},	
+			AL_GEN = #{al_gen, jdbcType=VARCHAR},		
+			AL_MAIL = #{al_mail, jdbcType=VARCHAR},		
+			AL_CAREER = #{al_career, jdbcType=VARCHAR},	
+			AL_SPEC = #{al_spec, jdbcType=VARCHAR},	
+			AL_DESC = #{al_desc, jdbcType=VARCHAR}
+			<if test="al_img != null">
+			, AL_IMG = #{al_img, jdbcType=VARCHAR}
+			</if>
+		WHERE AL_ID = #{al_id, jdbcType=VARCHAR}
+	</update>
+	
 	<insert id="insertAlba" parameterType="AlbaVO">
 		
 		<selectKey resultType="string" order="BEFORE" keyProperty="al_id">
@@ -71,7 +92,7 @@
 		from (
 			select @rownum:=@rownum+1 as no,A.*
 			from	(
-					select ALBA.AL_ID, AL_NAME, AL_ADDR1, AL_GEN, AL_MAIL,AL_IMG,GR_NAME
+					select ALBA.AL_ID, AL_NAME, AL_ADDR1, AL_HP, AL_GEN, AL_MAIL,AL_IMG,GR_NAME
 					from alba
 							INNER JOIN GRADE ON (ALBA.GR_CODE = GRADE.GR_CODE)
 					<include refid="searchFrag"/>		
@@ -83,7 +104,7 @@
 	
 	<select id="selectTotalRecord" parameterType="pagingVO" resultType="int">
 		SELECT COUNT(*)
-		<include refid="fromFrag"/>
+		FROM ALBA
 		<include refid="searchFrag"/>
 	</select>
 	
