@@ -6,11 +6,53 @@
 		from alba
 			inner join grade on (alba.gr_code = grade.gr_code)
 			left outer join lic_alba on (alba.al_id = lic_alba.al_id)
-			inner join license on (lic_alba.lic_code = license.lic_code)
+			left outer join license on (lic_alba.lic_code = license.lic_code)
 	</sql>
 	<sql id="searchFrag">
 	
 	</sql>
+	
+	<insert id="insertAlba" parameterType="AlbaVO">
+		
+		<selectKey resultType="string" order="BEFORE" keyProperty="al_id">
+			select concat('A', LPAD(max(cast(substr(al_id,2) as unsigned integer)) +1,7,'0') )
+			from alba
+		</selectKey>
+		
+		INSERT INTO ALBA
+			(
+				AL_ID,	
+				AL_NAME,		
+				AL_AGE,	
+				AL_ZIP,	
+				AL_ADDR1,		
+				AL_ADDR2,		
+				AL_HP,			
+				GR_CODE,	
+				AL_GEN,		
+				AL_MAIL,		
+				AL_CAREER,	
+				AL_SPEC,	
+				AL_DESC,	
+				AL_IMG
+			)
+			VALUES(
+				#{al_id, jdbcType=VARCHAR}, 	
+				#{al_name, jdbcType=VARCHAR},		
+				#{al_age, jdbcType=NUMERIC},	
+				#{al_zip, jdbcType=VARCHAR},	
+				#{al_addr1, jdbcType=VARCHAR},		
+				#{al_addr2, jdbcType=VARCHAR},		
+				#{al_hp, jdbcType=VARCHAR},			
+				#{gr_code, jdbcType=VARCHAR},	
+				#{al_gen, jdbcType=VARCHAR},		
+				#{al_mail, jdbcType=VARCHAR},		
+				#{al_career, jdbcType=VARCHAR},	
+				#{al_spec, jdbcType=VARCHAR},	
+				#{al_desc, jdbcType=VARCHAR},	
+				#{al_img, jdbcType=VARCHAR}
+			)
+	</insert>
 	
 	<resultMap type="AlbaVO" id="albaMap" autoMapping="true">
 		<id property="al_id" column="AL_ID"/>
@@ -23,6 +65,7 @@
 		SELECT *
 		<include refid="fromFrag"/>
 		<include refid="searchFrag"/>
+		ORDER BY ALBA.AL_ID DESC
 	</select>
 	
 	<select id="selectTotalRecord" parameterType="pagingVO" resultType="int">

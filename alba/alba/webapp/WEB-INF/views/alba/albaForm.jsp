@@ -51,13 +51,13 @@ img{
 	<div class="form-group">
 		<label for="grade">학력:</label>
  		<select name="gr_code" required>
-     	<option value>학력 선택</option>
-     	<c:forEach items="${gradeList}" var="grade">
-     		<c:set var="selected" value="${grade.gr_code eq alba.gr_code ? 'selected' : ''}"></c:set>
-     		<option value="${grade[gr_code]}" ${selected} >
-     			${grade.gr_name }
-     		</option>
-     	</c:forEach>
+	     	<option value>학력 선택</option>
+	     	<c:forEach items="${gradeList}" var="grade">
+	     		<c:set var="selected" value="${grade.gr_code eq alba.gr_code ? 'selected' : ''}"></c:set>
+	     		<option value="${grade.gr_code}" ${selected} >
+	     			${grade.gr_name }
+	     		</option>
+	     	</c:forEach>
  		</select>
 	</div>
  	<div class="form-group">
@@ -83,7 +83,7 @@ img{
    	<c:forEach items="${licenseList}" var="license">
    		<c:set var="selected" value=" "></c:set>
 		<div class="form-check">
-			<input class="form-check-input" type="checkbox" id="${license.lic_code}" value="${license.lic_code}" >
+			<input class="form-check-input" type="checkbox" id="${license.lic_code}" name="${license.lic_code}" >
 			<label class="form-check-label" for="${license.lic_code}">
 				${license.lic_name }
 			</label>

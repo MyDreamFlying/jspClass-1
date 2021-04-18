@@ -32,7 +32,7 @@ public class RequestMappingInfo {
 	
 	@Override
 	public String toString() {
-		return String.format("%s : %s.%s\n",
+		return String.format("%s : %s.%s",
 				mappingCondition
 				, commandHandler.getClass().getName()
 				,handlerMethod.getName());

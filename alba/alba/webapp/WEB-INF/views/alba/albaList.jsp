@@ -38,15 +38,17 @@ img{
 			<c:when test="${not empty pagingVO.dataList }">
 				<c:forEach items="${pagingVO.dataList }" var="alba">
 					<tr>
+						<c:url value="/albaView.do" var="viewURL">
+							<c:param name="al_id" value="${alba.al_id}"></c:param>
+						</c:url>
 						<td>
 							<c:if test="${not empty alba.al_img}">
-								<img src="${cPath}/profile/${alba.al_img}">
+								<a href="${viewURL}">
+									<img src="${cPath}/profile/${alba.al_img}">
+								</a>
 							</c:if>
 						</td>
 						<td>
-							<c:url value="/albaView.do" var="viewURL">
-								<c:param name="al_id" value="${alba.al_id}"></c:param>
-							</c:url>
 							<a href="${viewURL}">${alba.al_name }</a>
 						</td>
 						<td>${alba.al_addr1 }</td>
