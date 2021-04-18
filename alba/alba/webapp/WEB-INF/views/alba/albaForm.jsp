@@ -93,7 +93,7 @@ img{
    		String checked = "";
    		for( Map<String,Object> license : licenseList){
    			if(holdingLicenseList != null)
- 	  			checked = holdingLicenseList.contains(license.get("lic_code")) ? "checked" : "";
+ 	  			checked = holdingLicenseList.contains(license.get("lic_code")) ? "checked disabled" : "";
    		%>	
 			<div class="form-check">
 				<input class="form-check-input" type="checkbox" <%=checked %> id="<%=license.get("lic_code") %>" name="<%=license.get("lic_code") %>" >

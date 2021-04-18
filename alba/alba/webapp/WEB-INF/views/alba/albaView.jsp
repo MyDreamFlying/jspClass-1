@@ -14,6 +14,9 @@ th{
 img{
 	height : 100px;
 }
+.license{
+	width : 150px;
+}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -90,9 +93,16 @@ img{
 		<tr>
 			<th>보유자격증</th>
 			<td>
-				   	<c:forEach items="${alba.licenseList}" var="license">
-						 ${license.lic_name }<br/>
-				   	</c:forEach>
+			   	<c:forEach items="${alba.licenseList}" var="license">
+			   		<c:choose>
+			   			<c:when test="${not empty license.lic_name }">
+							<label class="license">${license.lic_name }</label> <button type="button" class="btn btn-dark btn-sm">보기</button> <br/>
+			   			</c:when>
+				   		<c:otherwise>
+				   			보유 자격증 없음
+				   		</c:otherwise>
+			   		</c:choose>
+			   	</c:forEach>
 			</td>
 		</tr>
 </table>

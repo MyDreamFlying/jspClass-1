@@ -87,6 +87,7 @@ img{
 						<option value>전체</option>
 						<option value="name">이름</option>
 						<option value="address">지역</option>
+						<option value="career">경력사항</option>
 					</select>
 					<input type="text" placeholder="검색어" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input id="searchBtn" class="btn btn-secondary" type="button" value="검색"/>
