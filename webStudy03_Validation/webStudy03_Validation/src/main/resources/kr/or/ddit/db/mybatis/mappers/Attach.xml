@@ -17,7 +17,7 @@
 				,ATT_CONTENTTYPE
 			)
 			VALUES(
-				#{bo_no, jdbcType=VARCHAR}
+				#{bo_no}
 				, #{startAttNo}+#{idx}
 				, #{attach.att_filename, jdbcType=VARCHAR}
 				, #{attach.att_savename, jdbcType=VARCHAR}

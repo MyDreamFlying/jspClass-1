@@ -96,15 +96,27 @@
 			BO_TITLE,
 			BO_WRITER,
 			BO_PASS,
-			BO_CONTENT,
-			BO_DATE
+			BO_CONTENT
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_sec)">
+			, BO_SEC
+			</if>
+			<if test="bo_parent != null and bo_parent gt 0">
+			, BO_PARENT
+			</if>
+			,BO_DATE
 		)VALUES(
 			#{bo_no, jdbcType=NUMERIC},
 			#{bo_title, jdbcType=VARCHAR},
 			#{bo_writer, jdbcType=VARCHAR},
 			#{bo_pass, jdbcType=VARCHAR},
-			#{bo_content, jdbcType=VARCHAR},
-			sysdate
+			#{bo_content, jdbcType=VARCHAR}
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_sec)">
+			, #{bo_sec, jdbcType=CHAR}
+			</if>
+			<if test="bo_parent != null and bo_parent gt 0">
+			, #{bo_parent, jdbcType=NUMERIC}
+			</if>
+			,sysdate
 		)
 		
 	</insert>

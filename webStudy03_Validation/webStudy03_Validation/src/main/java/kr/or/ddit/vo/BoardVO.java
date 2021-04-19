@@ -24,7 +24,7 @@ public class BoardVO {
 	private Integer bo_hit;
 	private Integer bo_rec;
 	private Integer bo_rep;
-	private String bo_seq;
+	private String bo_sec;
 	private Integer bo_parent;
 	
 	private int startAttNo;
