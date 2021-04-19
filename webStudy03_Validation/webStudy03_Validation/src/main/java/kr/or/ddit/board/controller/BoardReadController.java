@@ -26,24 +26,29 @@ public class BoardReadController {
 
 	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
 	public String boardAuth(
-			@RequestParam("bo_no") int bo_no
+			HttpServletResponse resp
+			,@RequestParam("bo_no") int bo_no
 			,@RequestParam("bo_pass") String bo_pass
 			,HttpSession session
-			) {
+			) throws IOException {
 		
 		BoardVO search = new BoardVO();
 		search.setBo_no(bo_no);
 		search.setBo_pass(bo_pass);
-		String view = null;
+		String result = "fail";
+		
 		if(service.boardAuthenticate(search)) {
 			session.setAttribute(BOARDAUTH, search);
-			view = "redirect:/board/boardView.do?what="+bo_no;
-		}else {
-			session.setAttribute("message", "비밀번호오류");
-			view = "redirect:/board/boardList.do";
+			result = "success";
 		}
 		
-		return view;
+		try(
+			PrintWriter out = resp.getWriter();
+		){
+			out.write(result);
+		}
+		
+		return null;
 	}
 	
 	@RequestMapping("/board/boardList.do")

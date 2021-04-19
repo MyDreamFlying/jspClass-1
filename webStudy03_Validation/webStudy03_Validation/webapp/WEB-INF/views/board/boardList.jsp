@@ -47,8 +47,8 @@
 							<c:param name="what" value="${board.bo_no }"></c:param>
 						</c:url>
 						<c:choose>
-							<c:when test="board.bo_sec eq 'Y'">
-								<a class="secret" href="${viewURL}">
+							<c:when test="${board.bo_sec eq 'Y'}">
+								<a class="secret" what="${board.bo_no}" href="${viewURL}">
 									${board.bo_title}
 								</a>
 							</c:when>
@@ -112,6 +112,30 @@
 	let searchForm = $("#searchForm");
 	let searchUI = $("#searchUI");
 	searchUI.find("[name='searchType']").val("${pagingVO.simpleSearch.searchType }");
+	
+	$('a.secret').on('click', function(event){
+		event.preventDefault();
+		var bo_no = $(this).attr("what");
+		var bo_pass = prompt('비밀글입니다. 암호를 입력하세요.');
+		$.ajax({
+			url : "${cPath}/board/authenticate.do",
+			method : "post",
+			data : {"bo_no" : bo_no, "bo_pass" : bo_pass},
+			dataType : 'text',
+			success : function(resp) {
+				if(resp == 'success'){
+					location.href="boardView.do?what="+bo_no;
+				}else{
+					alert('비번불일치')
+				}
+			},
+			error : function(xhr, error, msg) {
+				console.log(xhr);
+				console.log(error);
+				console.log(msg);
+			}
+		})
+	})
 	
 	$('#searchBtn').on("click", function(){
 		let inputs = $("#searchUI").find(":input[name]");
