@@ -8,18 +8,43 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
 @Controller
 public class BoardReadController {
+	public static final String BOARDAUTH = "board.authenticated";
 	private IBoardService service = BoardServiceImpl.getInstance();
+
+	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
+	public String boardAuth(
+			@RequestParam("bo_no") int bo_no
+			,@RequestParam("bo_pass") String bo_pass
+			,HttpSession session
+			) {
+		
+		BoardVO search = new BoardVO();
+		search.setBo_no(bo_no);
+		search.setBo_pass(bo_pass);
+		String view = null;
+		if(service.boardAuthenticate(search)) {
+			session.setAttribute(BOARDAUTH, search);
+			view = "redirect:/board/boardView.do?what="+bo_no;
+		}else {
+			session.setAttribute("message", "비밀번호오류");
+			view = "redirect:/board/boardList.do";
+		}
+		
+		return view;
+	}
 	
 	@RequestMapping("/board/boardList.do")
 	public String selectBoardList(
@@ -51,41 +76,50 @@ public class BoardReadController {
 		return "board/boardList";
 	}
 	
-	@RequestMapping("/board/boardRead.do")
-	public String boardRead(
-			@RequestParam(value="what") int bo_num,
-			HttpServletRequest req
-			) {
-		BoardVO board = new BoardVO();
-		board.setBo_no(bo_num);
-		board = service.retrieveBoard(board);
+	@RequestMapping("/board/boardView.do")
+	public String viewForAjax(
+			@RequestParam("what") int bo_no
+			, HttpServletRequest req
+			, HttpServletResponse resp
+			, HttpSession session
+		) throws IOException{
+		String accept = req.getHeader("Accept");
 		
-		req.setAttribute("board", board);
+		BoardVO search = new BoardVO();
+		req.setAttribute("search", search);
+		search.setBo_no(bo_no);
+		BoardVO board = service.retrieveBoard(search);
 		
-		String view = "board/boardView";
+		boolean valid = true;
+		if("Y".equals(board.getBo_sec())) {
+			BoardVO authenticated = 
+					(BoardVO) session.getAttribute(BOARDAUTH);
+			if(authenticated==null || authenticated.getBo_no() != bo_no) {
+				valid = false;
+			}
+		}
+		
+		String view = null;
+		if(valid) {
+			if(accept.contains("plain")) {
+				resp.setContentType("text/plain;charset=UTF-8");
+				try(
+						PrintWriter out = resp.getWriter();	
+						){
+					out.println(board.getBo_content());
+				}
+			}else {
+				req.setAttribute("board", board);
+				view = "board/boardView";
+			}
+		}else {
+			view = "board/passwordForm";
+		}// if(valid) end
+		
+		session.removeAttribute(BOARDAUTH);
 		return view;
 	}
 	
-	@RequestMapping("/board/boardView.do")
-	public String viewForAjax(
-			@RequestParam(value="idx") int bo_num,
-			HttpServletResponse resp) throws IOException{
-		
-		resp.setContentType("text/plain; charset=UTF-8");
-		
-		BoardVO board = new BoardVO();
-		board.setBo_no(bo_num);
-		board = service.retrieveBoard(board);
-		String content = board.getBo_content();
-		
-		try(
-			PrintWriter out = resp.getWriter();	
-			){
-			out.println(content);
-		}
-		return null;
-		
-	}
 }
 
 

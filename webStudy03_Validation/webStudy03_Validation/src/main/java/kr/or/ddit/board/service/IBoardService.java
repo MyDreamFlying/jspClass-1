@@ -21,4 +21,6 @@ public interface IBoardService {
 	
 	public AttachVO download(int att_no);
 	
+	public boolean boardAuthenticate(BoardVO search);
+	
 }

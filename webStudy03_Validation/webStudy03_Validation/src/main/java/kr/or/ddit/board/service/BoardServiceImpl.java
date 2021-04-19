@@ -26,42 +26,58 @@ public class BoardServiceImpl implements IBoardService {
 		if(self == null) self = new BoardServiceImpl();
 		return self;
 	}
-
-	@Override
-	public ServiceResult createBoard(BoardVO board) {
-		
-		// 비밀번호 암호화
+	
+	private void encodePassword(BoardVO board) {
 		try {
 			String encPass = CryptoUtil.sha512(board.getBo_pass());
 			board.setBo_pass(encPass);
-		} catch (NoSuchAlgorithmException e1) {
-			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 		}
+	}
+	
+	private int process(BoardVO board) {
+		String saveFolderUrl ="/Users/shane/Documents/GitHub/jspClass/attaches";
+		File saveFolder = new File(saveFolderUrl);
+		int cnt = 0;
+		
+		List<AttachVO> attachList = board.getAttachList();
+		if(attachList != null && attachList.size()>0) {
+			// 첨부파일들 metaData DB에 저장하기
+			cnt += attachDao.insertAttaches(board);
+			
+			// 첨부파일들의 binary데이터를 파일시스템에 저장하기
+			try {
+				for(AttachVO attach : attachList) {
+					attach.saveTo(saveFolder);
+				}
+				
+			} catch(IOException e) {
+				throw new RuntimeException();
+			}
+		}
+		return cnt;
+	}
+
+	@Override
+	public ServiceResult createBoard(BoardVO board) {
+		ServiceResult result = ServiceResult.FAIL;
+		
+		// 비밀번호 암호화
+		encodePassword(board);
 		
 		// board DB에 새글 등록
 		int cnt = boardDao.insertBoard(board);
-		String saveFolderUrl ="/Users/shane/Documents/GitHub/jspClass/attaches";
-		File saveFolder = new File(saveFolderUrl);
+		
 		
 		if(cnt >0) {
-			// 첨부파일들 metaData DB에 저장하기
-			attachDao.insertAttaches(board);
+			cnt += process(board);
 			
-			// 첨부파일들의 binary데이터를 파일시스템에 저장하기
-			for(AttachVO attach : board.getAttachList()) {
-				attach.setBo_no(board.getBo_no());
-				try {
-					attach.getFile().saveTo(saveFolder);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			return ServiceResult.OK;
-			
-		}else {
-			return ServiceResult.FAIL;
+			if(cnt > 0)
+				result = ServiceResult.OK;
 		}
+		
+		return result;
 	}
 
 	@Override
@@ -95,6 +111,14 @@ public class BoardServiceImpl implements IBoardService {
 	public AttachVO download(int att_no) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public boolean boardAuthenticate(BoardVO search) {
+		BoardVO saved = boardDao.selectBoard(search);
+		encodePassword(search);
+		String savedPass = saved.getBo_pass();
+		String inputPass = search.getBo_pass();
+		return savedPass.equals(inputPass);
 	}
 
 }

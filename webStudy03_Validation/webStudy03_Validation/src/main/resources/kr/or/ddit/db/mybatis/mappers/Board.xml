@@ -1,128 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.or.ddit.board.dao.IBoardDAO">
-
-	<sql id="fromFrag">
-		FROM BOARDVIEW
-	</sql>
 	<sql id="searchFrag">
 		<trim prefix="WHERE" prefixOverrides="AND" suffixOverrides="OR"> 
-		    BO_SORT = 1 OR 1 = 1
-		    <if test="searchMap!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.searchWord)">
-		        <trim prefix="AND (" suffix=")">
-		            <choose>
-		                <when test="searchMap.searchType eq 'title'">
-		                    INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
-		                </when>
-		                <when test="searchMap.searchType eq 'writer'">
-		                    INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
-		                </when>
-		                <when test="searchMap.searchType eq 'content'">
-		                    INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
-		                </when>
-		                <when test="searchMap.searchType eq 'type'">
-		                    BO_TYPE = #{searchMap.searchWord}
-		                </when>
-		                <otherwise>
-		                    INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
-		                    OR 
-		                    INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
-		                    OR
-		                    INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
-		                    OR
-		                    BO_TYPE = #{searchMap.searchWord}
-		                </otherwise>
-		            </choose>
-		        </trim>
-		    </if>
-		    <trim prefix="AND (" suffix=")" prefixOverrides="AND">
-		        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.startDate)">
-		            AND BO_DATE >= TO_DATE(#{searchMap.startDate}, 'YYYY-MM-DD') 
-		        </if>
-		        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.endDate)">
-		            <![CDATA[
-		            AND BO_DATE <= TO_DATE(#{searchMap.endDate}, 'YYYY-MM-DD')
-		            ]]> 
-		        </if>
-		    </trim>	
+			BO_SORT = 1 OR 1 = 1
+			<trim prefix="AND (" suffix=")">
+				<if test="searchMap!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.searchWord)">
+					<choose>
+						<when test="searchMap.searchType eq 'title'">
+							INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
+						</when>
+						<when test="searchMap.searchType eq 'writer'">
+							INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
+						</when>
+						<when test="searchMap.searchType eq 'content'">
+							INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
+						</when>
+						<when test="searchMap.searchType eq 'type'">
+							BO_TYPE = #{searchMap.searchWord}
+						</when>
+						<otherwise>
+							INSTR(BO_TITLE, #{searchMap.searchWord}) > 0
+							OR 
+							INSTR(BO_WRITER, #{searchMap.searchWord}) > 0
+							OR
+							INSTR(BO_CONTENT, #{searchMap.searchWord}) > 0
+							OR
+							BO_TYPE = #{searchMap.searchWord}
+						</otherwise>
+					</choose>
+				</if>
+			</trim>
+			<trim prefix="AND (" suffix=")" prefixOverrides="AND">
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.minDate)">
+					AND BO_DATE >= TO_DATE(#{searchMap.minDate}, 'YYYY-MM-DD') 
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(searchMap.maxDate)">
+					<![CDATA[
+					AND BO_DATE <= TO_DATE(#{searchMap.maxDate}, 'YYYY-MM-DD')
+					]]> 
+				</if>
+			</trim>	
 		</trim>
 	</sql>
-
-	<select id="selectBoardList" parameterType="PagingVO" resultType="BoardVO">
-		SELECT B.*
-		FROM
-			(SELECT A.*, ROWNUM-3 RNUM
-				FROM(
-					SELECT  *
-					<include refid="fromFrag"/>
-					<include refid="searchFrag"></include>
-				) A
-			) B
-		<![CDATA[
-			WHERE bo_sort=1 or RNUM >= #{startRow} AND RNUM <= #{endRow}
-		]]>
-	</select>
-	
-	<select id="selectBoardCount" resultType="int" parameterType="pagingVO">
+	<select id="selectBoardCount" parameterType="PagingVO" resultType="int">
 		SELECT COUNT(*)
-		<include refid="fromFrag"/>
+		FROM BOARDVIEW
 		<include refid="searchFrag" />
 	</select>
-	
+	<select id="selectBoardList" parameterType="PagingVO" resultType="BoardVO">
+		SELECT B.*
+		FROM (
+		    SELECT ROWNUM-3 RNUM, A.*
+		    FROM(
+		        SELECT
+		            BO_SORT, BO_TYPE, BO_NO
+		            , DECODE(BO_SEC, 'Y', '비밀글임', BO_TITLE) BO_TITLE
+		            , BO_WRITER
+		            , BO_HIT, BO_REC
+		            , TO_CHAR(BO_DATE, 'YYYY-MM-DD HH:MI') BO_DATE
+		            , BO_SEC
+		        FROM BOARDVIEW
+		        <include refid="searchFrag" />
+		        ORDER BY BO_SORT ASC, BO_NO DESC
+		    ) A
+		) B
+		<![CDATA[
+			WHERE BO_SORT = 1 OR RNUM >= #{startRow} AND RNUM <= #{endRow}
+		]]>
+	</select>
 	<resultMap type="BoardVO" id="boardMap" autoMapping="true">
-		<id property="bo_no" column="BO_NO"/>
-		<collection property="attachList" ofType="AttachVO" javaType="java.util.List" autoMapping="true">
+		<id property="bo_no" column="BONO"/>
+		<collection property="attachList" ofType="AttachVO" autoMapping="true">
 			<id property="att_no" column="ATT_NO"/>
 		</collection>
 	</resultMap>
-	
 	<select id="selectBoard" parameterType="BoardVO" resultMap="boardMap">
-		SELECT BO_SORT, BO_TYPE, BOARDVIEW.BO_NO, BO_TITLE, BO_WRITER, BO_PASS,
-				BO_CONTENT, BO_DATE, BO_HIT, BO_REC, BO_REP, BO_SEQ, BO_PARENT, 
-				ATT_NO, ATT_FILENAME, ATT_SAVENAME, ATT_SIZE, ATT_CONTENTTYPE, ATT_DOWNCOUNT
-		from boardview
-   			left outer join attach on (boardview.bo_no = attach.bo_no)
-		WHERE BOARDVIEW.BO_NO = ${bo_no}
+		SELECT
+		    BO_SORT,    BO_TYPE,    A.BO_NO BONO
+		    , BO_TITLE,    BO_WRITER,    BO_PASS
+		    , BO_CONTENT
+		    , TO_CHAR(BO_DATE, 'YYYY-MM-DD HH:MI') BO_DATE
+		    , BO_HIT,    BO_REC,    BO_REP
+		    , BO_SEC
+		    , BO_PARENT
+		    , B.ATT_NO, B.ATT_FILENAME
+		    , B.ATT_CONTENTTYPE
+		FROM    BOARDVIEW A LEFT OUTER JOIN Attach B 
+				ON(A.BO_NO = B.BO_NO)
+		WHERE A.BO_NO = #{bo_no}
 	</select>
-	
-	<insert id="insertBoard">
-		<selectKey resultType="int" order="BEFORE" keyProperty="bo_no">
+	<insert id="insertBoard" parameterType="BoardVO">
+		<selectKey resultType="int" keyProperty="bo_no" order="BEFORE">
 			select max(bo_no)+1 
 			from board
 		</selectKey>
-		
-		INSERT INTO BOARD(
-			BO_NO,
-			BO_TITLE,
-			BO_WRITER,
-			BO_PASS,
-			BO_CONTENT
-			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_sec)">
-			, BO_SEC
-			</if>
-			<if test="bo_parent != null and bo_parent gt 0">
-			, BO_PARENT
-			</if>
-			,BO_DATE
-		)VALUES(
-			#{bo_no, jdbcType=NUMERIC},
-			#{bo_title, jdbcType=VARCHAR},
-			#{bo_writer, jdbcType=VARCHAR},
-			#{bo_pass, jdbcType=VARCHAR},
-			#{bo_content, jdbcType=VARCHAR}
-			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_sec)">
-			, #{bo_sec, jdbcType=CHAR}
-			</if>
-			<if test="bo_parent != null and bo_parent gt 0">
-			, #{bo_parent, jdbcType=NUMERIC}
-			</if>
-			,sysdate
+		INSERT INTO BOARD (
+		    BO_NO
+		    , BO_TITLE
+		    , BO_WRITER
+		    , BO_PASS
+		    , BO_CONTENT
+		    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_sec)">
+		    , BO_SEC
+		    </if>
+		    <if test="bo_parent!=null and bo_parent gt 0">
+		    , BO_PARENT
+		    </if>
+		) VALUES (
+		    #{bo_no}
+		    , #{bo_title,jdbcType=VARCHAR}
+		    , #{bo_writer,jdbcType=VARCHAR}
+		    , #{bo_pass,jdbcType=VARCHAR}
+		    , #{bo_content,jdbcType=CLOB}
+		    <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(bo_sec)">
+		    , #{bo_sec,jdbcType=CHAR}
+		    </if>
+		    <if test="bo_parent!=null and bo_parent gt 0">
+		    , #{bo_parent,jdbcType=NUMERIC}
+		    </if>
 		)
-		
 	</insert>
-	
-	
 </mapper>
+
+	
+
+
+
+
+
+
+
 
 
 

@@ -9,6 +9,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<c:if test="${not empty message }">
+	<script type="text/javascript">
+		alert("${message}")
+	</script>
+	<c:remove var="message" scope="session"/>
+</c:if>
 </head>
 <body>
 <h4>게시판 목록 조회</h4>
@@ -37,12 +43,21 @@
 					<td>${board.bo_type}</td>
 					<td>${board.bo_no}</td>
 					<td>
-						<c:url value="/board/boardRead.do" var="viewURL">
+						<c:url value="/board/boardView.do" var="viewURL">
 							<c:param name="what" value="${board.bo_no }"></c:param>
 						</c:url>
-						<a idx="${board.bo_no}" href="${viewURL}" data-toggle="popover" title="Popover title" >
-							${board.bo_title}
-						</a>
+						<c:choose>
+							<c:when test="board.bo_sec eq 'Y'">
+								<a class="secret" href="${viewURL}">
+									${board.bo_title}
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a class="nonsecret" what="${board.bo_no}" href="${viewURL}" data-toggle="popover" title="Popover title" >
+									${board.bo_title}
+								</a>
+							</c:otherwise>
+						</c:choose>
 					</td>
 					<td>${board.bo_writer}</td>
 					<td>${board.bo_content}</td>
@@ -100,7 +115,7 @@
 	
 	$('#searchBtn').on("click", function(){
 		let inputs = $("#searchUI").find(":input[name]");
-		$(inputs).each(function(idx, input){
+		$(inputs).each(function(what, input){
 			let name = $(this).attr("name");
 			let sameInput = $("#searchForm").find("[name='"+name+"']");
 			$(sameInput).val($(this).val());
@@ -119,14 +134,14 @@
 	})
 	
 	$(function(){
-		$("#listBody a").hover(function(){
-			idx = $(this).attr("idx");
+		$("#listBody a.nonsecret").hover(function(){
+			what = $(this).attr("what");
 			$(this).popover({
 				html:true,
 				content:function(){
 					$.ajax({
 						url : "${cPath}/board/boardView.do",
-						data : {'idx' : idx},
+						data : {'what' : what},
 						dataType : "text",
 						success : function(resp) {
 							retValue=resp;

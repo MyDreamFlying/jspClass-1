@@ -49,11 +49,13 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:forEach items="${board.attachList}" var="attach">
-				<c:if test="${not empty attach.att_savename}">
+			<c:if test="${not empty board.attachList }">
+				<c:forEach items="${board.attachList}" var="attach">
 					<img src="${cPath}/board/image.do?fileName=${attach.att_savename}">
-				</c:if>
-			</c:forEach>
+					${attach.att_filename}
+					<br/>
+				</c:forEach>
+			</c:if>
 		</td>
 	</tr>
 </table>

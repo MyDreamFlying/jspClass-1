@@ -11,6 +11,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <jsp:include page="/includee/preScript.jsp" />
+<script type="text/javascript" src="${cPath}/js/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 <h4>게시판 글 작성</h4>
@@ -39,7 +40,10 @@
 		<tr>
 			<th>글 내용</th>
 			<td>
-				<textarea name="bo_content" rows="8" cols="50"></textarea>
+				<textarea id="bo_content" name="bo_content" rows="8" cols="50"></textarea>
+				<script>CKEDITOR.replace('bo_content',{
+					filebrowserImageUploadUrl: '${cPath}/board/boardImage.do?type=Image',
+				});</script>
 			</td>
 		</tr>
 		<tr>
