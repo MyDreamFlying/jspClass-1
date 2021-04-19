@@ -8,6 +8,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	body{
+		margin : 50px;
+	}
+</style>
+<jsp:include page="/includee/preScript.jsp" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -59,7 +65,10 @@
 		<%
 	}
 %>
-<a href="<%=request.getContextPath() %>/login/loginForm.jsp">로그인 페이지로 돌아가기</a>
-	
+<a href="<%=request.getContextPath() %>/login/loginForm.jsp">로그인 페이지</a><br/>
+<button type="button" class="btn btn-primary" onclick="location.href='${cPath}/board/boardList.do'">게시판</button>
+<button type="button" class="btn btn-info" onclick="location.href='${cPath}/prod/prodList.do'">제품</button>
+<button type="button" class="btn btn-success" onclick="location.href='${cPath}/member/memberList.do'">회원</button>
+<jsp:include page="/includee/postScript.jsp"/>	
 </body>
 </html>

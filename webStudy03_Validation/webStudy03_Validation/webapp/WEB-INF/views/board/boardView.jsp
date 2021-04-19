@@ -9,7 +9,10 @@
 <jsp:include page="/includee/preScript.jsp" />
 <style>
 	img{
-		width : 400px
+		max-width : 400px
+	}
+	th{
+		width : 250px
 	}
 </style>
 </head>
