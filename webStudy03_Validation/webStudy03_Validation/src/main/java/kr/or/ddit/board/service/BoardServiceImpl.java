@@ -25,8 +25,7 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public ServiceResult createBoard(BoardVO board) {
-		// TODO Auto-generated method stub
-		return null;
+		return boardDao.insertBoard(board) == 1 ? ServiceResult.OK : ServiceResult.FAIL;
 	}
 
 	@Override

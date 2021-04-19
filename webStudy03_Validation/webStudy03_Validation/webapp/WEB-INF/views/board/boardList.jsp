@@ -12,6 +12,7 @@
 </head>
 <body>
 <h4>게시판 목록 조회</h4>
+<button type="button" onclick="location.href=`${cPath}/board/boardInsert.do`" class="btn btn-primary">새글등록</button>
 <table class="table table-bordered">
 	<thead>
 		<tr>

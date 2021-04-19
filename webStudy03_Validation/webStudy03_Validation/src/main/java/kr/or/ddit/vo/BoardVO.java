@@ -27,6 +27,7 @@ public class BoardVO {
 	private String bo_seq;
 	private Integer bo_parent;
 	
+	private int startAttNo;
 	private List<AttachVO> attachList;
 	private List<Reply2VO> replyList;
 }

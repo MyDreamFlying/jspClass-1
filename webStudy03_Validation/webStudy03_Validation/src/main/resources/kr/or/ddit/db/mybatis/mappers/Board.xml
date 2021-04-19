@@ -69,9 +69,48 @@
 		<include refid="searchFrag" />
 	</select>
 	
-	<select id="selectBoard" parameterType="BoardVO" resultType="BoardVO">
-		SELECT * 
-		<include refid="fromFrag"/>
-		WHERE BO_NO = ${bo_no}
+	<resultMap type="BoardVO" id="boardMap" autoMapping="true">
+		<id property="bo_no" column="BO_NO"/>
+		<collection property="attachList" ofType="AttachVO" javaType="java.util.List" autoMapping="true">
+			<id property="att_no" column="ATT_NO"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectBoard" parameterType="BoardVO" resultMap="boardMap">
+		SELECT BO_SORT, BO_TYPE, BOARDVIEW.BO_NO, BO_TITLE, BO_WRITER, BO_PASS,
+				BO_CONTENT, BO_DATE, BO_HIT, BO_REC, BO_REP, BO_SEQ, BO_PARENT, 
+				ATT_NO, ATT_FILENAME, ATT_SAVENAME, ATT_SIZE, ATT_CONTENTTYPE, ATT_DOWNCOUNT
+		from boardview
+   			left outer join attach on (boardview.bo_no = attach.bo_no)
+		WHERE BOARDVIEW.BO_NO = ${bo_no}
 	</select>
+	
+	<insert id="insertBoard">
+		<selectKey resultType="int" order="BEFORE" keyProperty="bo_no">
+			select max(bo_no)+1 
+			from board
+		</selectKey>
+		
+		INSERT INTO BOARD(
+			BO_NO,
+			BO_TITLE,
+			BO_WRITER,
+			BO_PASS,
+			BO_CONTENT,
+			BO_DATE
+		)VALUES(
+			#{bo_no, jdbcType=NUMERIC},
+			#{bo_title, jdbcType=VARCHAR},
+			#{bo_writer, jdbcType=VARCHAR},
+			#{bo_pass, jdbcType=VARCHAR},
+			#{bo_content, jdbcType=VARCHAR},
+			sysdate
+		)
+		
+	</insert>
+	
+	
 </mapper>
+
+
+
