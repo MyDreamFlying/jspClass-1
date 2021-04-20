@@ -8,6 +8,10 @@
 	th{
 		width : 150px;
 	}
+	.preview{
+		max-width : 200px;
+		max-height : 200px;
+	}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -56,23 +60,29 @@
 				});</script>
 			</td>
 		</tr>
+		<c:if test="${board.bo_type eq 'BOARD' }">
 		<tr>
 			<td class="files" colspan="2">
 				<c:if test="${not empty board.attachList }">
 					<c:forEach items="${board.attachList}" var="attach">
 						<div>
-							<img src="${cPath}/board/image.do?fileName=${attach.att_savename}">
+							<img class="preview" src="${cPath}/board/image.do?fileName=${attach.att_savename}">
 							${attach.att_filename}
 							<button type="button" data-att_no="${attach.att_no}" class="delete btn btn-sm btn-danger">삭제</button>
 							<br/>
 						</div>
 					</c:forEach>
 				</c:if>
-				<input type="file" name="bo_files"><br/>
-				<input type="file" name="bo_files"><br/>
-				<input type="file" name="bo_files">
+				<div class="uploadFiles">
+					<div class="uploadFile">
+						<span class="previewArea"></span>
+						<input type="file" name="bo_files" class="fileUpload">
+						<button type="button" class="moreFile btn btn-secondary">+</button><br/>
+					</div>
+				</div>
 			</td>
 		</tr>
+		</c:if>
 		<tr>
 			<td colspan="2">
 				<button type="submit" class="btn btn-success">등록하기</button>
@@ -93,7 +103,44 @@ $(function(){
 		}
 	});
 	
+	$(".uploadFiles").on("change", ".fileUpload" , function(){
+		var previewArea = $(this).parent('.uploadFile').children('.previewArea');
+		handleImgsFilesSelect(this,previewArea);
+	});
+	
+	$('.uploadFiles').on('click', '.moreFile', function(){
+		$('.uploadFiles').append(
+				'<div class="uploadFile">'
+				+'	<span class="previewArea"></span>'
+				+'	<input type="file" name="bo_files" class="fileUpload">'
+				+'	<button type="button" class="lessFile btn btn-secondary">-</button><br/>'
+				+'</div>');
+	});
+	
+	$('.uploadFiles').on('click', '.lessFile', function(){
+		$(this).parents('.uploadFile').remove();
+	});
+	
 })
+
+function handleImgsFilesSelect(e , previewArea) {
+	var files = e.files;
+	var filesArr = Array.prototype.slice.call(files);
+	
+	filesArr.forEach(function(f) {
+		if(!f.type.match("image.*")) {
+			alert("이미지만 업로드 하실 수 있습니다.");
+			return;
+		}
+
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			var img_html = '<img class="preview" src=\"' + e.target.result + '\" />';
+			previewArea.html(img_html);
+		}
+		reader.readAsDataURL(f);
+	});
+}
 </script>
 <jsp:include page="/includee/postScript.jsp"/>
 </body>

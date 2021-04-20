@@ -141,9 +141,21 @@
 	</insert>
 	
 	<update id="updateBoard" parameterType="BoardVO">
-		UPDATE BOARD
+		UPDATE
+		<choose>
+			<when test="bo_type eq 'BOARD'">
+			BOARD
+			</when>
+			<when test="bo_type eq 'NOTICE'">
+			NOTICE
+			</when>
+		</choose> 
 		SET BO_TITLE = #{bo_title, jdbcType=VARCHAR}
-		    ,BO_WRITER = #{bo_writer, jdbcType=VARCHAR}
+		<choose>
+		<when test="bo_type eq 'BOARD'">
+			,BO_WRITER = #{bo_writer, jdbcType=VARCHAR}
+			</when>
+		</choose> 
 		    ,BO_CONTENT = #{bo_content, jdbcType=VARCHAR}
 		WHERE BO_NO = #{bo_no,jdbcType=NUMERIC}
 	</update>

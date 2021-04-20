@@ -39,7 +39,7 @@ public class BoardUpdateController {
 	@RequestMapping(value="/board/boarUpdate.do", method = RequestMethod.POST)
 	public String updateForm(
 			HttpServletRequest req
-			,@RequestPart("bo_files") MultipartFile[] bo_files
+			,@RequestPart(value="bo_files",required = false) MultipartFile[] bo_files
 			,@ModelAttribute("board") BoardVO board) {
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		
@@ -59,8 +59,8 @@ public class BoardUpdateController {
 			board.setDeleteAttachList(deleteList);
 		}
 		
-		// 비밀번호 검증 먼저 하기
-		if(!service.boardAuthenticate(board)) {
+		// 공지가 아닐경우엔 비밀번호 검증 먼저 하기
+		if("BOARD".equals(board.getBo_type()) &&!service.boardAuthenticate(board)) {
 			message = "비밀번호가 일치하지 않음.";
 		}else {
 			
