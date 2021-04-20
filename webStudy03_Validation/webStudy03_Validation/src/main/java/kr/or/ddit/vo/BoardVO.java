@@ -41,5 +41,6 @@ public class BoardVO {
 	
 	private int startAttNo;
 	private List<AttachVO> attachList;
+	private int[] deleteAttachList;
 	private List<Reply2VO> replyList;
 }

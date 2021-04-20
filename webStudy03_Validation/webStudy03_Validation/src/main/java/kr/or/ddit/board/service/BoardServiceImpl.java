@@ -5,14 +5,15 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import javax.xml.transform.OutputKeys;
-
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import kr.or.ddit.board.dao.AttachDAOImpl;
 import kr.or.ddit.board.dao.BoardDAOImpl;
 import kr.or.ddit.board.dao.IAttachDAO;
 import kr.or.ddit.board.dao.IBoardDAO;
+import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.utils.CryptoUtil;
 import kr.or.ddit.vo.AttachVO;
@@ -23,6 +24,7 @@ public class BoardServiceImpl implements IBoardService {
 	
 	private IBoardDAO boardDao = BoardDAOImpl.getInstance();
 	private IAttachDAO attachDao = AttachDAOImpl.getInstance();
+	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();	
 	private static BoardServiceImpl self;
 	
 	private BoardServiceImpl() {}
@@ -102,11 +104,26 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public ServiceResult modifyBoard(BoardVO board) {
-		ServiceResult result = ServiceResult.FAIL;
-		int cnt = boardDao.updateBoard(board);
-		if(cnt > 0)
-			result = ServiceResult.OK;
-		return result;
+		try(
+			SqlSession session = sessionFactory.openSession();
+		){
+			ServiceResult result = ServiceResult.FAIL;
+			
+			if(board.getDeleteAttachList().length > 0) {
+				attachDao.deleteAttaches(board);
+			}
+			
+			int cnt = boardDao.updateBoard(board);
+			if(cnt >0) {
+				cnt += process(board);
+				
+				if(cnt > 0)
+					result = ServiceResult.OK;
+			}
+			session.commit();
+			return result;
+			
+		}
 	}
 
 	@Override

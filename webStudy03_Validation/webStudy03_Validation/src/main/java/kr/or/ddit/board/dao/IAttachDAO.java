@@ -1,5 +1,7 @@
 package kr.or.ddit.board.dao;
 
+import org.apache.ibatis.session.SqlSession;
+
 import kr.or.ddit.vo.AttachVO;
 import kr.or.ddit.vo.BoardVO;
 

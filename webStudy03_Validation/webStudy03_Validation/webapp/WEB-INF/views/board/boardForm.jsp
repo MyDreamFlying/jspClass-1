@@ -57,13 +57,13 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td class="files" colspan="2">
 				<c:if test="${not empty board.attachList }">
 					<c:forEach items="${board.attachList}" var="attach">
 						<div>
 							<img src="${cPath}/board/image.do?fileName=${attach.att_savename}">
 							${attach.att_filename}
-							<button type="button" class="btn btn-sm btn-danger">삭제</button>
+							<button type="button" data-att_no="${attach.att_no}" class="delete btn btn-sm btn-danger">삭제</button>
 							<br/>
 						</div>
 					</c:forEach>
@@ -81,6 +81,20 @@
 		</tr>
 	</table>
 </form>
+<script type="text/javascript">
+$(function(){
+	$('.files').on('click', '.delete', function(){
+		let thisAttachDiv = $(this).parent('div')
+		let att_no = $(this).data("att_no");
+		let answer = confirm("정말로 첨부파일을 삭제하겠습니까?");
+		if(answer == true){
+			thisAttachDiv.remove();
+			$('form').prepend('<input type="hidden" name="att_no" value="'+att_no+'">');
+		}
+	});
+	
+})
+</script>
 <jsp:include page="/includee/postScript.jsp"/>
 </body>
 </html>

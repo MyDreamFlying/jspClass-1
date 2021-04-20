@@ -27,4 +27,19 @@
 		</foreach>
 		SELECT * FROM DUAL
 	</insert>
+	
+	<delete id="deleteAttaches" parameterType="BoardVO" >
+		DELETE 
+		FROM ATTACH 
+		WHERE ATT_NO IN(
+		<foreach collection="deleteAttachList" item="att_no" index="idx">
+			<if test="idx neq 0">
+			,
+			</if>
+			${att_no}
+		</foreach>
+		)
+	</delete>
+	
+	
 </mapper>
