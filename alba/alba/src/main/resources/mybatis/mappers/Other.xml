@@ -27,4 +27,11 @@
 		)
 	</insert>
 	
+	<update id="updateLicense" parameterType="LicenseVO">
+		UPDATE LIC_ALBA
+		SET
+			LIC_IMG = #{lic_img, jdbcType=BLOB}
+		WHERE AL_ID = #{al_id} AND LIC_CODE = #{lic_code}
+	</update>
+	
 </mapper>

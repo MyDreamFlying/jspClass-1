@@ -51,4 +51,16 @@ public class OtherDAOImpl implements OtherDAO {
 			}
 	}
 
+	@Override
+	public int updateLicense(LicenseVO license) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				OtherDAO mapper = session.getMapper(OtherDAO.class);
+				int cnt =  mapper.updateLicense(license);
+				session.commit();
+				return cnt;
+			}
+	}
+
 }

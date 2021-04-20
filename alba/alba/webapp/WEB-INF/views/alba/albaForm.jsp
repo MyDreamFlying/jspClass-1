@@ -13,6 +13,9 @@ body{
 img{
 	height : 100px;
 }
+.form-check-label{
+	width : 150px;
+}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -28,17 +31,20 @@ img{
 	</div>
 	<div class="form-group">
 		<label for="profile">프로필 사진</label>
-		<input type="file" accept="image/*" class="form-control-file" name="profile" id="profile">
 		<div id="preview">
 			<c:choose>
 				<c:when test="${not empty alba.al_img}">
 					<img src="${cPath}/profile/${alba.al_img}">
 				</c:when>
-				<c:otherwise>
+				<c:when test="${not empty alba}">
 					<img src="${cPath}/profile/default_${alba.al_gen}.jpg">
+				</c:when>
+				<c:otherwise>
+					<img src="${cPath}/profile/default_M.jpg">
 				</c:otherwise>
 			</c:choose>
 		</div>
+		<input type="file" accept="image/*" class="form-control-file" name="profile" id="profile">
 	</div>
 	<div class="form-group">
 		<label for="al_age">나이:</label>
@@ -97,14 +103,18 @@ img{
    		List<String> holdingLicenseList = (List<String>)request.getAttribute("holdingLicenseList");
    		String checked = "";
    		for( Map<String,Object> license : licenseList){
-   			if(holdingLicenseList != null)
+	   		String registerButton = "";
+   			if(holdingLicenseList != null){
  	  			checked = holdingLicenseList.contains(license.get("lic_code")) ? "checked disabled" : "";
+ 	  			registerButton = !checked.isEmpty()? "<button type='button' class='regLic btn btn-dark btn-sm'>사본등록</button>" : "";
+   			}
    		%>	
-			<div class="form-check">
+			<div class="license form-check" data-lic_code="<%=license.get("lic_code") %>">
 				<input class="form-check-input" type="checkbox" <%=checked %> id="<%=license.get("lic_code") %>" name="<%=license.get("lic_code") %>" >
 				<label class="form-check-label" for="<%=license.get("lic_code") %>">
 					<%=license.get("lic_name") %>
 				</label>
+				<%=registerButton %>
 			</div>
    		<%
    		}
@@ -120,10 +130,53 @@ img{
 	<button type="submit" class="btn btn-primary">Submit</button>
 	<button type="button" onclick="location.href='albaList.do';" class="btn btn-danger">Cancel</button>
 </form>
+<form id="licForm">
+	<input type="file" name="licensePic" id="licUpdate">히든파일폼
+	<input type="text" name="al_id" value="${alba.al_id }">
+	<input type="text" id="lic_code" name="lic_code">
+</form>
 <script type="text/javascript">
 $(function(){
+	
 	// 이미지 업로드시 미리보기 이벤트
 	$("#profile").on("change", handleImgsFilesSelect);
+	
+	// 자격증 사본 사진 등록 클릭시 이벤트
+	$('.regLic').on("click", function(){
+		lic_code = $(this).parent('div').data('lic_code');
+		$('#lic_code').val(lic_code);
+		$("#licUpdate").click();
+	})
+	
+	// 자격증 사본 사진 등록시 비동기 업로드
+	$("#licUpdate").on('change', function(){
+		const form = $('#licForm')[0];
+		let formData = new FormData(form);
+		$.ajax({
+			type : 'post',
+			enctype : 'multipart/form-data',
+			url : '${cPath}/licUpload.do',
+			data : formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			cache : false,
+			timeout : 60000,
+			success : function(resp){
+				if(resp=='OK'){
+					alert("등록 성공");
+				}else{
+					alert("등록 실패");
+				}
+			},
+			error : function(xhr){
+				alert("error code : " + xhr)
+			}
+		})
+		
+	})
+	
+	
 })
 let profile_file = [];
 function handleImgsFilesSelect(e) {

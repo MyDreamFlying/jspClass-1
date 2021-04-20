@@ -9,4 +9,5 @@ public interface OtherDAO {
 	public List<Map<String, Object>> selectLicenseList();
 	public List<Map<String, Object>> selectGradeList();
 	public int insertLicense(LicenseVO license);
+	public int updateLicense(LicenseVO license);
 }
