@@ -41,5 +41,14 @@
 		)
 	</delete>
 	
+	<select id="selectSaveNamesForDelete" parameterType="BoardVO" resultType="string">
+		SELECT ATT_SAVENAME
+		FROM ATTACH
+		WHERE ATT_NO IN
+		<foreach collection="deleteAttachList" item="att_no" open="(" close=")" separator=",">
+			${att_no}
+		</foreach>
+	</select>
+	
 	
 </mapper>

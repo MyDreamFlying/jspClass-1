@@ -43,7 +43,7 @@ public class BoardServiceImpl implements IBoardService {
 		}
 	}
 	
-	private int process(BoardVO board) {
+	private int process(BoardVO board, SqlSession session) {
 		String saveFolderUrl ="/Users/shane/Documents/GitHub/jspClass/attaches";
 		File saveFolder = new File(saveFolderUrl);
 		int cnt = 0;
@@ -51,7 +51,7 @@ public class BoardServiceImpl implements IBoardService {
 		List<AttachVO> attachList = board.getAttachList();
 		if(attachList != null && attachList.size()>0) {
 			// 첨부파일들 metaData DB에 저장하기
-			cnt += attachDao.insertAttaches(board);
+			cnt += attachDao.insertAttaches(board, session);
 			
 			// 첨부파일들의 binary데이터를 파일시스템에 저장하기
 			try {
@@ -69,21 +69,23 @@ public class BoardServiceImpl implements IBoardService {
 	@Override
 	public ServiceResult createBoard(BoardVO board) {
 		ServiceResult result = ServiceResult.FAIL;
+		encodePassword(board); // 비밀번호 암호화
 		
-		// 비밀번호 암호화
-		encodePassword(board);
-		
-		// board DB에 새글 등록
-		int cnt = boardDao.insertBoard(board);
-		
-		
-		if(cnt >0) {
-			cnt += process(board);
+		try(
+			SqlSession session = sessionFactory.openSession();
+		){
+			// board DB에 새글 등록
+			int cnt = boardDao.insertBoard(board, session);
 			
-			if(cnt > 0)
-				result = ServiceResult.OK;
-		}
-		
+			if(cnt >0) {
+				cnt += process(board, session);
+				
+				if(cnt > 0) {
+					result = ServiceResult.OK;
+					session.commit();
+				}
+			}
+		}// TRY END
 		return result;
 	}
 
@@ -109,18 +111,27 @@ public class BoardServiceImpl implements IBoardService {
 		){
 			ServiceResult result = ServiceResult.FAIL;
 			
-			if(board.getDeleteAttachList().length > 0) {
-				attachDao.deleteAttaches(board);
+			if(board.getDeleteAttachList()!=null && board.getDeleteAttachList().length > 0) {
+				List<String> saveNames = attachDao.selectSaveNamesForDelete(board);
+				// 첨부 파일의 메타 데이터 삭제
+				attachDao.deleteAttaches(board, session);
+				// 이진 데이터 삭제
+				String saveFolder ="/Users/shane/Documents/GitHub/jspClass/attaches";
+				for(String saveName : saveNames) {
+					File saveFile = new File(saveFolder, saveName);
+					saveFile.delete();
+				}
 			}
 			
-			int cnt = boardDao.updateBoard(board);
+			int cnt = boardDao.updateBoard(board, session);
 			if(cnt >0) {
-				cnt += process(board);
+				cnt += process(board, session);
 				
-				if(cnt > 0)
+				if(cnt > 0) {
 					result = ServiceResult.OK;
+					session.commit();
+				}
 			}
-			session.commit();
 			return result;
 			
 		}

@@ -3,9 +3,7 @@ package kr.or.ddit.board.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +16,8 @@ import kr.or.ddit.board.dao.IAttachDAO;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.RequestMethod;
-import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.mvc.annotation.resolvers.RequestPart;
 import kr.or.ddit.mvc.filter.wrapper.MultipartFile;
-import kr.or.ddit.vo.AttachVO;
-import kr.or.ddit.vo.BoardVO;
 
 @Controller
 public class BoardFileController {
@@ -59,31 +54,5 @@ public class BoardFileController {
 		return null;
 	}
 	
-	@RequestMapping(value="/board/fileDelete.do",method = RequestMethod.POST)
-	public String deleteFileAjax(
-			HttpServletResponse resp
-			,@RequestParam("att_no") int att_no
-			) throws IOException {
-		BoardVO board = new BoardVO();
-		List<AttachVO> attachList = new ArrayList<>();
-		AttachVO attach = new AttachVO();
-		attach.setAtt_no(att_no);
-		attachList.add(attach);
-		board.setAttachList(attachList);
-		
-		int result = attachDAO.deleteAttaches(board);
-		
-		try(
-			PrintWriter out = resp.getWriter()
-		){
-			if(result > 0) {
-				out.write("OK");
-			}else {
-				out.write("FAIL");
-			}
-		}
-		
-		return null;
-	}
 	
 }

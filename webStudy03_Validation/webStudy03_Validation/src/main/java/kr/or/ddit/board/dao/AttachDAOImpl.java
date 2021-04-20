@@ -1,5 +1,7 @@
 package kr.or.ddit.board.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -19,15 +21,8 @@ public class AttachDAOImpl implements IAttachDAO {
 	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();	
 
 	@Override
-	public int insertAttaches(BoardVO board) {
-		try(
-			SqlSession session = sessionFactory.openSession();
-		){
-			IAttachDAO mapper = session.getMapper(IAttachDAO.class);
-			int cnt = mapper.insertAttaches(board);
-			session.commit();
-			return cnt;
-		}
+	public int insertAttaches(BoardVO board, SqlSession session) {
+		return session.insert("kr.or.ddit.board.dao.IAttachDAO.insertAttaches",board);
 	}
 
 	@Override
@@ -37,15 +32,19 @@ public class AttachDAOImpl implements IAttachDAO {
 	}
 
 	@Override
-	public int deleteAttaches(BoardVO board) {
+	public int deleteAttaches(BoardVO board, SqlSession session) {
+		return session.delete("kr.or.ddit.board.dao.IAttachDAO.deleteAttaches",board);
+	}
+
+	@Override
+	public List<String> selectSaveNamesForDelete(BoardVO board) {
 		try(
-				SqlSession session = sessionFactory.openSession();
-			){
-				IAttachDAO mapper = session.getMapper(IAttachDAO.class);
-				int cnt = mapper.deleteAttaches(board);
-				session.commit();
-				return cnt;
-			}
+			SqlSession session = sessionFactory.openSession();
+		){
+			IAttachDAO mapper = session.getMapper(IAttachDAO.class);
+			return mapper.selectSaveNamesForDelete(board);
+		}
+		
 	}
 
 }

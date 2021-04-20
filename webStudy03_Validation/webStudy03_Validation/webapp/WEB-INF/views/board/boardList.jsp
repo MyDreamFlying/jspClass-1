@@ -27,7 +27,6 @@
 			<th>글 번호</th>
 			<th>글 제목</th>
 			<th>작성자</th>
-			<th>글 내용</th>
 			<th>작성일</th>
 			<th>조회수</th>
 			<th>추천수</th>
@@ -61,7 +60,6 @@
 						</c:choose>
 					</td>
 					<td>${board.bo_writer}</td>
-					<td>${board.bo_content}</td>
 					<td>${board.bo_date}</td>
 					<td>${board.bo_hit}</td>
 					<td>${board.bo_rec}</td>
