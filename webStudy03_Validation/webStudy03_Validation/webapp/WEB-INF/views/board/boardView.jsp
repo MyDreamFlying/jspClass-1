@@ -19,7 +19,15 @@
 <h4>게시글 상세 조회</h4>
 <body>
 <button type="button" onclick="location.href=`${cPath}/board/boardList.do`" class="btn btn-info">목록으로</button>
-<button type="button" class="btn btn-warning">수정</button>
+<button type="button" onclick="location.href=`${cPath}/board/noticeList.do`" class="btn btn-primary">공지목록</button>
+<c:url value="/board/boardInsert.do" var="insertURL">
+	<c:param name="parent" value="${board.bo_no}"/>
+</c:url>
+<button type="button" onclick="location.href='${insertURL}'" class="btn btn-dark">답글쓰기</button>
+<c:url value="/board/boarUpdate.do" var="updateURL">
+	<c:param name="bo_no" value="${board.bo_no}"/>
+</c:url>
+<button type="button" onclick="location.href='${updateURL}'" class="btn btn-warning">수정</button>
 <button type="button" class="btn btn-danger">삭제</button>
 <table class="table table-dark table-striped">
 	<tr>

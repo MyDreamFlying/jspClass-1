@@ -12,7 +12,7 @@ public class StringCheck {
 		System.out.println(s1.equals(s3)); //true
 		System.out.println(s1==s3); //false
 		System.out.println(s3==s4); //false
-		System.out.println(s3.intern()==s4.intern());
+		System.out.println(s3.intern()==s4.intern());//true
 		
 		
 		TestVO vo1 = new TestVO();

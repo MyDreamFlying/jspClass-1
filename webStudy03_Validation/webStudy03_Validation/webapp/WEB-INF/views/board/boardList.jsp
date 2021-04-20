@@ -19,6 +19,7 @@
 <body>
 <h4>게시판 목록 조회</h4>
 <button type="button" onclick="location.href=`${cPath}/board/boardInsert.do`" class="btn btn-primary">새글등록</button>
+<button type="button" onclick="location.href=`${cPath}/board/noticeInsert.do`" class="btn btn-info"> 공지등록</button>
 <table class="table table-bordered">
 	<thead>
 		<tr>
@@ -94,6 +95,7 @@
 						<option value="title">글 제목</option>
 						<option value="writer">작성자</option>
 						<option value="content">글내용</option>
+						<option value="type">게시판종류</option>
 					</select>
 					<input type="text" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input type="date" name="startDate"> ~ 

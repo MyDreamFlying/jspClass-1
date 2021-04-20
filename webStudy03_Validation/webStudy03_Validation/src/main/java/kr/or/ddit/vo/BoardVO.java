@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import kr.or.ddit.validator.BoardInsertGroup;
 import kr.or.ddit.validator.UpdateGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,9 +27,9 @@ public class BoardVO {
 	private Integer bo_no;
 	@NotBlank
 	private String bo_title;
-	@NotBlank
+	@NotBlank(groups = BoardInsertGroup.class)
 	private String bo_writer;
-	@NotBlank
+	@NotBlank(groups = BoardInsertGroup.class)
 	private String bo_pass;
 	private String bo_content;
 	private String bo_date;

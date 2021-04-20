@@ -23,6 +23,19 @@ import kr.or.ddit.vo.PagingVO;
 public class BoardReadController {
 	public static final String BOARDAUTH = "board.authenticated";
 	private IBoardService service = BoardServiceImpl.getInstance();
+	
+	@RequestMapping("/board/noticeList.do")
+	public String noticeList(HttpServletRequest req
+			,@RequestParam(value="searchType", required=false) String searchType
+			,@RequestParam(value="searchWord", required=false) String searchWord
+			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
+			,@RequestParam(value="startDate", required=false) String startDate
+			,@RequestParam(value="endDate", required=false) String endDate
+			) {
+		searchType = "type";
+		searchWord = "NOTICE";
+		return selectBoardList(startDate, endDate, searchType, searchWord, currentPage, req);
+	}
 
 	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
 	public String boardAuth(

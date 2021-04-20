@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.xml.transform.OutputKeys;
+
+import org.apache.commons.lang3.StringUtils;
+
 import kr.or.ddit.board.dao.AttachDAOImpl;
 import kr.or.ddit.board.dao.BoardDAOImpl;
 import kr.or.ddit.board.dao.IAttachDAO;
@@ -28,6 +32,7 @@ public class BoardServiceImpl implements IBoardService {
 	}
 	
 	private void encodePassword(BoardVO board) {
+		if(StringUtils.isBlank(board.getBo_pass())) return;
 		try {
 			String encPass = CryptoUtil.sha512(board.getBo_pass());
 			board.setBo_pass(encPass);
@@ -97,8 +102,11 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public ServiceResult modifyBoard(BoardVO board) {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceResult result = ServiceResult.FAIL;
+		int cnt = boardDao.updateBoard(board);
+		if(cnt > 0)
+			result = ServiceResult.OK;
+		return result;
 	}
 
 	@Override
