@@ -15,6 +15,7 @@ import kr.or.ddit.board.dao.IAttachDAO;
 import kr.or.ddit.board.dao.IBoardDAO;
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.utils.CryptoUtil;
 import kr.or.ddit.vo.AttachVO;
 import kr.or.ddit.vo.BoardVO;
@@ -139,14 +140,63 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public ServiceResult removeBoard(BoardVO search) {
-		// TODO Auto-generated method stub
-		return null;
+		BoardVO board = boardDao.selectBoard(search);
+		int replyConunt = boardDao.selectReplyCount(search);
+		ServiceResult result = ServiceResult.FAIL;
+		int cnt = 0;
+		
+		try(
+				SqlSession session = sessionFactory.openSession();
+		){
+			// 해당글의 첨부파일 메타데이터 및 이진데이터 먼저 모두 삭제
+			List<AttachVO> attList = board.getAttachList();
+			if(attList != null) {
+				final int SIZE = attList.size();
+				int[] delAttNos = new int[SIZE];
+				for(int i=0; i<SIZE; i++) {
+					delAttNos[i] = attList.get(i).getAtt_no();
+				}
+				board.setDeleteAttachList(delAttNos);
+						
+				if(board.getDeleteAttachList()!=null && board.getDeleteAttachList().length > 0) {
+					List<String> saveNames = attachDao.selectSaveNamesForDelete(board);
+					// 첨부 파일의 메타 데이터 삭제
+					attachDao.deleteAttaches(board, session);
+					// 이진 데이터 삭제
+					String saveFolder ="/Users/shane/Documents/GitHub/jspClass/attaches";
+					for(String saveName : saveNames) {
+						File saveFile = new File(saveFolder, saveName);
+						saveFile.delete();
+					}
+				}
+			}
+			
+			if(replyConunt >0) {
+				board.setBo_content("삭제된 게시글입니다.");
+				board.setBo_title("삭제된 게시글입니다.");
+				board.setBo_writer("삭제됨");
+				cnt = boardDao.updateBoard(board, session);
+			}else {
+				// 댓글이 달려있지 않으면 바로 삭제
+				cnt = boardDao.deleteBoard(board, session);
+			}
+			
+			if(cnt >0) {
+				result = ServiceResult.OK;
+			}
+			
+			session.commit();
+		}
+		
+		return result;
 	}
 
 	@Override
 	public AttachVO download(int att_no) {
-		// TODO Auto-generated method stub
-		return null;
+		AttachVO attach = attachDao.selectAttaches(att_no);
+		if(attach == null)
+			throw new CustomException(att_no+"에 해당하는 파일이 없음.");
+		return attach;
 	}
 	@Override
 	public boolean boardAuthenticate(BoardVO search) {

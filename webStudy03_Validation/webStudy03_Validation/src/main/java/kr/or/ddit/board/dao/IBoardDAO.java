@@ -16,5 +16,6 @@ public interface IBoardDAO {
 	public List<BoardVO> selectBoardList(PagingVO<BoardVO> pagingVO);
 	public BoardVO selectBoard(BoardVO search);
 	public int updateBoard(BoardVO board, SqlSession session);
-	public int deleteBoard(BoardVO search);
+	public int deleteBoard(BoardVO search, SqlSession session);
+	public int selectReplyCount(BoardVO search);
 }

@@ -28,7 +28,7 @@
 	<c:param name="bo_no" value="${board.bo_no}"/>
 </c:url>
 <button type="button" onclick="location.href='${updateURL}'" class="btn btn-warning">수정</button>
-<button type="button" class="btn btn-danger">삭제</button>
+<button type="button" id="deleteBtn" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">삭제</button>
 <table class="table table-dark table-striped">
 	<tr>
 		<th>글번호</th>
@@ -73,6 +73,34 @@
 		</td>
 	</tr>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">글을 삭제하려면 비밀번호를 입력하세요.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="delForm" action="${cPath }/board/boardDelete.do" method="post">
+			<input type="hidden" name="bo_no" value=${board.bo_no }>
+			<input type="password" id="hiddenPass" name="bo_pass" required>&nbsp;
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	        <button type="submit" class="btn btn-danger">삭제</button>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <jsp:include page="/includee/postScript.jsp"/>
+<script type="text/javascript">
+	$(function(){
+		
+	})
+</script>
 </body>
 </html>
