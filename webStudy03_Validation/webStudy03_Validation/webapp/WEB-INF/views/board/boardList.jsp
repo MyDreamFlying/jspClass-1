@@ -5,6 +5,10 @@
 <html>
 <head>
 <style>
+	.thumbnail{
+		max-width : 80px;
+		max-height : 80px;
+	}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -25,6 +29,7 @@
 		<tr>
 			<th>글 종류</th>
 			<th>글 번호</th>
+			<th>썸네일</th>
 			<th>글 제목</th>
 			<th>작성자</th>
 			<th>작성일</th>
@@ -42,6 +47,9 @@
 				<tr>
 					<td>${board.bo_type}</td>
 					<td>${board.bo_no}</td>
+					<td>
+						<img class="thumbnail" src="${board.thumbnail}">
+					</td>
 					<td>
 						<c:url value="/board/boardView.do" var="viewURL">
 							<c:param name="what" value="${board.bo_no }"></c:param>

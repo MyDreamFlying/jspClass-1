@@ -43,4 +43,6 @@ public class BoardVO {
 	private List<AttachVO> attachList;
 	private int[] deleteAttachList;
 	private List<Reply2VO> replyList;
+	
+	private String thumbnail;
 }
