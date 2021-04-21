@@ -43,8 +43,11 @@ public class BoardFileController {
 		File attachFile = new File(savedfolder, attach.getAtt_savename());
 		
 		// 해당 파일로 응답 스트림 생성 해서 응답데이터로 보내기
-		resp.setContentType("application/octet-stream");
-		resp.setHeader("Content-Disposition", "attachment; filename=\""+attach.getAtt_filename()+"\"");
+		String disposition = "attachment; filename=\""+attach.getAtt_filename()+"\"";
+		String encedDisposition = new String(disposition.getBytes("UTF-8"), "ISO-8859-1");
+		resp.setHeader("Content-Disposition", encedDisposition);
+		resp.setContentType("application/octet-stream; charset=utf-8");
+		resp.setContentLengthLong(attach.getAtt_size());
 		try(
 			FileInputStream fis = new FileInputStream(attachFile);
 			OutputStream out = resp.getOutputStream();
