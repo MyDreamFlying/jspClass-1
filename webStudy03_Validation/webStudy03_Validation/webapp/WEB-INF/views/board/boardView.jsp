@@ -63,7 +63,10 @@
 			<c:if test="${not empty board.attachList }">
 				<c:forEach items="${board.attachList}" var="attach">
 					<img src="${cPath}/board/image.do?fileName=${attach.att_savename}">
-					${attach.att_filename}
+					<c:url value="/board/download.do" var="downloadURL">
+						<c:param name="what" value="${attach.att_no }"></c:param>
+					</c:url>
+					<a href="${downloadURL }">${attach.att_filename}</a>
 					<br/>
 				</c:forEach>
 			</c:if>

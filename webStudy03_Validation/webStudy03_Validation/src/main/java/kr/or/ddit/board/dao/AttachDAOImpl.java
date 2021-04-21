@@ -27,8 +27,12 @@ public class AttachDAOImpl implements IAttachDAO {
 
 	@Override
 	public AttachVO selectAttaches(int att_no) {
-		// TODO Auto-generated method stub
-		return null;
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IAttachDAO mapper = session.getMapper(IAttachDAO.class);
+				return mapper.selectAttaches(att_no);
+			}
 	}
 
 	@Override

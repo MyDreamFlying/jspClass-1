@@ -50,5 +50,11 @@
 		</foreach>
 	</select>
 	
+	<select id="selectAttaches" parameterType="int" resultType="AttachVO">
+		SELECT *
+		FROM ATTACH
+		WHERE ATT_NO = #{att_no}
+	</select>
+	
 	
 </mapper>
