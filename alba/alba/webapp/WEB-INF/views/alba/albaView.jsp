@@ -23,13 +23,15 @@ img{
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<button type="button" onclick="location.href='albaList.do';" class="btn btn-info">알바목록으로 돌아가기</button>
-<button type="button" onclick="location.href='albaUpdate.do?al_id=${alba.al_id }';"class="btn btn-warning">${alba.al_name} 정보수정</button>
-<button type="button" onclick="deleteAlba()" class="btn btn-danger">${alba.al_name} 삭제</button>
+<div class="ui inverted segment">
+	<button type="button" class="ui inverted primary basic button" onclick="location.href='albaList.do';">알바목록으로 돌아가기</button>
+	<button type="button" class="ui inverted yellow basic button" onclick="location.href='albaUpdate.do?al_id=${alba.al_id }';"class="btn btn-warning">${alba.al_name} 정보수정</button>
+	<button type="button" class="ui inverted red basic button" onclick="deleteAlba()">${alba.al_name} 삭제</button>
+</div>
 <h4>
 	<br/>알바 상세 정보
 </h4>
-<table class="table">
+<table class="ui celled striped table">
 		<tr>
 			<th>프로필</th>
 			<td>

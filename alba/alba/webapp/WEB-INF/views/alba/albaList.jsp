@@ -10,6 +10,7 @@ body{
 }
 img{
 	height : 100px;
+	max-width : 150px;
 }
 .profile{
 	width : 120px;
@@ -20,8 +21,7 @@ img{
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-<h4>알바 목록</h4>
-<table class="table">
+<table class="ui padded table">
 	<thead>
 		<tr>
 			<th class="profile">프로필</th>
@@ -87,15 +87,18 @@ img{
 					<input type="hidden" name="page" />
 				</form>
 				<div id="searchUI">
-					<button type="button" onclick="location.href='albaInsert.do';" class="btn btn-info">알바등록</button>
-					<select name="searchType">
+					<button type="button" onclick="location.href='albaInsert.do';" class="positive ui button">알바등록</button>
+					<select class="ui search dropdown" name="searchType">
 						<option value>전체</option>
 						<option value="name">이름</option>
 						<option value="address">지역</option>
 						<option value="career">경력사항</option>
 					</select>
-					<input type="text" placeholder="검색어" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-					<input id="searchBtn" class="btn btn-secondary" type="button" value="검색"/>
+					<div class="ui icon input">
+						<input type="text" class="prompt" placeholder="Search" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
+						<i class="search icon"></i>
+					</div>
+					<input id="searchBtn" class="ui blue button" type="button" value="검색"/>
 				</div>
 			</td>
 		</tr>

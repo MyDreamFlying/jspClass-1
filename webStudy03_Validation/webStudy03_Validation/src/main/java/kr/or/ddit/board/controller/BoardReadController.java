@@ -99,7 +99,7 @@ public class BoardReadController {
 			if(source != null) {
 				Document dom = Jsoup.parse(source);
 				Elements imgs = dom.getElementsByTag("img");
-				String thumbnail = req.getContextPath() + "/images/IMG_2200.jpeg";
+				String thumbnail = req.getContextPath() + "/images/thumbnail-default.jpg";
 				if(!imgs.isEmpty()) {
 					Element img = imgs.get(0);
 					thumbnail = img.attr("src");

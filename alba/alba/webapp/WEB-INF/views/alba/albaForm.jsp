@@ -7,9 +7,6 @@
 <html>
 <head>
 <style>
-body{
-	padding : 40px;
-}
 img{
 	height : 100px;
 }
@@ -23,13 +20,13 @@ img{
 </head>
 <body>
 <h4>ALBA FORM</h4>
-<form method="post" enctype="multipart/form-data">
+<form class="ui form" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="al_id" value="${alba.al_id }">
-	<div class="form-group">
+	<div class="field">
 		<label for="al_name">이름:</label>
 		<input type="text" class="form-control" placeholder="Enter name" name="al_name" value="${alba.al_name}" required>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="profile">프로필 사진</label>
 		<div id="preview">
 			<c:choose>
@@ -46,27 +43,27 @@ img{
 		</div>
 		<input type="file" accept="image/*" class="form-control-file" name="profile" id="profile">
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_age">나이:</label>
 		<input type="number" class="form-control" placeholder="Enter age" name="al_age" value="${alba.al_age}" required>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_zip">우편번호:</label>
 		<input type="text" class="form-control" placeholder="35036" name="al_zip" value="${alba.al_zip}" required>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_addr1">주소:</label>
 		<input type="text" class="form-control" placeholder="대전광역시" name="al_addr1" value="${alba.al_addr1}" required>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_addr2">상세주소:</label>
 		<input type="text" class="form-control" placeholder="중구 대흥동 영민빌딩" name="al_addr2" value="${alba.al_addr2}" required>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_hp">전화번호:</label>
 		<input type="text" class="form-control" placeholder="Enter phone number" name="al_hp" value="${alba.al_hp}" required>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="grade">학력:</label>
  		<select name="gr_code" required>
 	     	<option value>학력 선택</option>
@@ -78,59 +75,71 @@ img{
 	     	</c:forEach>
  		</select>
 	</div>
- 	<div class="form-group">
-		<label></label>
-		 <div class="form-check form-check-inline">
-		  <input class="form-check-input" type="radio" name="al_gen" value="M" id="male" ${alba.al_gen eq "M" ? "checked" :""}>
-		  <label class="form-check-label" for="male">남</label>
-		 </div>
-		<div class="form-check form-check-inline">
-		  <input class="form-check-input" type="radio" name="al_gen" value="F" id="female" ${alba.al_gen eq "M" ? "" :"checked"}>
-		  <label class="form-check-label" for="female">여</label>
+	<div class="ui form">
+		<div class="inline fields">
+			<label for="fruit">성별:</label>
+	    	<div class="field">
+				<div class="ui radio checkbox">
+	        		<input type="radio" name="al_gen" value="M" ${alba.al_gen eq "M" ? "checked" :""} tabindex="0" class="hidden">
+	       			<label>남성</label>
+				</div>
+			</div>
+			<div class="field">
+				<div class="ui radio checkbox">
+	        		<input type="radio" name="al_gen" value="F"  ${alba.al_gen eq "M" ? "" :"checked"} tabindex="0" class="hidden">
+	       			<label>여성</label>
+	      		</div>
+	  		</div>
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_mail">이메일:</label>
 		<input type="text" class="form-control" placeholder="Enter email" name="al_mail" value="${alba.al_mail}">
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_career">경력:</label>
 		<textarea class="form-control" placeholder="Your work experience" name="al_career" rows="4">${alba.al_career}</textarea>
 	</div>
-		<label for="grade">보유자격증:</label>
-   	<%
-   		List<Map<String, Object>> licenseList = (List<Map<String, Object>>)request.getAttribute("licenseList");
-   		List<String> holdingLicenseList = (List<String>)request.getAttribute("holdingLicenseList");
-   		String checked = "";
-   		for( Map<String,Object> license : licenseList){
-	   		String registerButton = "";
-   			if(holdingLicenseList != null){
- 	  			checked = holdingLicenseList.contains(license.get("lic_code")) ? "checked disabled" : "";
- 	  			registerButton = !checked.isEmpty()? "<button type='button' class='regLic btn btn-dark btn-sm'>사본등록</button>" : "";
-   			}
-   		%>	
-			<div class="license form-check" data-lic_code="<%=license.get("lic_code") %>">
-				<input class="form-check-input" type="checkbox" <%=checked %> id="<%=license.get("lic_code") %>" name="<%=license.get("lic_code") %>" >
-				<label class="form-check-label" for="<%=license.get("lic_code") %>">
-					<%=license.get("lic_name") %>
-				</label>
-				<%=registerButton %>
-			</div>
-   		<%
-   		}
-   	%>
-	<div class="form-group">
+	<div class="ui form">
+		<div class="inline field">
+			<label>보유 자격증:</label>
+	   	<%
+	   		List<Map<String, Object>> licenseList = (List<Map<String, Object>>)request.getAttribute("licenseList");
+	   		List<String> holdingLicenseList = (List<String>)request.getAttribute("holdingLicenseList");
+	   		String checked = "";
+	   		for( Map<String,Object> license : licenseList){
+		   		String registerButton = "";
+	   			if(holdingLicenseList != null){
+	 	  			checked = holdingLicenseList.contains(license.get("lic_code")) ? "checked disabled" : "";
+	 	  			registerButton = !checked.isEmpty()? "<button type='button' class='regLic small olive button'>사본등록</button>" : "";
+	   			}
+	   		%>	
+	   			 <div class="inline field">
+			   	 	<div class="license ui checkbox" data-lic_code="<%=license.get("lic_code") %>">
+			     		 <input type="checkbox" name="<%=license.get("lic_code") %>" <%=checked %> tabindex="0" class="hidden">
+			     		 <label><%=license.get("lic_name") %> <%=registerButton %></label>
+			   		 </div>
+			 	 </div>
+	   		<%
+	   		}
+	   	%>
+	   	</div>
+   	</div>
+	<div class="field">
 		<label for="alba.al_spec">스펙:</label>
 		<textarea class="form-control" placeholder="your spec" name="al_spec" rows="4">${alba.al_spec }</textarea>
 	</div>
-	<div class="form-group">
+	<div class="field">
 		<label for="al_desc">자기소개:</label>
 		<textarea class="form-control" placeholder="Anything about you" name="al_desc" rows="4">${alba.al_desc }</textarea>
 	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
-	<button type="button" onclick="location.href='albaList.do';" class="btn btn-danger">Cancel</button>
+	<div class="ui buttons">
+	  <button onclick="location.href='albaList.do';" class="ui button">Cancel</button>
+	  <div class="or"></div>
+	  <button type="submit" class="ui positive button">Save</button>
+	</div>
 </form>
-<form id="licForm">
+<form id="licForm" hidden="hidden">
 	<input type="file" name="licensePic" id="licUpdate">히든파일폼
 	<input type="text" name="al_id" value="${alba.al_id }">
 	<input type="text" id="lic_code" name="lic_code">
@@ -198,7 +207,13 @@ function handleImgsFilesSelect(e) {
 		}
 		reader.readAsDataURL(f);
 	});
+	
 }
+$(function(){
+	$('.ui.radio.checkbox').checkbox();
+	$('.ui.checkbox').checkbox();
+})
+
 </script>
 <jsp:include page="/includee/postScript.jsp"/>
 </body>

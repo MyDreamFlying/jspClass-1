@@ -182,8 +182,8 @@
 				ON(C.BO_NO = #{bo_no} AND C.BO_NO = D.BO_NO)
 				WHEN MATCHED THEN
 				    UPDATE SET 
-				    BO_TITLE = '삭제된 글의 제목'
-				    , BO_CONTENT = '삭제된 글의 내용'
+				    BO_TITLE = '삭제된 게시글 입니다.'
+				    , BO_CONTENT = ' '
 				    , BO_WRITER = ' '
 				    , BO_DELETE = 'Y'
 				    DELETE WHERE D.CNT = 0
