@@ -167,16 +167,31 @@
 	</select>
 	
 	<delete id="deleteBoard" parameterType="BoardVO">
-		DELETE FROM
 		<choose>
 			<when test="bo_type eq 'BOARD'">
-			BOARD
+				MERGE INTO BOARD C
+				USING (
+				    SELECT BO_NO, (
+				        SELECT COUNT(*) - 1
+				        FROM BOARD B
+				        START WITH BO_NO = A.BO_NO
+				        CONNECT BY PRIOR BO_NO = BO_PARENT
+				    ) CNT
+				    FROM BOARD A
+				) D
+				ON(C.BO_NO = #{bo_no} AND C.BO_NO = D.BO_NO)
+				WHEN MATCHED THEN
+				    UPDATE SET 
+				    BO_TITLE = '삭제된 글의 제목'
+				    , BO_CONTENT = '삭제된 글의 내용'
+				    , BO_WRITER = ' '
+				    , BO_DELETE = 'Y'
+				    DELETE WHERE D.CNT = 0
 			</when>
-			<when test="bo_type eq 'NOTICE'">
-			NOTICE
+			<when test="bo_type neq 'BOARD'">
+				DELETE NOTICE WHERE BO_NO = ${bo_no}
 			</when>
 		</choose> 
-		WHERE BO_NO = #{bo_no}
 	</delete>
 	
 </mapper>

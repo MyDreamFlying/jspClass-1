@@ -16,6 +16,12 @@
 	}
 </style>
 </head>
+<c:if test="${not empty message }">
+	<script type="text/javascript">
+		alert("${message}")
+	</script>
+	<c:remove var="message" scope="session"/>
+</c:if>
 <h4>게시글 상세 조회</h4>
 <body>
 <button type="button" onclick="location.href=`${cPath}/board/boardList.do`" class="btn btn-info">목록으로</button>
@@ -87,6 +93,7 @@
       <div class="modal-body">
         <form id="delForm" action="${cPath }/board/boardDelete.do" method="post">
 			<input type="hidden" name="bo_no" value=${board.bo_no }>
+			<input type="hidden" name="bo_type" value=${board.bo_type }>
 			<input type="password" id="hiddenPass" name="bo_pass" required>&nbsp;
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 	        <button type="submit" class="btn btn-danger">삭제</button>

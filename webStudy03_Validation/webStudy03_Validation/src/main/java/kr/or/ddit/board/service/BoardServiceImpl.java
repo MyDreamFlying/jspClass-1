@@ -141,10 +141,9 @@ public class BoardServiceImpl implements IBoardService {
 	@Override
 	public ServiceResult removeBoard(BoardVO search) {
 		BoardVO board = boardDao.selectBoard(search);
-		int replyConunt = boardDao.selectReplyCount(search);
 		ServiceResult result = ServiceResult.FAIL;
 		int cnt = 0;
-		
+
 		try(
 				SqlSession session = sessionFactory.openSession();
 		){
@@ -171,15 +170,7 @@ public class BoardServiceImpl implements IBoardService {
 				}
 			}
 			
-			if(replyConunt >0) {
-				board.setBo_content("삭제된 게시글입니다.");
-				board.setBo_title("삭제된 게시글입니다.");
-				board.setBo_writer("삭제됨");
-				cnt = boardDao.updateBoard(board, session);
-			}else {
-				// 댓글이 달려있지 않으면 바로 삭제
-				cnt = boardDao.deleteBoard(board, session);
-			}
+			cnt = boardDao.deleteBoard(board, session);
 			
 			if(cnt >0) {
 				result = ServiceResult.OK;

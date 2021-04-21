@@ -24,8 +24,7 @@ public class BoardDeleteController {
 		String message = null;
 		
 		// 공지글이 아닐 경우에는 비밀번호 검증을 한다.
-		
-		if("BOARD".equals(board.getBo_type()) &&!service.boardAuthenticate(board)) {
+		if(!"NOTICE".equals(board.getBo_type()) && !service.boardAuthenticate(board)) {
 			message = "비밀번호가 일치하지 않음.";
 		}else {
 			ServiceResult result = service.removeBoard(board);
