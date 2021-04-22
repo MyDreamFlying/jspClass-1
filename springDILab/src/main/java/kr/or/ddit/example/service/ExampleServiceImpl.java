@@ -21,13 +21,30 @@ public class ExampleServiceImpl implements IExampleService {
 	
 	
 	private IExampleDAO dao;
+	
+	public ExampleServiceImpl() {
+		super();
+		System.out.println(getClass().getSimpleName()+" 객체 생성-기본 생성자");
+		// TODO Auto-generated constructor stub
+	}
+
 	public ExampleServiceImpl(IExampleDAO dao) {
 		super();
 		this.dao = dao;
+		System.out.println(getClass().getSimpleName()+" 객체 생성-argument 있는 생성자");
 	}
 
 	public void setDao(IExampleDAO dao) {
 		this.dao = dao;
+		System.out.println(getClass().getSimpleName()+"에서 setter inject 받음.");
+	}
+	
+	public void init() {
+		System.out.println(getClass().getSimpleName()+"객체 초기화");
+	}
+	
+	public void destroy() {
+		System.out.println(getClass().getSimpleName()+"객체 소멸");
 	}
 
 	@Override

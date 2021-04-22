@@ -2,6 +2,19 @@ package kr.or.ddit.example.dao;
 
 public class ExampleDAO_Oracle implements IExampleDAO{
 
+	public ExampleDAO_Oracle() {
+		super();
+		System.out.println(getClass().getSimpleName()+" 객체 생성");
+	}
+	
+	public void init() {
+		System.out.println(getClass().getSimpleName()+"객체 초기화");
+	}
+	
+	public void destroy() {
+		System.out.println(getClass().getSimpleName()+"객체 소멸");
+	}
+	
 	@Override
 	public String selectData(String pk) {
 		return String.format("%s로 Oracle에서 조회된 rawData", pk);

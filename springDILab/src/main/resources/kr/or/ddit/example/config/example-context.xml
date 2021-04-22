@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+<!-- 	Bean : 스프링 컨테이너에 의해 생명주기가 관리되는 객체 -->
+<!-- 	Spring container / IoC container / DI container / Bean Container -->
+	
+<!-- 	ExampleDAO_Oracle exampleDAO_Oracle = new ExampleDAO_Oracle(); -->
+	<bean id="exampleDAO_Oracle" class="kr.or.ddit.example.dao.ExampleDAO_Oracle"></bean>
+	<bean id="exampleDAO_MySql" class="kr.or.ddit.example.dao.ExampleDAO_MySql"></bean>
+<!-- 	ExampleServiceImpl exampleServiceImpl = new ExampleServiceImpl(exampleDAO_Oracle); -->
+		<bean id="exampleServiceImpl" class="kr.or.ddit.example.service.ExampleServiceImpl">
+			<constructor-arg name="dao" ref="exampleDAO_Oracle"/>
+		</bean>
+	
+</beans>

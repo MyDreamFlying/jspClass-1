@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	
+	default-lazy-init="false"
+	default-init-method="init"
+	default-destroy-method="destroy"
+	
+	>
+
+<!-- 스키마 정보 : bean , c, p -->
+	<bean depends-on="daoOracle" id="daoMySql" class="kr.or.ddit.example.dao.ExampleDAO_MySql"/>
+	<bean lazy-init="true" id="daoOracle" class="kr.or.ddit.example.dao.ExampleDAO_Oracle"></bean>
+	
+	<bean id="service1"
+		class="kr.or.ddit.example.service.ExampleServiceImpl"
+		c:dao-ref="daoMySql"
+		p:dao-ref="daoOracle"
+	>
+<!-- 		<constructor-arg name="dao" ref="daoMySql"/> -->
+<!-- 		<property name="dao" ref="daoMySql"></property> -->
+	</bean>
+	
+	<bean id="service2" scope="prototype" class="kr.or.ddit.example.service.ExampleServiceImpl"/>
+</beans>
