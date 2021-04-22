@@ -103,24 +103,40 @@ img{
 	<div class="ui form">
 		<div class="inline field">
 			<label>보유 자격증:</label>
+		   	<c:forEach items="${alba.licenseList}" var="license">
+	   			<c:if test="${not empty license.lic_name }">
+	   			 <div class="inline field">
+			   	 	<div class="license ui checkbox" data-lic_code="${license.lic_code}">
+			     		 <input type="checkbox" name="${license.lic_code}" checked disabled tabindex="0" class="hidden">
+			     		 <label>
+			     		 	${license.lic_name }
+			     		 	<c:choose>
+			     		 		<c:when test="${not empty license.lic_img}">
+					     		 	<button type='button' class='regLic small button'>수정</button>
+			     		 		</c:when>
+			     		 		<c:otherwise>
+					     		 	<button type='button' class='regLic small button'>등록</button>
+			     		 		</c:otherwise>
+			     		 	</c:choose>
+		     		 	</label>
+			   		 </div>
+			 	 </div>
+	   			</c:if>
+		   	</c:forEach>
 	   	<%
 	   		List<Map<String, Object>> licenseList = (List<Map<String, Object>>)request.getAttribute("licenseList");
 	   		List<String> holdingLicenseList = (List<String>)request.getAttribute("holdingLicenseList");
-	   		String checked = "";
 	   		for( Map<String,Object> license : licenseList){
-		   		String registerButton = "";
-	   			if(holdingLicenseList != null){
-	 	  			checked = holdingLicenseList.contains(license.get("lic_code")) ? "checked disabled" : "";
-	 	  			registerButton = !checked.isEmpty()? "<button type='button' class='regLic small olive button'>사본등록</button>" : "";
+	   			if(!(holdingLicenseList!=null && holdingLicenseList.contains(license.get("lic_code")))){
+		   		%>	
+		   			 <div class="inline field">
+				   	 	<div class="license ui checkbox" data-lic_code="<%=license.get("lic_code") %>">
+				     		 <input type="checkbox" name="<%=license.get("lic_code") %>" tabindex="0" class="hidden">
+				     		 <label><%=license.get("lic_name") %></label>
+				   		 </div>
+				 	 </div>
+		   		<%
 	   			}
-	   		%>	
-	   			 <div class="inline field">
-			   	 	<div class="license ui checkbox" data-lic_code="<%=license.get("lic_code") %>">
-			     		 <input type="checkbox" name="<%=license.get("lic_code") %>" <%=checked %> tabindex="0" class="hidden">
-			     		 <label><%=license.get("lic_name") %> <%=registerButton %></label>
-			   		 </div>
-			 	 </div>
-	   		<%
 	   		}
 	   	%>
 	   	</div>
@@ -139,8 +155,8 @@ img{
 	  <button type="submit" class="ui positive button">Save</button>
 	</div>
 </form>
-<form id="licForm" hidden="hidden">
-	<input type="file" name="licensePic" id="licUpdate">히든파일폼
+<form id="licForm" hidden="hidden" >
+	<input type="file" name="licensePic" id="licUpdate" accept="image/*">
 	<input type="text" name="al_id" value="${alba.al_id }">
 	<input type="text" id="lic_code" name="lic_code">
 </form>
@@ -150,9 +166,11 @@ $(function(){
 	// 이미지 업로드시 미리보기 이벤트
 	$("#profile").on("change", handleImgsFilesSelect);
 	
+	let btn;
 	// 자격증 사본 사진 등록 클릭시 이벤트
 	$('.regLic').on("click", function(){
-		lic_code = $(this).parent('div').data('lic_code');
+		let lic_code = $(this).parents('div.license').data('lic_code');
+		btn = $(this)
 		$('#lic_code').val(lic_code);
 		$("#licUpdate").click();
 	})
@@ -174,6 +192,7 @@ $(function(){
 			success : function(resp){
 				if(resp=='OK'){
 					alert("등록 성공");
+					btn.text("수정");
 				}else{
 					alert("등록 실패");
 				}

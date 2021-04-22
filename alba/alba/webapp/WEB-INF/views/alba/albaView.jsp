@@ -15,7 +15,8 @@ img.profileImg{
 	height : 100px;
 }
 img.licenseImg{
-	max-height : 500px;
+	max-height : 700px;
+	max-width : 700px;
 }
 .license{
 	width : 150px;
@@ -107,7 +108,11 @@ img.licenseImg{
 				   	<c:forEach items="${alba.licenseList}" var="license">
 				   		<c:choose>
 				   			<c:when test="${not empty license.lic_name }">
-								<label class="license">${license.lic_name }</label> <button data-al_id="${alba.al_id}" data-lic_code="${license.lic_code}" type="button" class="btn btn-dark btn-sm">보기</button> <br/>
+								<label class="license">${license.lic_name }</label> 
+								<c:if test="${not empty license.lic_img}">
+									<button data-al_id="${alba.al_id}" data-lic_code="${license.lic_code}" type="button" class="btn btn-dark btn-sm">보기</button>
+								</c:if>
+								<br/>
 				   			</c:when>
 					   		<c:otherwise>
 					   			보유 자격증 없음

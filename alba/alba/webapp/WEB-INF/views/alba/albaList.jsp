@@ -8,12 +8,11 @@
 body{
 	padding : 40px;
 }
-img{
-	height : 100px;
-	max-width : 150px;
-}
 .profile{
-	width : 120px;
+    width: 100px; height: 100px;
+    object-fit: cover;
+    object-position: bottom;
+    border-radius: 50%;
 }
 </style>
 <meta charset="UTF-8">
@@ -43,14 +42,14 @@ img{
 						</c:url>
 						<td>
 							<a href="${viewURL}">
-							<c:choose>
-								<c:when test="${not empty alba.al_img}">
-									<img src="${cPath}/profile/${alba.al_img}">
-								</c:when>
-								<c:otherwise>
-									<img src="${cPath}/profile/default_${alba.al_gen}.jpg">
-								</c:otherwise>
-							</c:choose>
+								<c:choose>
+									<c:when test="${not empty alba.al_img}">
+										<img class="profile" src="${cPath}/profile/${alba.al_img}">
+									</c:when>
+									<c:otherwise>
+										<img class="profile" src="${cPath}/profile/default_${alba.al_gen}.jpg">
+									</c:otherwise>
+								</c:choose>
 							</a>
 						</td>
 						<td>
