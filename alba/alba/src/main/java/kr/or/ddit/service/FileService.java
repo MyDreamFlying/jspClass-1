@@ -9,5 +9,10 @@ public interface FileService {
 	 * @return OK, FAIL
 	 */
 	public ServiceResult licUpload(LicenseVO license);
+	/**
+	 * @param license
+	 * @return OK, FAIL
+	 */
+	public LicenseVO selectLicense(LicenseVO search);
 		
 }

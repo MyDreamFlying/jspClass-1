@@ -21,4 +21,9 @@ public class FileServiceImpl implements FileService {
 		return dao.updateLicense(license)==1? ServiceResult.OK : ServiceResult.FAIL;
 	}
 
+	@Override
+	public LicenseVO selectLicense(LicenseVO search) {
+		return dao.selectLicense(search);
+	}
+
 }

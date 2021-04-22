@@ -109,7 +109,11 @@
 	</select>
 	
 	<select id="selectAlba" parameterType="string" resultMap="albaMap">
-		SELECT *
+		SELECT ALBA.AL_ID, AL_NAME, AL_AGE, AL_ZIP, AL_ADDR1, AL_ADDR2, AL_DESC
+				, AL_HP, ALBA.GR_CODE, AL_GEN,AL_MAIL, AL_CAREER, AL_SPEC, AL_IMG
+				, GR_NAME
+				, LIC_ALBA.LIC_CODE, LIC_ALBA.LIC_DATE, LIC_ALBA.LIC_IMG
+				, LICENSE.LIC_NAME
 		<include refid="fromFrag"/>
 		WHERE alba.AL_ID = #{al_id}
 	</select>

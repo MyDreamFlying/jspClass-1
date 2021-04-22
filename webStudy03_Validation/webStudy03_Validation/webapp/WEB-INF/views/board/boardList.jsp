@@ -9,6 +9,10 @@
 		max-width : 80px;
 		max-height : 80px;
 	}
+	img{
+		max-width : 200px;
+		max-height : 200px;
+	}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>

@@ -1,6 +1,7 @@
 package kr.or.ddit.controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,30 @@ public class FileController {
 				response = "OK";
 			}
 			out.write(response);
+		}
+		
+		return null;
+	}
+	
+	@RequestMapping(value="/showLicPicture.do")
+	public String showLicImgage(
+			@RequestParam("lic_code") String lic_code
+			,@RequestParam("al_id") String al_id
+			,HttpServletResponse resp
+			) throws IOException {
+		
+		LicenseVO license = new LicenseVO();
+		license.setAl_id(al_id);
+		license.setLic_code(lic_code);
+		license = service.selectLicense(license);
+		
+		byte[] img = license.getLic_img();
+		
+		try(
+			OutputStream out = resp.getOutputStream();
+		){
+			if(img != null)
+				out.write(img);
 		}
 		
 		return null;

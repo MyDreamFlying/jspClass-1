@@ -63,4 +63,14 @@ public class OtherDAOImpl implements OtherDAO {
 			}
 	}
 
+	@Override
+	public LicenseVO selectLicense(LicenseVO search) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				OtherDAO mapper = session.getMapper(OtherDAO.class);
+				return mapper.selectLicense(search);
+			}
+	}
+
 }

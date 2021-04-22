@@ -34,4 +34,11 @@
 		WHERE AL_ID = #{al_id} AND LIC_CODE = #{lic_code}
 	</update>
 	
+	<select id="selectLicense" parameterType="LicenseVO" resultType="LicenseVO">
+		SELECT *
+		FROM LIC_ALBA
+		WHERE AL_ID = #{al_id}
+				AND LIC_CODE= #{lic_code}
+	</select>
+	
 </mapper>

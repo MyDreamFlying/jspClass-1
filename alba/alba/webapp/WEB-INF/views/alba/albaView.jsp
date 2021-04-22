@@ -11,8 +11,11 @@ body{
 th{
 	width : 200px;
 }
-img{
+img.profileImg{
 	height : 100px;
+}
+img.licenseImg{
+	max-height : 500px;
 }
 .license{
 	width : 150px;
@@ -37,7 +40,7 @@ img{
 			<td>
 			<c:choose>
 				<c:when test="${not empty alba.al_img}">
-					<img src="${cPath}/profile/${alba.al_img}">
+					<img class="profileImg" src="${cPath}/profile/${alba.al_img}">
 				</c:when>
 				<c:otherwise>
 					<img src="${cPath}/profile/default_${alba.al_gen}.jpg">
@@ -100,21 +103,50 @@ img{
 		<tr>
 			<th>보유자격증</th>
 			<td>
-			   	<c:forEach items="${alba.licenseList}" var="license">
-			   		<c:choose>
-			   			<c:when test="${not empty license.lic_name }">
-							<label class="license">${license.lic_name }</label> <button data-lic_code="${license.lic_code}" type="button" class="btn btn-dark btn-sm">보기</button> <br/>
-			   			</c:when>
-				   		<c:otherwise>
-				   			보유 자격증 없음
-				   		</c:otherwise>
-			   		</c:choose>
-			   	</c:forEach>
+				<div id="licenseList">
+				   	<c:forEach items="${alba.licenseList}" var="license">
+				   		<c:choose>
+				   			<c:when test="${not empty license.lic_name }">
+								<label class="license">${license.lic_name }</label> <button data-al_id="${alba.al_id}" data-lic_code="${license.lic_code}" type="button" class="btn btn-dark btn-sm">보기</button> <br/>
+				   			</c:when>
+					   		<c:otherwise>
+					   			보유 자격증 없음
+					   		</c:otherwise>
+				   		</c:choose>
+				   	</c:forEach>
+				</div>
 			</td>
 		</tr>
 </table>
+<!--  license picture modal -->
+<div class="ui basic modal">
+  <div class="image content">
+    <img id="licenseImg" class="image licenseImg" src="http://blog.jinbo.net/attach/615/200937431.jpg">
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i>
+      Close
+    </div>
+  </div>
+</div>
+<!--  license picture modal End -->
 <jsp:include page="/includee/postScript.jsp"/>
 <script type="text/javascript">
+	$(function(){
+		$('#licenseList').on('click', 'button', function(){
+			let al_id = $(this).data('al_id');
+			let lic_code = $(this).data('lic_code');
+			
+			// set img src of img modal with result image
+			let contextPath = '${pageContext.request.contextPath}';
+			let imgSrc = contextPath+"/showLicPicture.do?al_id="+al_id+"&lic_code="+lic_code;
+			$('#licenseImg').attr("src",imgSrc);
+			
+			$('.ui.basic.modal').modal('show');
+		})
+	})
+
 	var deleteAlba = function(){
 		if (confirm('${alba.al_name}에 대한 정보를 정말로 삭제하겠습니까?')) {
 			location.href='albaDelete.do?al_id=${alba.al_id }';
