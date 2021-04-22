@@ -81,22 +81,43 @@ body{
 		<tr>
 			<td colspan="7">
 				<form id="searchForm">
-					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
-					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-					<input type="hidden" name="page" />
 					<div id="searchUI">
 						<button type="button" onclick="location.href='albaInsert.do';" class="positive ui button">알바등록</button>
+						<div class="ui radio checkbox">
+							<input type="radio" name="al_gen" value="">
+							<label>무관</label>
+						</div>
+						<div class="ui radio checkbox">
+							<input type="radio" name="al_gen" value="M">
+							<label>남</label>
+						</div>
+						<div class="ui radio checkbox">
+							<input type="radio" name="al_gen" value="F">
+							<label>여</label>
+						</div>
+						<select class="ui search dropdown" name="gr_code">
+							<option value>학력</option>
+							<c:forEach items="${gradeList}" var="grade">
+								<option value="${grade.gr_code}">${grade.gr_name}</option>
+							</c:forEach>
+						</select>
+						<select class="ui search dropdown" name="license">
+							<option value>자격증</option>
+							<c:forEach items="${licenseList}" var="license">
+								<option value="${license.lic_code}">${license.lic_name}</option>
+							</c:forEach>
+						</select>
 						<select class="ui search dropdown" name="searchType">
 							<option value>전체</option>
-							<option value="name">이름</option>
-							<option value="address">지역</option>
-							<option value="career">경력사항</option>
+							<option value="al_name">이름</option>
+							<option value="al_addr1">지역</option>
+							<option value="al_career">경력사항</option>
 						</select>
 						<div class="ui icon input">
 							<input type="text" class="prompt" placeholder="Search" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 							<i class="search icon"></i>
 						</div>
-						<input id="searchBtn" class="ui blue button" type="button" value="검색"/>
+						<input id="searchBtn" class="ui blue button" type="submit" value="검색"/>
 					</div>
 				</form>
 			</td>
@@ -107,16 +128,6 @@ body{
 	let searchForm = $("#searchForm");
 	let searchUI = $("#searchUI");
 	searchUI.find("[name='searchType']").val("${pagingVO.simpleSearch.searchType }");
-	
-	$('#searchBtn').on("click", function(){
-		let inputs = $("#searchUI").find(":input[name]");
-		$(inputs).each(function(idx, input){
-			let name = $(this).attr("name");
-			let sameInput = $("#searchForm").find("[name='"+name+"']");
-			$(sameInput).val($(this).val());
-		})
-		searchForm.submit();
-	});
 	
 	$("#pagingArea").on("click", "a", function(event){
 		event.preventDefault();

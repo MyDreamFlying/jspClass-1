@@ -1,7 +1,12 @@
 package kr.or.ddit.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
+import kr.or.ddit.dao.OtherDAO;
+import kr.or.ddit.dao.OtherDAOImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
@@ -14,12 +19,26 @@ import kr.or.ddit.vo.PagingVO;
 @Controller
 public class AlbaReadController {
 	private AlbaService service = AlbaServiceImpl.getInstance();
+	private OtherDAO otherDao = OtherDAOImpl.getInstance();
+	private List<Map<String, Object>> licenseList;
+	List<Map<String, Object>> gradeList;
+	
+	{
+		licenseList = otherDao.selectLicenseList();
+		gradeList = otherDao.selectGradeList();
+	}
+	
+	private void addAttribute(HttpServletRequest req) {
+		req.setAttribute("licenseList",licenseList);
+		req.setAttribute("gradeList",gradeList);
+	}
 	
 	@RequestMapping("/albaList.do")
 	public String albaList(
 			@ModelAttribute("detailSearch") AlbaVO detailSearch
 			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
 			,HttpServletRequest req) {
+		addAttribute(req);
 		
 		PagingVO<AlbaVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);
