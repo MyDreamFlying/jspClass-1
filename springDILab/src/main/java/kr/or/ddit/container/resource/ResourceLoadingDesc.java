@@ -24,12 +24,11 @@ public class ResourceLoadingDesc {
 		cpr = container.getResource("classpath:log4j2.xml");
 		System.out.println(cpr);
 		
-		fsr = container.getResource("file://d:/contents/텍스트파일.txt");
+		fsr = container.getResource("file:///Users/shane/Documents/GitHub/jspClass/contents/오래된 노래_utf8.txt");
 		System.out.println(fsr);
 		
 		urlr = (UrlResource) container.getResource("https://blog.kakaocdn.net/dn/0mySg/btqCUccOGVk/nQ68nZiNKoIEGNJkooELF1/img.jpg");
 		System.out.println(urlr);
-				
 				
 	}
 }
