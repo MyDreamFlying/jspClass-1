@@ -103,7 +103,7 @@ img{
 			   	<c:forEach items="${alba.licenseList}" var="license">
 			   		<c:choose>
 			   			<c:when test="${not empty license.lic_name }">
-							<label class="license">${license.lic_name }</label> <button type="button" class="btn btn-dark btn-sm">보기</button> <br/>
+							<label class="license">${license.lic_name }</label> <button data-lic_code="${license.lic_code}" type="button" class="btn btn-dark btn-sm">보기</button> <br/>
 			   			</c:when>
 				   		<c:otherwise>
 				   			보유 자격증 없음

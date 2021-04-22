@@ -85,21 +85,21 @@ img{
 					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
 					<input type="hidden" name="page" />
-				</form>
-				<div id="searchUI">
-					<button type="button" onclick="location.href='albaInsert.do';" class="positive ui button">알바등록</button>
-					<select class="ui search dropdown" name="searchType">
-						<option value>전체</option>
-						<option value="name">이름</option>
-						<option value="address">지역</option>
-						<option value="career">경력사항</option>
-					</select>
-					<div class="ui icon input">
-						<input type="text" class="prompt" placeholder="Search" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-						<i class="search icon"></i>
+					<div id="searchUI">
+						<button type="button" onclick="location.href='albaInsert.do';" class="positive ui button">알바등록</button>
+						<select class="ui search dropdown" name="searchType">
+							<option value>전체</option>
+							<option value="name">이름</option>
+							<option value="address">지역</option>
+							<option value="career">경력사항</option>
+						</select>
+						<div class="ui icon input">
+							<input type="text" class="prompt" placeholder="Search" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
+							<i class="search icon"></i>
+						</div>
+						<input id="searchBtn" class="ui blue button" type="button" value="검색"/>
 					</div>
-					<input id="searchBtn" class="ui blue button" type="button" value="검색"/>
-				</div>
+				</form>
 			</td>
 		</tr>
 	</tfoot>
