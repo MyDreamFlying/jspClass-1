@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+		
+<!-- 	프로퍼티 정보를 읽어서 Property source 내에서 관리함. -->
+<!-- 	프로퍼티 정보에 접근할때는 ${프로퍼티명} 형태의 placeholder를 사용함. -->
+
+	<context:property-placeholder location="classpath:kr/or/ddit/dbinfo.properties"/>
+	
+	<util:properties id="dbInfo" location="classpath:kr/or/ddit/dbinfo.properties">
+		<prop key="newProp">newValue</prop>
+	</util:properties>
+	
+	<bean id="infoVO" class="kr.or.ddit.container.collection.DBInfoVO" 
+		p:driverClassName="#{dbInfo['maindb.driverClassName']}"
+		p:url="#{dbInfo['maindb.url']}"
+		p:user="#{dbInfo['maindb.user']}"
+		p:password="#{dbInfo['maindb.password']}"
+		p:maxWait="#{dbInfo['maindb.maxWait'] * 2}"
+	/>
+	
+<!-- 	springEL(spEL)은 jsp EL과 사용법이 유사함. -->
+<!-- 	. 표기법이나 [] 표기 모두 사용 가능 -->
+<!-- 	+, * : 두 연산자는 문자열 concat 연산 기능까지 가짐 -->
+	
+	<bean id="infoVO2" class="kr.or.ddit.container.collection.DBInfoVO"
+		c:driverClassName="#{infoVO.driverClassName}"
+		c:url="#{infoVO.url + 'abc'}"
+		c:user="#{infoVO.user}"
+		c:password="#{infoVO.password * 2}"
+		c:maxWait="#{infoVO.maxWait * 2}"
+	/>
+	
+	<bean id="infoVO3" class="kr.or.ddit.container.collection.DBInfoVO"
+		p:driverClassName="${maindb.driverClassName}"
+		p:url="${maindb.url}"
+		p:user="${maindb.user}"
+		p:password="${maindb.password}"
+		p:maxWait="${maindb.maxWait}"
+	/>
+	
+	
+</beans>

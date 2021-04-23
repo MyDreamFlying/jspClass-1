@@ -8,6 +8,9 @@
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
 		<config>src/main/resources/kr/or/ddit/container/conf/variousDI-context.xml</config>
+		<config>src/main/resources/kr/or/ddit/container/conf/collectionDI-context.xml</config>
+		<config>src/main/resources/kr/or/ddit/container/conf/calendar-context.xml</config>
+		<config>src/main/resources/kr/or/ddit/container/conf/properties-context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

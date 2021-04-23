@@ -1,5 +1,8 @@
 package kr.or.ddit.crawlring;
 
+import java.util.Properties;
+import java.util.Map.Entry;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,8 +12,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class SeleniumAndParserTest {
-
+	
 	@Test
+	public void testcase() {
+		Properties props = System.getProperties();
+		for(Entry<Object, Object> prop : props.entrySet()) {
+			Object key = prop.getKey();
+			Object value = prop.getValue();
+			System.out.printf("%s : %s\n",key, value);
+		}
+	}
+
+//	@Test
 	public void test() {
 		System.setProperty("webdriver.chrome.driver","/opt/WebDriver/bin/chromedriver");
 		

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- Calendar를 Bean으로 등록하고,  -->
+<!-- 주입을 받아서 날짜를 포함한 현재 시간을 콘솔에 출력할 것. -->
+
+	<bean id="now" class="kr.or.ddit.container.collection.CalendarFactoryBean"/>
+
+</beans>
