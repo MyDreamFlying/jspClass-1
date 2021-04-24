@@ -11,7 +11,7 @@ public class Test01Connection {
 		
 		String user = "root";
 		String password = "python";
-		String url = "jdbc:mysql://localhost:3306?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false";
+		String url = "jdbc:mysql://localhost:3306";
 		try(
 			Connection conn = DriverManager.getConnection(url, user, password);
 		) {

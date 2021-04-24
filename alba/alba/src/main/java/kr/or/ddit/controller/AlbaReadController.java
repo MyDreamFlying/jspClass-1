@@ -9,12 +9,14 @@ import kr.or.ddit.dao.OtherDAO;
 import kr.or.ddit.dao.OtherDAOImpl;
 import kr.or.ddit.mvc.annotation.Controller;
 import kr.or.ddit.mvc.annotation.RequestMapping;
+import kr.or.ddit.mvc.annotation.RequestMethod;
 import kr.or.ddit.mvc.annotation.resolvers.ModelAttribute;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParam;
 import kr.or.ddit.service.AlbaService;
 import kr.or.ddit.service.AlbaServiceImpl;
 import kr.or.ddit.vo.AlbaVO;
 import kr.or.ddit.vo.PagingVO;
+import kr.or.ddit.vo.SearchVO;
 
 @Controller
 public class AlbaReadController {
@@ -36,12 +38,14 @@ public class AlbaReadController {
 	@RequestMapping("/albaList.do")
 	public String albaList(
 			@ModelAttribute("detailSearch") AlbaVO detailSearch
+			,@ModelAttribute(value = "SearchVO") SearchVO searchVO
 			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
 			,HttpServletRequest req) {
 		addAttribute(req);
 		
 		PagingVO<AlbaVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);
+		pagingVO.setSimpleSearch(searchVO);
 		pagingVO.setDetailSearch(detailSearch);
 		
 		int totalRecord = service.selectTotalRecord(pagingVO);

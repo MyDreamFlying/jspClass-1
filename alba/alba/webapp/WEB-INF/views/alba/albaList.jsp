@@ -81,6 +81,7 @@ body{
 		<tr>
 			<td colspan="7">
 				<form id="searchForm">
+					<input type="hidden" name="page" />
 					<div id="searchUI">
 						<button type="button" onclick="location.href='albaInsert.do';" class="positive ui button">알바등록</button>
 						<div class="ui radio checkbox">

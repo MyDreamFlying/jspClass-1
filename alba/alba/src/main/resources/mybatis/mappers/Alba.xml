@@ -9,7 +9,28 @@
 			left outer join license on (lic_alba.lic_code = license.lic_code)
 	</sql>
 	<sql id="searchFrag">
-	
+		<where>
+			<if test="simpleSearch!=null and @org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.searchWord)">
+				<choose>
+					<when test="simpleSearch.searchType eq 'al_name'">
+						INSTR(AL_NAME, #{simpleSearch.searchWord}) > 0 
+					</when>
+					<when test="simpleSearch.searchType eq 'al_addr1'">
+						INSTR(AL_ADDR1, #{simpleSearch.searchWord}) > 0 
+					</when>
+					<when test="simpleSearch.searchType eq 'al_career'">
+						INSTR(AL_CAREER, #{simpleSearch.searchWord}) > 0 
+					</when>
+					<otherwise>
+						INSTR(AL_NAME, #{simpleSearch.searchWord}) > 0 
+						OR 
+						INSTR(AL_ADDR1, #{simpleSearch.searchWord}) > 0 
+						OR
+						INSTR(AL_CAREER, #{simpleSearch.searchWord}) > 0 
+					</otherwise>
+				</choose>
+			</if>
+		</where>
 	</sql>
 	
 	<delete id="deleteAlba" parameterType="String">
@@ -95,7 +116,7 @@
 					select ALBA.AL_ID, AL_NAME, AL_ADDR1, AL_HP, AL_GEN, AL_MAIL,AL_IMG,GR_NAME
 					from alba
 							INNER JOIN GRADE ON (ALBA.GR_CODE = GRADE.GR_CODE)
-					<include refid="searchFrag"/>		
+					<include refid="searchFrag"/>	
 					ORDER BY AL_ID desc
 					)A, (select @rownum:=0) temp
 			) B
