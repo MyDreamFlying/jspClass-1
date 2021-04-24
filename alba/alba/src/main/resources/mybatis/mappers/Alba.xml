@@ -30,6 +30,17 @@
 					</otherwise>
 				</choose>
 			</if>
+			<if test="detailSearch neq null">
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailSearch.al_gen)">
+					AND AL_GEN = #{detailSearch.al_gen}
+				</if>
+				<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(detailSearch.gr_code)">
+					AND ALBA.GR_CODE = #{detailSearch.gr_code}
+				</if>
+			</if>
+			<if test="@org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.lic_code)">
+				AND LIC_ALBA.LIC_CODE = #{simpleSearch.lic_code}
+			</if>
 		</where>
 	</sql>
 	
@@ -114,8 +125,16 @@
 			select @rownum:=@rownum+1 as no,A.*
 			from	(
 					select ALBA.AL_ID, AL_NAME, AL_ADDR1, AL_HP, AL_GEN, AL_MAIL,AL_IMG,GR_NAME
-					from alba
-							INNER JOIN GRADE ON (ALBA.GR_CODE = GRADE.GR_CODE)
+					<choose>
+						<when test="@org.apache.commons.lang3.StringUtils@isNotBlank(simpleSearch.lic_code)">
+							,LIC_ALBA.LIC_CODE
+							<include refid="fromFrag"/>
+						</when>
+						<otherwise>
+						from alba
+								INNER JOIN GRADE ON (ALBA.GR_CODE = GRADE.GR_CODE)
+						</otherwise>
+					</choose>
 					<include refid="searchFrag"/>	
 					ORDER BY AL_ID desc
 					)A, (select @rownum:=0) temp
@@ -125,8 +144,12 @@
 	
 	<select id="selectTotalRecord" parameterType="pagingVO" resultType="int">
 		SELECT COUNT(*)
-		FROM ALBA
-		<include refid="searchFrag"/>
+		FROM(
+			SELECT DISTINCT ALBA.AL_ID
+			<include refid="fromFrag"/>
+			<include refid="searchFrag"/>
+			GROUP BY ALBA.AL_ID
+		)A
 	</select>
 	
 	<select id="selectAlba" parameterType="string" resultMap="albaMap">

@@ -85,32 +85,32 @@ body{
 					<div id="searchUI">
 						<button type="button" onclick="location.href='albaInsert.do';" class="positive ui button">알바등록</button>
 						<div class="ui radio checkbox">
-							<input type="radio" name="al_gen" value="">
+							<input type="radio" name="al_gen" value="" ${empty pagingVO.detailSearch.al_gen ? "checked " : ""}>
 							<label>무관</label>
 						</div>
 						<div class="ui radio checkbox">
-							<input type="radio" name="al_gen" value="M">
+							<input type="radio" name="al_gen" value="M" ${pagingVO.detailSearch.al_gen eq 'M' ? "checked " : ""}>
 							<label>남</label>
 						</div>
 						<div class="ui radio checkbox">
-							<input type="radio" name="al_gen" value="F">
+							<input type="radio" name="al_gen" value="F" ${pagingVO.detailSearch.al_gen eq 'F' ? "checked " : ""}>
 							<label>여</label>
 						</div>
 						<select class="ui search dropdown" name="gr_code">
 							<option value>학력</option>
 							<c:forEach items="${gradeList}" var="grade">
-								<option value="${grade.gr_code}">${grade.gr_name}</option>
+								<option value="${grade.gr_code}" ${pagingVO.detailSearch.gr_code eq grade.gr_code ? "selected " : ""}>${grade.gr_name}</option>
 							</c:forEach>
 						</select>
-						<select class="ui search dropdown" name="license">
+						<select class="ui search dropdown" name="lic_code">
 							<option value>자격증</option>
 							<c:forEach items="${licenseList}" var="license">
-								<option value="${license.lic_code}">${license.lic_name}</option>
+								<option value="${license.lic_code}" ${pagingVO.simpleSearch.lic_code eq license.lic_code ? "selected " : ""}>${license.lic_name}</option>
 							</c:forEach>
 						</select>
 						<select class="ui search dropdown" name="searchType">
 							<option value>전체</option>
-							<option value="al_name">이름</option>
+							<option value="al_name" >이름</option>
 							<option value="al_addr1">지역</option>
 							<option value="al_career">경력사항</option>
 						</select>
