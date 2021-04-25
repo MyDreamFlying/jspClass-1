@@ -16,6 +16,7 @@
 		<config>src/main/resources/kr/or/ddit/container/conf/child-context.xml</config>
 		<config>src/main/resources/kr/or/ddit/container/conf/hierarchy/root-context.xml</config>
 		<config>src/main/resources/kr/or/ddit/container/conf/hierarchy/child-context.xml</config>
+		<config>src/main/resources/kr/or/ddit/container/conf/starcraft.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
