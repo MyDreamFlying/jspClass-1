@@ -14,6 +14,9 @@ body{
     object-position: bottom;
     border-radius: 50%;
 }
+.page,.currPage{
+	font-size : 1.3em;
+}
 </style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -119,6 +122,7 @@ body{
 							<i class="search icon"></i>
 						</div>
 						<input id="searchBtn" class="ui blue button" type="submit" value="검색"/>
+						<button type="button" class="negative ui button" onclick="resetSearch()">검색초기화</button>
 					</div>
 				</form>
 			</td>
@@ -139,6 +143,10 @@ body{
 		}
 		return false;
 	})
+	
+	function resetSearch(){
+		location.href="${cPath}/albaList.do";
+	}
 </script>
 <jsp:include page="/includee/postScript.jsp"/>
 </body>

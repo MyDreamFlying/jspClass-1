@@ -50,8 +50,8 @@ public class PagingVO<T> implements Serializable{
 		
 	}
 	
-	private static String aPattern = "<a href='#' data-page='%d'>[%s]</a>";
-	private static String currentPagePtrn = "<a href='#'>[%s]</a>";
+	private static String aPattern = "<a href='#' data-page='%d'><span class='page'>[%s]</span></a>";
+	private static String currentPagePtrn = "<span class='currPage'>[%s]</span>";
 	
 	public String getPagingHTML() {
 		StringBuffer html = new StringBuffer();
