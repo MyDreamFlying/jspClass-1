@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.stereotype.Repository;
 
 import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.AttachVO;
 import kr.or.ddit.vo.BoardVO;
 
+@Repository
 public class AttachDAOImpl implements IAttachDAO {
 	private static AttachDAOImpl self;
 	private AttachDAOImpl() {}

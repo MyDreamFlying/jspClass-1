@@ -2,7 +2,6 @@ package kr.or.ddit.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +11,10 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,8 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import kr.or.ddit.board.dao.AttachDAOImpl;
 import kr.or.ddit.board.dao.IAttachDAO;
 import kr.or.ddit.board.service.BoardServiceImpl;
@@ -33,6 +34,7 @@ import kr.or.ddit.vo.AttachVO;
 
 @Controller
 public class BoardFileController {
+	private static final Logger logger = LoggerFactory.getLogger(BoardFileController.class);
 	
 	@Inject
 	private WebApplicationContext container;
@@ -42,15 +44,20 @@ public class BoardFileController {
 //		this.container = container;
 //		application = container.getServletContext();
 //	}
+	@Value("#{appInfo.boardImages}")
+	private String saveFolderUrl;
+	private File saveFolder;
 	
 	@PostConstruct
 	public void init() {
 		application = container.getServletContext();
+		String saveFolderPath = application.getRealPath(saveFolderUrl);
+		saveFolder = new File(saveFolderPath);
+		logger.info("{}초기화, {}생성됨.", getClass().getSimpleName(), saveFolder.getAbsolutePath());
 	}
 	
 	IAttachDAO attachDAO = AttachDAOImpl.getInstance();
 	IBoardService service = BoardServiceImpl.getInstance();
-	String savedfolder ="/Users/shane/Documents/GitHub/jspClass/attaches";
 	
 	@RequestMapping(value="/board/download.do")
 	public String download(
@@ -70,13 +77,11 @@ public class BoardFileController {
 	@ResponseBody
 	@RequestMapping(value="/board/boardImage.do"
 				, method = RequestMethod.POST
-				,produces = "application/json;charset-UTF-8")
+				,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public Map<String, Object> imageUpload(
 		@RequestPart("upload") MultipartFile upload
-		) throws IOException {
-		String saveFolderUrl = "/boardImages";
-		String saveFolderPath = application.getRealPath(saveFolderUrl);
-		File saveFolder = new File(saveFolderPath);
+		) throws IOException{
+
 		Map<String, Object> resultMap = new HashMap<>();
 		if(!upload.isEmpty()) {
 			String saveName = UUID.randomUUID().toString();

@@ -5,16 +5,29 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.view.AbstractView;
 
 import kr.or.ddit.vo.AttachVO;
 
 public class DownloadView extends AbstractView {
+	private static final Logger logger = LoggerFactory.getLogger(DownloadView.class);
+	
+	@Value("#{appInfo.attachPath}")
+	private File saveFolder;
+	
+	@PostConstruct
+	public void init() {
+		logger.info("{}초기화, {}주입됨.", getClass().getSimpleName(), saveFolder.getAbsolutePath());
+	}
 
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest req,

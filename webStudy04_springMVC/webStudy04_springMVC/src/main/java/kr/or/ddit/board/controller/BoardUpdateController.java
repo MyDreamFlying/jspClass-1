@@ -5,9 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,30 +25,32 @@ import kr.or.ddit.vo.BoardVO;
 
 @Controller
 public class BoardUpdateController {
-	private IBoardService service = BoardServiceImpl.getInstance();
+	
+	@Inject
+	private IBoardService service;
 	
 	@RequestMapping("/board/boarUpdate.do")
 	public String updateForm(
-			HttpServletRequest req
-			,@RequestParam(value="bo_no") int bo_no) {
+			Model model
+			,@RequestParam(value="bo_no") int bo_no){
 		BoardVO board = new BoardVO();
 		board.setBo_no(bo_no);
 		board = service.retrieveBoard(board);
-		req.setAttribute("board",board);
+		model.addAttribute("board",board);
 		
 		return "board/boardForm";
 	}
 	
 	@RequestMapping(value="/board/boarUpdate.do", method = RequestMethod.POST)
 	public String updateForm(
-			HttpServletRequest req
-			,@RequestPart(value="bo_files",required = false) MultipartFile[] bo_files
+			Model model
+			,HttpServletRequest req
 			,@ModelAttribute("board") BoardVO board) {
 		Map<String, List<String>> errors = new LinkedHashMap<>();
 		
 		String view = "board/boardForm";
 		String message = null;
-		req.setAttribute("errors", errors);
+		model.addAttribute("errors", errors);
 		
 		// 지울 첨부파일들 등록
 		String[] attArr = req.getParameterValues("att_no");
@@ -64,20 +68,6 @@ public class BoardUpdateController {
 		if("BOARD".equals(board.getBo_type()) &&!service.boardAuthenticate(board)) {
 			message = "비밀번호가 일치하지 않음.";
 		}else {
-			
-			if(bo_files != null) {
-				List<AttachVO> attachList = new ArrayList<>();
-				for(MultipartFile file : bo_files) {
-					// BoardVO에 AttachVO들 등록
-					if(!file.isEmpty()) {
-						AttachVO attachFile = new AttachVO(file);
-						attachList.add(attachFile);
-					}
-				}
-				if(attachList.size() > 0)
-					board.setAttachList(attachList);
-			}
-			
 			ServiceResult result = service.modifyBoard(board);
 			
 			if(ServiceResult.OK.equals(result)) {
@@ -87,7 +77,7 @@ public class BoardUpdateController {
 			}
 		}
 		
-		req.setAttribute("message", message);
+		model.addAttribute("message", message);
 		return view;
 	}
 	

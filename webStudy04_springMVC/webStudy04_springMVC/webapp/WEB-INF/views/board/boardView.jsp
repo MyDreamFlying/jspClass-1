@@ -21,7 +21,6 @@
 	<script type="text/javascript">
 		alert("${message}")
 	</script>
-	<c:remove var="message" scope="session"/>
 </c:if>
 <h4>게시글 상세 조회</h4>
 <body>

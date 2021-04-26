@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.or.ddit.board.service.BoardServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
@@ -27,7 +30,8 @@ import kr.or.ddit.vo.PagingVO;
 @Controller
 public class BoardReadController {
 	public static final String BOARDAUTH = "board.authenticated";
-	private IBoardService service = BoardServiceImpl.getInstance();
+	@Inject
+	private IBoardService service;
 	
 	@RequestMapping("/board/noticeList.do")
 	public String noticeList(HttpServletRequest req
@@ -36,10 +40,10 @@ public class BoardReadController {
 			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
 			,@RequestParam(value="startDate", required=false) String startDate
 			,@RequestParam(value="endDate", required=false) String endDate
-			) {
+			) throws IOException {
 		searchType = "type";
 		searchWord = "NOTICE";
-		return selectBoardList(startDate, endDate, searchType, searchWord, currentPage, req);
+		return selectBoardList(startDate, endDate, searchType, searchWord, currentPage, req, null);
 	}
 
 	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
@@ -77,7 +81,8 @@ public class BoardReadController {
 			@RequestParam(value="searchWord", required=false) String searchWord,
 			@RequestParam(value="page", required=false, defaultValue="1") int currentPage,
 			HttpServletRequest req
-			){
+			,HttpServletResponse resp
+			) throws IOException{
 		PagingVO<BoardVO> pagingVO = new PagingVO<>();
 		
 		Map<String, Object> searchMap = new HashMap<>();
@@ -94,6 +99,7 @@ public class BoardReadController {
 		
 		List<BoardVO> boardList = service.retrieveBoardList(pagingVO);
 		
+		
 		for(BoardVO tmp : boardList) {
 			String source = tmp.getBo_content();
 			if(source != null) {
@@ -104,17 +110,29 @@ public class BoardReadController {
 					Element img = imgs.get(0);
 					thumbnail = img.attr("src");
 				}
-				
 				tmp.setThumbnail(thumbnail);
 			}
-			
 		}
 		
 		pagingVO.setDataList(boardList);
 		
-		req.setAttribute("pagingVO", pagingVO);
-		return "board/boardList";
+		String accept = req.getHeader("Accept");
+		String view = null;
+		if(StringUtils.containsIgnoreCase(accept, "json")) {
+			resp.setContentType("application/json;charset=UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			try(
+				PrintWriter out = resp.getWriter();
+			){
+				mapper.writeValue(out, pagingVO);
+			}
+		}else {
+			req.setAttribute("pagingVO", pagingVO);
+			view = "board/boardList";
+		}
+		return view;
 	}
+		
 	
 	@RequestMapping("/board/boardView.do")
 	public String viewForAjax(

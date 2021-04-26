@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
-
 //@Controller
 public class FileUploadController_bak {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController_bak.class);
@@ -77,7 +75,7 @@ public class FileUploadController_bak {
 		if(StringUtils.isNotBlank(originalFileName1)) {
 			String mime1 = uploadFile1.getContentType();
 			if(!mime1.startsWith("image/")) {
-				throw new BadRequestException();
+//				throw new BadRequestException();
 			}
 			
 			File saveFile1 = new File(saveFolder, originalFileName1);

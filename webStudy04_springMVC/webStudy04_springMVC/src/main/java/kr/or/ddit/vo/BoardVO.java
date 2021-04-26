@@ -1,10 +1,13 @@
 package kr.or.ddit.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.validator.BoardInsertGroup;
 import kr.or.ddit.validator.UpdateGroup;
@@ -41,6 +44,23 @@ public class BoardVO {
 	
 	private int startAttNo;
 	private List<AttachVO> attachList;
+	private MultipartFile[] bo_files;
+	public void setBo_files(MultipartFile[] bo_files) {
+		this.bo_files = bo_files;
+		if(bo_files != null) {
+			List<AttachVO> attachList = new ArrayList<>();
+			for(MultipartFile file : bo_files) {
+				// BoardVO에 AttachVO들 등록
+				if(!file.isEmpty()) {
+					AttachVO attachFile = new AttachVO(file);
+					attachList.add(attachFile);
+				}
+			}
+			if(attachList.size() > 0)
+				this.attachList = attachList;
+		}
+	}
+	
 	private int[] deleteAttachList;
 	private List<Reply2VO> replyList;
 	
