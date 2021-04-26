@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,14 +18,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.board.service.IBoardService;
+import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.BadRequestException;
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
 
@@ -32,6 +41,13 @@ public class BoardReadController {
 	public static final String BOARDAUTH = "board.authenticated";
 	@Inject
 	private IBoardService service;
+	@Inject
+	private WebApplicationContext container;
+	private ServletContext application;
+	@PostConstruct
+	public void init() {
+		application = container.getServletContext();
+	}
 	
 	@RequestMapping("/board/noticeList.do")
 	public String noticeList(HttpServletRequest req
@@ -40,10 +56,25 @@ public class BoardReadController {
 			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
 			,@RequestParam(value="startDate", required=false) String startDate
 			,@RequestParam(value="endDate", required=false) String endDate
+			,Model model
 			) throws IOException {
 		searchType = "type";
 		searchWord = "NOTICE";
-		return selectBoardList(startDate, endDate, searchType, searchWord, currentPage, req, null);
+		return listForHTML(startDate, endDate, searchType, searchWord, currentPage, model);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/board/noticeList.do", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public PagingVO<BoardVO> noticeListForAjax(HttpServletRequest req
+			,@RequestParam(value="searchType", required=false) String searchType
+			,@RequestParam(value="searchWord", required=false) String searchWord
+			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
+			,@RequestParam(value="startDate", required=false) String startDate
+			,@RequestParam(value="endDate", required=false) String endDate
+			) throws IOException {
+		searchType = "type";
+		searchWord = "NOTICE";
+		return listForAjax(startDate, endDate, searchType, searchWord, currentPage);
 	}
 
 	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
@@ -54,9 +85,7 @@ public class BoardReadController {
 			,HttpSession session
 			) throws IOException {
 		
-		BoardVO search = new BoardVO();
-		search.setBo_no(bo_no);
-		search.setBo_pass(bo_pass);
+		BoardVO search = BoardVO.builder().bo_no(bo_no).bo_pass(bo_pass).build();
 		String result = "fail";
 		
 		if(service.boardAuthenticate(search)) {
@@ -73,23 +102,25 @@ public class BoardReadController {
 		return null;
 	}
 	
-	@RequestMapping("/board/boardList.do")
-	public String selectBoardList(
-			@RequestParam(value="startDate", required=false) String startDate,
-			@RequestParam(value="endDate", required=false) String endDate,
-			@RequestParam(value="searchType", required=false) String searchType,
-			@RequestParam(value="searchWord", required=false) String searchWord,
-			@RequestParam(value="page", required=false, defaultValue="1") int currentPage,
-			HttpServletRequest req
-			,HttpServletResponse resp
-			) throws IOException{
-		PagingVO<BoardVO> pagingVO = new PagingVO<>();
+	@RequestMapping(value={"/board/boardList.do"})
+	public String listForHTML(
+			@RequestParam Map<String, Object> searchMap
+			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
+			,Model model
+		){
+		PagingVO<BoardVO> pagingVO = listForAjax(searchMap, currentPage);
+		model.addAttribute("pagingVO", pagingVO);
+		return "board/boardList";
 		
-		Map<String, Object> searchMap = new HashMap<>();
-		searchMap.put("startDate", startDate);
-		searchMap.put("endDate", endDate);
-		searchMap.put("searchType", searchType);
-		searchMap.put("searchWord", searchWord);
+	}
+	
+	@RequestMapping(value="/board/boardList.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public PagingVO<BoardVO> listForAjax(
+			@RequestParam Map<String, Object> searchMap
+			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
+		){
+		PagingVO<BoardVO> pagingVO = new PagingVO<>();
 		
 		pagingVO.setSearchMap(searchMap);
 		pagingVO.setCurrentPage(currentPage);
@@ -105,7 +136,7 @@ public class BoardReadController {
 			if(source != null) {
 				Document dom = Jsoup.parse(source);
 				Elements imgs = dom.getElementsByTag("img");
-				String thumbnail = req.getContextPath() + "/images/thumbnail-default.jpg";
+				String thumbnail = application.getContextPath() + "/images/thumbnail-default.jpg";
 				if(!imgs.isEmpty()) {
 					Element img = imgs.get(0);
 					thumbnail = img.attr("src");
@@ -115,36 +146,17 @@ public class BoardReadController {
 		}
 		
 		pagingVO.setDataList(boardList);
+		return pagingVO;
 		
-		String accept = req.getHeader("Accept");
-		String view = null;
-		if(StringUtils.containsIgnoreCase(accept, "json")) {
-			resp.setContentType("application/json;charset=UTF-8");
-			ObjectMapper mapper = new ObjectMapper();
-			try(
-				PrintWriter out = resp.getWriter();
-			){
-				mapper.writeValue(out, pagingVO);
-			}
-		}else {
-			req.setAttribute("pagingVO", pagingVO);
-			view = "board/boardList";
-		}
-		return view;
 	}
-		
 	
 	@RequestMapping("/board/boardView.do")
-	public String viewForAjax(
-			@RequestParam("what") int bo_no
-			, HttpServletRequest req
-			, HttpServletResponse resp
-			, HttpSession session
-		) throws IOException{
-		String accept = req.getHeader("Accept");
-		
-		BoardVO search = new BoardVO();
-		req.setAttribute("search", search);
+	public String view(
+		 @RequestParam("what") int bo_no
+		 ,@ModelAttribute BoardVO search
+		 ,Model model
+		 ,HttpSession session
+		) {
 		search.setBo_no(bo_no);
 		BoardVO board = service.retrieveBoard(search);
 		
@@ -159,24 +171,44 @@ public class BoardReadController {
 		
 		String view = null;
 		if(valid) {
-			if(accept.contains("plain")) {
-				resp.setContentType("text/plain;charset=UTF-8");
-				try(
-						PrintWriter out = resp.getWriter();	
-						){
-					out.println(board.getBo_content());
-				}
-			}else {
-				req.setAttribute("board", board);
-				view = "board/boardView";
-			}
+			model.addAttribute("board", board);
+			view = "board/boardView";
+		
 		}else {
 			view = "board/passwordForm";
-		}// if(valid) end
-		
-		session.removeAttribute(BOARDAUTH);
+		}	
 		return view;
+		
 	}
+	
+	@RequestMapping(value="/board/boardView.do", produces = "text/plain;charset=UTF-8")
+	@ResponseBody
+	public String preview(
+			@RequestParam("what") int bo_no
+			, @ModelAttribute("search") BoardVO search
+			, HttpSession session
+		){
+		
+		search.setBo_no(bo_no);
+		BoardVO board = service.retrieveBoard(search);
+		
+		boolean valid = true;
+		if("Y".equals(board.getBo_sec())) {
+			BoardVO authenticated = 
+					(BoardVO) session.getAttribute(BOARDAUTH);
+			if(authenticated==null || authenticated.getBo_no() != bo_no) {
+				valid = false;
+			}
+		}
+		if(valid) {
+			session.removeAttribute(BOARDAUTH);
+			return board.getBo_content();
+		}else {
+			throw new BadRequestException("비밀글은 미리보기 불가.");
+		}
+		
+	}
+
 	
 }
 

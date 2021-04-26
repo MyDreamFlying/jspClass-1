@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.logging.log4j.core.net.DatagramOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -216,6 +217,13 @@ public class BoardServiceImpl implements IBoardService {
 		String savedPass = saved.getBo_pass();
 		String inputPass = search.getBo_pass();
 		return savedPass.equals(inputPass);
+	}
+	@Override
+	public ServiceResult recommend(int bo_no) {
+		int result = boardDao.recommend(bo_no);
+		
+		return result == 1 ? ServiceResult.OK : ServiceResult.FAIL;
+		
 	}
 
 }

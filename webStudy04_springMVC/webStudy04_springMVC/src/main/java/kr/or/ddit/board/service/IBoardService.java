@@ -23,4 +23,8 @@ public interface IBoardService {
 	
 	public boolean boardAuthenticate(BoardVO search);
 	
+	public ServiceResult recommend(int bo_no);
+	public ServiceResult report(int bo_no);
+	public ServiceResult hit(int bo_no);
+	
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
+import kr.or.ddit.exception.BadRequestException;
 
 @Controller
 public class Model2MediaFormServlet {

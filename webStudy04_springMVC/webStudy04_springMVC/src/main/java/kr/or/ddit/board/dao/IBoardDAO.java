@@ -18,4 +18,13 @@ public interface IBoardDAO {
 	public int updateBoard(BoardVO board, SqlSession session);
 	public int deleteBoard(BoardVO search, SqlSession session);
 	public int selectReplyCount(BoardVO search);
+	
+	/**
+	 * 추천수 증가
+	 * @param bo_no
+	 * @return
+	 */
+	public int recommend(int bo_no);
+	public int report(int bo_no);
+	public int hit(int bo_no);
 }

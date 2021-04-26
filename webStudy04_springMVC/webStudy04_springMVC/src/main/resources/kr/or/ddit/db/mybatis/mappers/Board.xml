@@ -194,6 +194,12 @@
 		</choose> 
 	</delete>
 	
+	<update id="recommend" parameterType="BoardVO">
+		UPDATE BOARD
+		SET BO_REC = #{bo_rec, jdbcType=NUMERIC}
+		WHERE BO_NO = #{bo_no}
+	</update>
+	
 </mapper>
 
 	

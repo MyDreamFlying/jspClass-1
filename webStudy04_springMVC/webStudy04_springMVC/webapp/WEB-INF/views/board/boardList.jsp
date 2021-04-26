@@ -92,10 +92,10 @@
 	<tfoot>
 		<tr>
 			<td colspan="9">
-				<form id="searchForm">
+				<form id="searchForm" action="${cPAth }/board/boardList.do">
 					<input type="hidden" name="searchType" value="${pagingVO.simpleSearch.searchType }"/>
 					<input type="hidden" name="searchWord" value="${pagingVO.simpleSearch.searchWord }"/>
-					<input type="hidden" name="page" />
+					<input type="text" name="page" />
 					<input type="text" hidden="hidden" name="startDate"/> 
 					<input type="text" hidden="hidden" name="endDate"/> 
 				</form>
@@ -121,9 +121,63 @@
 	</tfoot>
 </table>
 <script type="text/javascript">
-	let searchForm = $("#searchForm");
 	let searchUI = $("#searchUI");
 	searchUI.find("[name='searchType']").val("${pagingVO.simpleSearch.searchType }");
+	let listBody = $("#listBody")
+	let pagingArea = $("#pagingArea");
+	
+	let searchForm = $("#searchForm").on("change", "input[name]", function(){
+		searchForm.submit();
+	}).ajaxForm({
+		dataType : "json"
+		,beforeSubmit:function(){
+			searchForm.find("[name='page']").val("");
+		},success:function(resp){
+			listBody.empty();
+			let trTags = [];
+			if(resp.dataList){
+				$(resp.dataList).each(function(idx, board){
+					let bo_title;
+					let viewURL = 'boardView.do?what='+board.bo_no;
+					
+					if(board.bo_sec == 'Y'){
+						bo_title = '<a class="secret" what="'+board.bo_no+'" href="'+viewURL+'}">'+board.bo_title+'</a>'
+					}else{
+						bo_title = '<a class="nonsecret" what="'+board.bo_no+'" href="'+viewURL+'" data-toggle="popover" title="Popover title" >'+board.bo_title+'</a>'
+					}
+					
+					let tr = $("<tr>").append(
+						$("<td>").text(board.bo_type)
+						,$("<td>").text(board.bo_no)
+						,$("<td>").html('<img class="thumbnail" src="'+board.thumbnail+'">')
+						,$("<td>").html(bo_title)
+						,$("<td>").text(board.bo_writer)
+						,$("<td>").text(board.bo_date)
+						,$("<td>").text(board.bo_hit)
+						,$("<td>").text(board.bo_rec)
+						,$("<td>").text(board.bo_rep)
+					).data("board",board).css("cursor", "pointer");
+					trTags.push(tr);
+				});
+			}else{
+				trTags.push( 
+					$("<tr>").html(
+						$("<td >").attr("colspan",9)
+					)
+				);
+			}
+			listBody.html(trTags);
+			pagingArea.html(resp.pagingHTML);
+			
+			
+			
+		}, error : function(xhr, resp, error){
+			console.log(xhr);
+		}
+	}) 
+	
+	
+	
 	
 	$('a.secret').on('click', function(event){
 		event.preventDefault();
@@ -170,7 +224,7 @@
 	})
 	
 	$(function(){
-		$("#listBody a.nonsecret").hover(function(){
+		$("#listBody").on('mouseenter', 'a.nonsecret', function(){
 			what = $(this).attr("what");
 			$(this).popover({
 				html:true,
@@ -194,6 +248,12 @@
 				}
 				}).popover("toggle")
 			});
+		
+		$("#listBody").on('mouseleave', 'a.nonsecret', function(){
+			$(this).popover().popover("toggle");
+		});
+		
+		
 		});
 </script>
 <jsp:include page="/includee/postScript.jsp"/>

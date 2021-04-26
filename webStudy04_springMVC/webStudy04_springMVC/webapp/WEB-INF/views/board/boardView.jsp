@@ -58,7 +58,20 @@
 	</tr>
 	<tr>
 		<th>추천수</th>
-		<td>${board.bo_rec }</td>
+		<td id="recArea">${board.bo_rec }</td>
+	</tr>
+	<tr>
+		<th>신고수</th>
+		<td id="repArea">${board.bo_rep }</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		/board/recommend.do 비동기 요청 발생
+		what 이름의 필수 파라미터 전달
+		Json 응답(success, recommend, message)
+			<input type="button" onclick="recommend()" value="추천하기"/>
+			<input type="button" onclick="report()" value="신고하기"/>
+		</td>
 	</tr>
 	<tr>
 		<th>내용</th>
@@ -105,9 +118,48 @@
 
 <jsp:include page="/includee/postScript.jsp"/>
 <script type="text/javascript">
-	$(function(){
-		
-	})
+	const bo_no = '${board.bo_no }';
+	
+	function recommend(){
+		$.ajax({
+			url : "${cPath}/board/recommend.do",
+			data : {"bo_no" : bo_no},
+			dataType : "json",
+			success : function(resp) {
+				if(resp.success){
+					$('#recArea').text(resp.recommend);
+				}else{
+					alert(resp.message);
+				}
+			},
+			error : function(xhr, error, msg) {
+				console.log(xhr);
+				console.log(error);
+				console.log(msg);
+			}
+		})
+	}
+	
+	function report(){
+		$.ajax({
+			url : "${cPath}/board/report.do",
+			data : {"bo_no" : bo_no},
+			dataType : "json",
+			success : function(resp) {
+				if(resp.success){
+					$('#repArea').text(resp.report);
+				}else{
+					alert(resp.message);
+				}
+			},
+			error : function(xhr, error, msg) {
+				console.log(xhr);
+				console.log(error);
+				console.log(msg);
+			}
+		})
+	}
+	
 </script>
 </body>
 </html>

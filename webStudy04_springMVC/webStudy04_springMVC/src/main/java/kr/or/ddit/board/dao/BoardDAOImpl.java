@@ -78,4 +78,16 @@ public class BoardDAOImpl implements IBoardDAO {
 			}
 	}
 
+	@Override
+	public int recommend(BoardVO board) {
+		try(
+				SqlSession session = sessionFactory.openSession();
+			){
+				IBoardDAO mapper = session.getMapper(IBoardDAO.class);
+				int cnt =  mapper.recommend(board);
+				session.commit();
+				return cnt;
+			}
+	}
+
 }

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.validator.BoardInsertGroup;
 import kr.or.ddit.validator.UpdateGroup;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(of="bo_no")
 @ToString(exclude={"attachList","replyList"})
+@Builder
 public class BoardVO {
 	private Integer bo_sort;
 	@NotBlank
