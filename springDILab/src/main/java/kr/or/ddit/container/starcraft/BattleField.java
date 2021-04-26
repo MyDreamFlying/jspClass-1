@@ -1,6 +1,7 @@
 package kr.or.ddit.container.starcraft;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import kr.or.ddit.container.starcraft.building.Barrack;
@@ -17,13 +18,16 @@ public class BattleField {
 	
 	public void play() {
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext("kr/or/ddit/container/conf/starcraft.xml");
+		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("kr/or/ddit/container/conf/starcraft.xml");
 		
 		Barrack barrack = (Barrack) context.getBean("barrack");
-		FootSoldier soldier = barrack.trainingSoldier(SoldierType.MEDIC);
-		
+
 		barrack.trainingSoldiers(SoldierType.FIREBAT, 3);
+		
+		FootSoldier soldier = barrack.trainingSoldier(SoldierType.MEDIC);
 		soldier.attack();
+		
+		context.close();
 	}
 
 }

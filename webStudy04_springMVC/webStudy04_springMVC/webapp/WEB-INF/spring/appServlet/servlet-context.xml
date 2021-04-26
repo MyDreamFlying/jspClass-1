@@ -19,6 +19,14 @@
 			p:suffix=".jsp"
 		/>
 		
+		<beans:bean id="BNVR" class="org.springframework.web.servlet.view.BeanNameViewResolver"
+			p:order="1"
+		/>
+		
+		<beans:bean id="downloadView" class="kr.or.ddit.board.view.DownloadView"/>
+		
+		<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></beans:bean>
+		
 		<context:component-scan base-package="kr.or.ddit" use-default-filters="false">
 			<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 			<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
