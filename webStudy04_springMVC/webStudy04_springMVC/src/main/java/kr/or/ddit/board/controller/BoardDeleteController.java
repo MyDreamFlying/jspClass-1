@@ -4,14 +4,16 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.validator.DeleteGroup;
 import kr.or.ddit.vo.BoardVO;
 
 @Controller
@@ -21,12 +23,17 @@ public class BoardDeleteController {
 	
 	@RequestMapping(value="/board/boardDelete.do", method = RequestMethod.POST)
 	public String boardDelete(
-			@ModelAttribute("board") BoardVO board
+			@Validated(DeleteGroup.class) @ModelAttribute("board") BoardVO board
+			,BindingResult errors
 			, Model model
 			, RedirectAttributes redirectAttributes
 			) {
 		String view = "redirect:/board/boardView.do?what="+board.getBo_no();
 		String message = null;
+		
+		if(errors.hasErrors()) {
+			
+		}
 		
 		// 공지글이 아닐 경우에는 비밀번호 검증을 한다.
 		if(!"NOTICE".equals(board.getBo_type()) && !service.boardAuthenticate(board)) {

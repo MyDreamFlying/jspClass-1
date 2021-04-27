@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +27,7 @@
 </head>
 <body>
 <h4>게시판 글 작성</h4>
-<form method="post" enctype="multipart/form-data">
+<form:form modelAttribute="board" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="bo_no" value="${board.bo_no }">
 	<input type="hidden" name="bo_type" value="${board.bo_type }">
 	<input type="hidden" name="bo_parent" value="${board.bo_parent }">
@@ -34,20 +35,23 @@
 		<tr>
 			<th>제목</th>
 			<td>
-				<input type="text" name="bo_title" value="${board.bo_title }" required>
+				<input type="text" name="bo_title" value="${board.bo_title }" >
+				<form:errors path="bo_title" element="span" cssClass="error"/>
 			</td>
 		</tr>
 		<c:if test="${board.bo_type eq 'BOARD' }">
 		<tr>
 			<th>작성자</th>
 			<td>
-				<input type="text" name="bo_writer" value="${board.bo_writer }" required>
+				<input type="text" name="bo_writer" value="${board.bo_writer }" >
+				<form:errors path="bo_writer" element="span" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
 			<th>비밀번호</th>
 			<td>
-				<input type="password" name="bo_pass" required>
+				<input type="password" name="bo_pass" >
+				<form:errors path="bo_pass" element="span" cssClass="error"/>
 			</td>
 		</tr>
 		</c:if>
@@ -58,6 +62,7 @@
 				<script>CKEDITOR.replace('bo_content',{
 					filebrowserImageUploadUrl: '${cPath}/board/boardImage.do?type=Image',
 				});</script>
+				<form:errors path="bo_content" element="span" cssClass="error"/>
 			</td>
 		</tr>
 		<c:if test="${board.bo_type eq 'BOARD' }">
@@ -90,7 +95,7 @@
 			</td>
 		</tr>
 	</table>
-</form>
+</form:form>
 <script type="text/javascript">
 $(function(){
 	$('.files').on('click', '.delete', function(){

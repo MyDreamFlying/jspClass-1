@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 
@@ -18,7 +17,7 @@ public class MemberDAOImpl implements IMemberDAO {
 		return self;
 	}
 	
-	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();
+	private SqlSessionFactory sessionFactory;
 
 	@Override
 	public MemberVO selectMemberForAuth(String mem_id) {

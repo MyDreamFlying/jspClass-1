@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.or.ddit.board.dao.AttachDAOImpl;
 import kr.or.ddit.board.dao.IAttachDAO;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
@@ -56,8 +55,8 @@ public class BoardFileController {
 		logger.info("{}초기화, {}생성됨.", getClass().getSimpleName(), saveFolder.getAbsolutePath());
 	}
 	
-	IAttachDAO attachDAO = AttachDAOImpl.getInstance();
-	IBoardService service = BoardServiceImpl.getInstance();
+	IAttachDAO attachDAO;
+	IBoardService service;
 	
 	@RequestMapping(value="/board/download.do")
 	public String download(

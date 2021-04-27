@@ -3,6 +3,7 @@ package kr.or.ddit.board.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import kr.or.ddit.vo.BoardVO;
 import kr.or.ddit.vo.PagingVO;
@@ -10,13 +11,14 @@ import kr.or.ddit.vo.PagingVO;
 /**
  *	게시글 관리를 위한 persistence layer
  */
+@Repository
 public interface IBoardDAO {
-	public int insertBoard(BoardVO board, SqlSession session);
+	public int insertBoard(BoardVO board);
 	public int selectBoardCount(PagingVO<BoardVO> pagingVO);
 	public List<BoardVO> selectBoardList(PagingVO<BoardVO> pagingVO);
 	public BoardVO selectBoard(BoardVO search);
-	public int updateBoard(BoardVO board, SqlSession session);
-	public int deleteBoard(BoardVO search, SqlSession session);
+	public int updateBoard(BoardVO board);
+	public int deleteBoard(BoardVO search);
 	public int selectReplyCount(BoardVO search);
 	
 	/**

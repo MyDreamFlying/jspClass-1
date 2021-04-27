@@ -54,7 +54,7 @@
 		    SELECT ROWNUM-3 RNUM, A.*
 		    FROM(
 		        SELECT
-		            BO_SORT, BO_TYPE, BO_NO
+		            BO_SORT, BO_NO, BO_TYPE
 		            , LEVEL
 		            <![CDATA[
 		            , LPAD('   RE:', 12*(level-1), '&nbsp;') || DECODE(BO_SEC, 'Y', '=====비밀글 입니다=====', BO_TITLE) BO_TITLE
@@ -194,9 +194,9 @@
 		</choose> 
 	</delete>
 	
-	<update id="recommend" parameterType="BoardVO">
+	<update id="recommend" parameterType="int">
 		UPDATE BOARD
-		SET BO_REC = #{bo_rec, jdbcType=NUMERIC}
+		SET BO_REC = BO_REC + 1
 		WHERE BO_NO = #{bo_no}
 	</update>
 	

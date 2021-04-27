@@ -7,10 +7,12 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@ToString
 public class PagingVO<T> implements Serializable{
 	
 	public PagingVO(int screenSize, int blockSize) {

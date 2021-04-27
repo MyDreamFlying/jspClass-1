@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
@@ -18,7 +17,7 @@ public class ProdDAOImpl implements IProdDAO {
 		return self;
 	}
 	
-	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();			
+	private SqlSessionFactory sessionFactory;			
 
 	@Override
 	public ProdVO selectProd(String prod_id) {

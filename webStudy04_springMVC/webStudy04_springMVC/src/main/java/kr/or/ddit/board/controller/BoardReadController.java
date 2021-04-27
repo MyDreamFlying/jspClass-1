@@ -50,31 +50,27 @@ public class BoardReadController {
 	}
 	
 	@RequestMapping("/board/noticeList.do")
-	public String noticeList(HttpServletRequest req
-			,@RequestParam(value="searchType", required=false) String searchType
-			,@RequestParam(value="searchWord", required=false) String searchWord
-			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
-			,@RequestParam(value="startDate", required=false) String startDate
-			,@RequestParam(value="endDate", required=false) String endDate
+	public String noticeList(
+			@RequestParam Map<String, Object> searchMap
+			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
 			,Model model
 			) throws IOException {
-		searchType = "type";
-		searchWord = "NOTICE";
-		return listForHTML(startDate, endDate, searchType, searchWord, currentPage, model);
+		String searchType = "type";
+		String searchWord = "NOTICE";
+		searchMap.put(searchType, searchWord);
+		return listForHTML(searchMap, currentPage, model);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/board/noticeList.do", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public PagingVO<BoardVO> noticeListForAjax(HttpServletRequest req
-			,@RequestParam(value="searchType", required=false) String searchType
-			,@RequestParam(value="searchWord", required=false) String searchWord
-			,@RequestParam(value="page", required=false, defaultValue = "1") int currentPage
-			,@RequestParam(value="startDate", required=false) String startDate
-			,@RequestParam(value="endDate", required=false) String endDate
+	public PagingVO<BoardVO> noticeListForAjax(
+			@RequestParam Map<String, Object> searchMap
+			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
 			) throws IOException {
-		searchType = "type";
-		searchWord = "NOTICE";
-		return listForAjax(startDate, endDate, searchType, searchWord, currentPage);
+		String searchType = "type";
+		String searchWord = "NOTICE";
+		searchMap.put(searchType, searchWord);
+		return listForAjax(searchMap, currentPage);
 	}
 
 	@RequestMapping(value="/board/authenticate.do", method=RequestMethod.POST)
@@ -127,7 +123,6 @@ public class BoardReadController {
 		
 		int totalRecord = service.retrieveBoardCount(pagingVO);
 		pagingVO.setTotalRecord(totalRecord);
-		
 		List<BoardVO> boardList = service.retrieveBoardList(pagingVO);
 		
 		

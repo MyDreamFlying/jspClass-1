@@ -10,7 +10,18 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 		
-		<annotation-driven/>
+		<annotation-driven validator="validator"/>
+		
+		<beans:bean id="resourceBundleLocator" class="org.hibernate.validator.resourceloading.PlatformResourceBundleLocator"
+			c:bundleName="kr.or.ddit.messages.errorMessages"
+		/>
+		<beans:bean id="messageInterpolator" class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator"
+			c:userResourceBundleLocator-ref="resourceBundleLocator"
+		/>
+		<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+			p:messageInterpolator-ref="messageInterpolator"
+		/>
+		
 		<resources location="/resources/" mapping="/resources/**" cache-period="0"></resources>
 		<default-servlet-handler/>
 		

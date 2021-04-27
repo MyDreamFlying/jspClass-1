@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import kr.or.ddit.db.mybatis.CustomSqlSessionFactoryBuilder;
 import kr.or.ddit.vo.BuyerVO;
 
 public class OthersDAOImpl implements IOthersDAO {
@@ -18,7 +17,7 @@ public class OthersDAOImpl implements IOthersDAO {
 		return self;
 	}
 	
-	private SqlSessionFactory sessionFactory = CustomSqlSessionFactoryBuilder.getSessionFactory();
+	private SqlSessionFactory sessionFactory;
 
 	@Override
 	public List<Map<String, Object>> selectLprodList() {
