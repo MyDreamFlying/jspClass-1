@@ -16,7 +16,7 @@ public interface IProdService {
 	 * @return 해당 상품이 존재하지 않는 경우, RuntimeException 발생
 	 */
 	public ProdVO retrieveProd(String prod_id);
-	public List<ProdVO> retrieveProdList(PagingVO pagingVO);
+	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO);
 	public ServiceResult createProd(ProdVO prod);
 	public ServiceResult modifyProd(ProdVO prod);
 	/**

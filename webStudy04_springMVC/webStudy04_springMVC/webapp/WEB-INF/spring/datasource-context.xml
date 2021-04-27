@@ -34,7 +34,7 @@
 		c:sqlSessionFactory-ref="sqlSessionFactory"
 	/>
 	
-	<mybatis-spring:scan base-package="kr.or.ddit.board.dao"
+	<mybatis-spring:scan base-package="kr.or.ddit.**.dao"
 		annotation="org.springframework.stereotype.Repository"
 	/>
 

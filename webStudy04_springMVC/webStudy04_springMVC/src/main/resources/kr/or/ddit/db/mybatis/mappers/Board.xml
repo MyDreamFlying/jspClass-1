@@ -79,6 +79,9 @@
 		<collection property="attachList" ofType="AttachVO" autoMapping="true">
 			<id property="att_no" column="ATT_NO"/>
 		</collection>
+		<collection property="replyList" ofType="Reply2VO" autoMapping="true">
+			<id property="rep_no" column="REP_NO"/>
+		</collection>
 	</resultMap>
 	<select id="selectBoard" parameterType="BoardVO" resultMap="boardMap">
 		SELECT
@@ -91,9 +94,12 @@
 		    , BO_PARENT
 		    , B.ATT_NO, ATT_FILENAME, ATT_SAVENAME, ATT_SIZE, ATT_DOWNCOUNT 
 		    , B.ATT_CONTENTTYPE
-		FROM    BOARDVIEW A LEFT OUTER JOIN Attach B 
-				ON(A.BO_NO = B.BO_NO)
+		    , REP_NO, REP_WRITER, REP_CONTENT, REP_DATE
+		FROM    BOARDVIEW A 
+					LEFT OUTER JOIN Attach B ON(A.BO_NO = B.BO_NO)
+					LEFT OUTER JOIN REPLY2 C ON(A.BO_NO = C.BO_NO)
 		WHERE A.BO_NO = #{bo_no}
+		ORDER BY REP_NO
 	</select>
 	<insert id="insertBoard" parameterType="BoardVO">
 		<selectKey resultType="int" keyProperty="bo_no" order="BEFORE">

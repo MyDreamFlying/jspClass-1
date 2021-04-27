@@ -1,15 +1,13 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.BadRequestException;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
-import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.UpdateGroup;
 import kr.or.ddit.vo.MemberVO;
 
@@ -28,32 +25,33 @@ import kr.or.ddit.vo.MemberVO;
 public class MemberUpdateController {
 	private IMemberService service = new MemberServiceImpl();
 	
-	private void addCommandAttribute(HttpServletRequest req) {
-		req.setAttribute("command", "update");
+	private void addCommandAttribute(Model model) {
+		model.addAttribute("command", "update");
 	}
 	
 	@RequestMapping("/member/memberUpdate.do")
 	public String memberUpdateForm(
 			HttpSession session
-			,HttpServletRequest req) throws ServletException, IOException {
+			,Model model) throws ServletException, IOException {
 		
-		addCommandAttribute(req);
+		addCommandAttribute(model);
 		
 		MemberVO authMember = (MemberVO)session.getAttribute("authMember");
 		String authId = authMember.getMem_id();
 		MemberVO member = service.retrieveMember(authId);
-		req.setAttribute("member", member);
+		model.addAttribute("member", member);
 		return "member/memberForm";
 	}
 
 	@RequestMapping(value="/member/memberUpdate.do", method=RequestMethod.POST )
 	public String memberUpdate(
 			@RequestPart(value="mem_image", required=false) MultipartFile mem_image,
-			@ModelAttribute("member") MemberVO member
+			@Validated(UpdateGroup.class) @ModelAttribute("member") MemberVO member
 			,HttpSession session
-			,HttpServletRequest req) throws ServletException, IOException {
+			,Errors errors
+			,Model model) throws IOException {
 		
-		addCommandAttribute(req);
+		addCommandAttribute(model);
 		
 		if(mem_image != null && !mem_image.isEmpty()) {
 			String mime = mem_image.getContentType();
@@ -68,12 +66,11 @@ public class MemberUpdateController {
 		String authId = authMember.getMem_id();
 		
 		member.setMem_id(authId);
-		req.setAttribute("member", member);
+		model.addAttribute("member", member);
 		
 		// 2. 검증
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		req.setAttribute("erros", errors);
-		boolean valid = new CommonValidator<MemberVO>().validate(member, errors, UpdateGroup.class);
+		boolean valid = !errors.hasErrors();
+		
 		String view = null;
 		String message = null;
 		
@@ -95,7 +92,7 @@ public class MemberUpdateController {
 		}else {	// 검증에 통과하지 못했을 경우 
 			view = "member/memberForm";
 		}
-		req.setAttribute("message", message);
+		model.addAttribute("message", message);
 		
 		return view;
 		

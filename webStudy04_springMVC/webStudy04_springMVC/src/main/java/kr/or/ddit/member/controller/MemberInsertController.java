@@ -1,14 +1,11 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.exception.BadRequestException;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
-import kr.or.ddit.mvc.annotation.resolvers.BadRequestException;
-import kr.or.ddit.validator.CommonValidator;
 import kr.or.ddit.validator.InsertGroup;
 import kr.or.ddit.vo.MemberVO;
 
@@ -35,8 +31,10 @@ public class MemberInsertController{
 	@RequestMapping(value="/member/memberInsert.do", method=RequestMethod.POST)
 	public String process(
 			@RequestPart(value="mem_image", required=false) MultipartFile mem_image,
-			@ModelAttribute("member") MemberVO member
-			, HttpServletRequest req) throws ServletException, IOException {
+			@Validated(InsertGroup.class) @ModelAttribute("member") MemberVO member
+			,Errors errors
+			,Model model
+		) throws IOException{
 		
 //		Locale.setDefault(Locale.KOREAN);
 		
@@ -49,10 +47,8 @@ public class MemberInsertController{
 		}
 		
 		// 검증
-		Map<String, List<String>> errors = new LinkedHashMap<>();
-		req.setAttribute("errors", errors);
 		
-		boolean valid = new CommonValidator<MemberVO>().validate(member, errors, InsertGroup.class);
+		boolean valid = !errors.hasErrors();
 		
 		String view = null;
 		String message = null;
@@ -76,7 +72,7 @@ public class MemberInsertController{
 			view = "member/memberForm";
 		}
 		
-		req.setAttribute("message", message);
+		model.addAttribute("message", message);
 		return view;
 		
 	}

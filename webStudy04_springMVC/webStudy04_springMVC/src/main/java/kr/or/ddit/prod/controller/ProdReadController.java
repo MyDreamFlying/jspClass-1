@@ -2,15 +2,18 @@ package kr.or.ddit.prod.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpRetryException;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,30 +21,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.prod.dao.IOthersDAO;
-import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
-import kr.or.ddit.prod.service.ProdServiceImpl;
 import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 @Controller
 public class ProdReadController{
-	private IProdService service = ProdServiceImpl.getInstance();
-	private IOthersDAO othersDAO = OthersDAOImpl.getInstance();
+	@Inject
+	private IProdService service;
+	@Inject
+	private IOthersDAO othersDAO;
 	
-	private void addAttribute(HttpServletRequest req ) {
+	private void addAttribute(Model model ) {
 		List<Map<String, Object>> lprodList = othersDAO.selectLprodList();
 		List<BuyerVO> buyerList = othersDAO.selectBuyerList(null);
-		req.setAttribute("lprodList", lprodList);
-		req.setAttribute("buyerList", buyerList);
+		model.addAttribute("lprodList", lprodList);
+		model.addAttribute("buyerList", buyerList);
 	}
 	
 	@RequestMapping("/prod/prodList.do")
 	public String list(
 			@ModelAttribute("detailSearch") ProdVO detailSearch
 			,@RequestParam(value="page", required=false, defaultValue="1") int currentPage
-			,HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+			,Model model
+			,HttpServletRequest req
+			,HttpServletResponse resp) throws ServletException, IOException {
 		
 		PagingVO<ProdVO> pagingVO = new PagingVO<>();
 		pagingVO.setCurrentPage(currentPage);
@@ -52,7 +57,7 @@ public class ProdReadController{
 				
 		List<ProdVO> prodList =  service.retrieveProdList(pagingVO);
 		pagingVO.setDataList(prodList);
-		addAttribute(req);
+		addAttribute(model);
 
 		String accept = req.getHeader("Accept");
 		String view = null;
@@ -65,7 +70,7 @@ public class ProdReadController{
 				mapper.writeValue(out, pagingVO);
 			}
 		}else {
-			req.setAttribute("pagingVO", pagingVO);
+			model.addAttribute("pagingVO", pagingVO);
 			view = "prod/prodList";
 		}
 		return view;

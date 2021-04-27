@@ -2,16 +2,21 @@ package kr.or.ddit.prod.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.prod.ProdNotFoundException;
 import kr.or.ddit.prod.dao.IProdDAO;
-import kr.or.ddit.prod.dao.ProdDAOImpl;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
+@Service
 public class ProdServiceImpl implements IProdService {
-	private IProdDAO dao = ProdDAOImpl.getInstance();
+	@Inject
+	private IProdDAO dao;
 	private static ProdServiceImpl self;
 	
 	private ProdServiceImpl() {}
@@ -29,7 +34,7 @@ public class ProdServiceImpl implements IProdService {
 		return prod;
 	}
 	@Override
-	public List<ProdVO> retrieveProdList(PagingVO pagingVO) {
+	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO) {
 		List<ProdVO> list = dao.selectProdList(pagingVO);
 		return list;
 	}

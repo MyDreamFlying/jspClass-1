@@ -2,6 +2,7 @@ package kr.or.ddit.fileupload.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -43,14 +44,16 @@ public class FileUploadController {
 		}
 		
 		if(file1.length >0) {
-			file1[0].saveTo(saveFolder);
-			String saveFileUrl = saveFolderUrl + "/" + file1[0].getUniqueSaveName();
+			file1[0].transferTo(saveFolder);
+			String saveName = UUID.randomUUID().toString();
+			String saveFileUrl = saveFolderUrl + "/" +saveName;
 			session.setAttribute("uploadFile1", saveFileUrl);
 			logger.info("saveFile1 : {}", saveFileUrl);
 		}
 		if(file2 != null && file2.length > 0) {
-			file2[0].saveTo(saveFolder);
-			String saveFileUrl = saveFolderUrl + "/" + file2[0].getUniqueSaveName();
+			file2[0].transferTo(saveFolder);
+			String saveName = UUID.randomUUID().toString();
+			String saveFileUrl = saveFolderUrl + "/" +saveName;
 			session.setAttribute("uploadFile2", saveFileUrl);
 			logger.info("saveFile2 : {}", saveFileUrl);
 		}

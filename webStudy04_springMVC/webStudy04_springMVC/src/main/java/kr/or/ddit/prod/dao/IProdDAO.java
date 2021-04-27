@@ -2,15 +2,18 @@ package kr.or.ddit.prod.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
 /**
  *	상품 관리를 위한 Persistence Layer
  */
+@Repository
 public interface IProdDAO {
 	public ProdVO selectProd(String prod_id);
-	public List<ProdVO> selectProdList(PagingVO pagingVO);
+	public List<ProdVO> selectProdList(PagingVO<ProdVO> pagingVO);
 	/**
 	 * @param prod
 	 * @return inserted row count
