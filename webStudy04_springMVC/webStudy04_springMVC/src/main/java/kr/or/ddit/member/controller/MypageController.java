@@ -2,6 +2,7 @@ package kr.or.ddit.member.controller;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +22,9 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MypageController {
+	@Inject
 	IMemberService service = new MemberServiceImpl();
+	@Inject
 	IAuthenticateService authService = new AuthenticateServiceImpl();
 	
 	@RequestMapping("/mypage.do")

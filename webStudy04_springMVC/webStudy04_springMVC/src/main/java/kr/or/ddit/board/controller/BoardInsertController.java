@@ -1,10 +1,14 @@
 package kr.or.ddit.board.controller;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,9 +28,17 @@ import kr.or.ddit.vo.BoardVO;
 
 @Controller
 public class BoardInsertController {
+	private static final Logger logger = LoggerFactory.getLogger(BoardInsertController.class);
 	
 	@Inject
 	private IBoardService service;
+	
+	@PostConstruct
+	public void init() {
+		logger.info("주입된 service : {}", service.getClass().getName());
+		logger.info("프록시 여부 : {}", AopUtils.isAopProxy(service));
+	}
+	
 	private String[] filteringTokens = new String[] {"말미잘", "해삼"};
 	
 	@RequestMapping("/board/noticeInsert.do")

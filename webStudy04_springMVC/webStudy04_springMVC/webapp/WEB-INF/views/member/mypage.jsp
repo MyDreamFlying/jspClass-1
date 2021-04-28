@@ -4,31 +4,6 @@
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-table, th, td {
-	border: 1px solid black
-}
-</style>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<%
-	String message = (String)session.getAttribute("message");
-	session.removeAttribute("message");
-	
-	if(message != null && !message.isEmpty()){
-		%>
-		<script type="text/javascript">
-			alert("<%=message%>");
-		</script>
-		<%
-	}
-%>
-<jsp:include page="/includee/preScript.jsp" />
-</head>
-<body>
 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request"></jsp:useBean>
 	<h4>
 		<%=member.getMem_name()%>님의 마이페이지
@@ -191,5 +166,3 @@ table, th, td {
 			
 		});
 	</script>
-</body>
-</html>

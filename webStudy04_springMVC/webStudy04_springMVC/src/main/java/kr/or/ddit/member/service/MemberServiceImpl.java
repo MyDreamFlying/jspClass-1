@@ -17,12 +17,8 @@ public class MemberServiceImpl implements IMemberService {
 	@Inject
 	private IMemberDAO dao;
 	
-	private IAuthenticateService authService;
-	
 	@Inject
-	public IAuthenticateService getAuthService() {
-		return authService;
-	}
+	private IAuthenticateService authService;
 	
 	@Override
 	public MemberVO retrieveMember(String mem_id) {

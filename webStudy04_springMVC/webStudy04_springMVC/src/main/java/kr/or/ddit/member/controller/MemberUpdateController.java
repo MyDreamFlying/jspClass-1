@@ -1,6 +1,8 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +25,7 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberUpdateController {
+	@Inject
 	private IMemberService service = new MemberServiceImpl();
 	
 	private void addCommandAttribute(Model model) {

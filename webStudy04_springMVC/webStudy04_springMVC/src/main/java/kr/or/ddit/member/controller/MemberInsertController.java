@@ -1,6 +1,8 @@
 package kr.or.ddit.member.controller;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberInsertController{
+	@Inject
 	private IMemberService service = new MemberServiceImpl();
 	
 	@RequestMapping("/member/memberInsert.do")

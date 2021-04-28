@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,6 +23,7 @@ import kr.or.ddit.member.service.MemberServiceImpl;
 
 @Controller
 public class IdCheckController {
+	@Inject
 	private IMemberService service = new MemberServiceImpl();
 	
 	@RequestMapping(value="/member/idCheck.do", method=RequestMethod.POST)

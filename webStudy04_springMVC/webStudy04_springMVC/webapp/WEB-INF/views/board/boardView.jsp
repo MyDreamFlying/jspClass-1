@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp" />
 <style>
 	img{
 		max-width : 200px;
@@ -25,14 +19,7 @@
 		width : 200px;
 	}
 </style>
-</head>
-<c:if test="${not empty message }">
-	<script type="text/javascript">
-		alert("${message}")
-	</script>
-</c:if>
 <h4>게시글 상세 조회</h4>
-<body>
 <button type="button" onclick="location.href=`${cPath}/board/boardList.do`" class="btn btn-info">목록으로</button>
 <button type="button" onclick="location.href=`${cPath}/board/noticeList.do`" class="btn btn-primary">공지목록</button>
 <c:url value="/board/boardInsert.do" var="insertURL">
@@ -259,5 +246,3 @@
 	});
 	
 </script>
-</body>
-</html>

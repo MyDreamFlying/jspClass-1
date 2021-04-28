@@ -2,6 +2,8 @@ package kr.or.ddit.member.service;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.inject.Inject;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +18,8 @@ import kr.or.ddit.vo.MemberVO;
 public class AuthenticateServiceImpl implements IAuthenticateService {
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticateServiceImpl.class);
 	
+	@Inject
 	private IMemberDAO dao;
-	public void setDao(IMemberDAO dao) {
-		this.dao = dao;
-	}
 
 	@Override
 	public ServiceResult authenticate(MemberVO member) {

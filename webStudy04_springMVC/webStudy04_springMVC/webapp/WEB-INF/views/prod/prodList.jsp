@@ -1,17 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-table, th, td{
-	border : 1px solid black;	
-}
-</style>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<jsp:include page="/includee/preScript.jsp"/>
 <script defer type="text/javascript" src="<%=request.getContextPath() %>/js/prod/prodList.js"></script>
 </head>
 <body>
@@ -56,8 +45,6 @@ table, th, td{
 		</tr>
 	</tfoot>
 </table>
-</body>
-</html>
 
 
 

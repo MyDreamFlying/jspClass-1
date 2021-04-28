@@ -2,29 +2,6 @@
 <%@page import="kr.or.ddit.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style type="text/css">
-.error {
-	color: red;
-}
-</style>
-<jsp:include page="/includee/preScript.jsp" />
-<%
-	String message = (String) request.getAttribute("message");
-	if(message!=null && !message.isEmpty()){
-		%>
-		<script type="text/javascript">
-			alert("<%=message %>");
-		</script>
-		<%
-	}
-%>
-</head>
-<body>
 	<h4>가입양식</h4>
 	<jsp:useBean id="member" class="kr.or.ddit.vo.MemberVO" scope="request" />
 	<jsp:useBean id="errors" class="java.util.LinkedHashMap"
@@ -166,11 +143,6 @@ if(!"update".equals(command)){
 <%
 }
 %>
-</body>
-</html>
-
-
-
 
 
 

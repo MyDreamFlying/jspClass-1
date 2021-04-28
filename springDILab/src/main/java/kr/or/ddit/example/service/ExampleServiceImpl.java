@@ -1,6 +1,7 @@
 package kr.or.ddit.example.service;
 
 import javax.annotation.Resource;
+import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.annotation.Scope;
@@ -39,7 +40,7 @@ public class ExampleServiceImpl implements IExampleService {
 		System.out.println(getClass().getSimpleName()+" 객체 생성-argument 있는 생성자");
 	}
 
-//	@Inject
+//	@Injects
 	@Resource(name="exampleDAO_MySql")
 	@Required
 	public void setDao(IExampleDAO dao) {
@@ -59,6 +60,8 @@ public class ExampleServiceImpl implements IExampleService {
 	public String readData(String pk) {
 		String rawData = dao.selectData(pk);
 		String info = rawData + "를 가공한 information";
+//		if(1==1)
+//				throw new RuntimeErrorException(null, "강제 발생 예외");
 		return info;
 	}
 

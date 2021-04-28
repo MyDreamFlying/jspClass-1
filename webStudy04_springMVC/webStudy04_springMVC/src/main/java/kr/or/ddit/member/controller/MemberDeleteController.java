@@ -2,6 +2,7 @@ package kr.or.ddit.member.controller;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +18,7 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class MemberDeleteController{
+	@Inject
 	private IMemberService service = new MemberServiceImpl();
 	
 	@RequestMapping(value="/member/memberDelete.do", method=RequestMethod.POST)

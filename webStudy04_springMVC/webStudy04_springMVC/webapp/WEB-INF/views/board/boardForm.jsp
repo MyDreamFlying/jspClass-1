@@ -2,9 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<!DOCTYPE html>
-<html>
-<head>
 <style>
 	th{
 		width : 150px;
@@ -14,18 +11,7 @@
 		max-height : 200px;
 	}
 </style>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<c:if test="${not empty message }">
-	<script type="text/javascript">
-		alert("${message}")
-	</script>
-	<c:remove var="message" scope="session"/>
-</c:if>
-<jsp:include page="/includee/preScript.jsp" />
 <script type="text/javascript" src="${cPath}/js/ckeditor/ckeditor.js"></script>
-</head>
-<body>
 <h4>게시판 글 작성</h4>
 <form:form modelAttribute="board" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="bo_no" value="${board.bo_no }">
@@ -147,6 +133,3 @@ function handleImgsFilesSelect(e , previewArea) {
 	});
 }
 </script>
-<jsp:include page="/includee/postScript.jsp"/>
-</body>
-</html>

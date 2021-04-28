@@ -2,6 +2,7 @@ package kr.or.ddit.login;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import kr.or.ddit.vo.MemberVO;
 
 @Controller
 public class LoginOutController{
+	
+	@Inject
 	private IAuthenticateService service = new AuthenticateServiceImpl();
 	private static final Logger logger = LoggerFactory.getLogger(LoginOutController.class);
 
