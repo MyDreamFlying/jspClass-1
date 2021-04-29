@@ -22,7 +22,7 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.vo.Reply2VO;
 
 @RestController
-@RequestMapping(value="/board/reply/{bo_no}", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value="/board/reply", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BoardReplyController {
 	@Inject
 	private IReplyService service;

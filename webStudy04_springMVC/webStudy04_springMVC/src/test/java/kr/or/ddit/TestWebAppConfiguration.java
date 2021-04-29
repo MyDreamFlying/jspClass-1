@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 	,@ContextConfiguration("file:webapp/WEB-INF/spring/appServlet/servlet-context.xml")
 })
 @WebAppConfiguration
+@Transactional//트랜잭션 종료후 알아서 롤백 시킨다.
 public @interface TestWebAppConfiguration {
 	
 }

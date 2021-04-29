@@ -77,6 +77,7 @@ public class LoginOutController{
 				message = "아이디 오류";
 				break;
 			case INVALIDPASSWORD:
+			default:
 				// 인증 실패시 loginForm.jsp로 이동
 				view = "redirect:/login/loginForm.jsp";
 				// 2) 인증 실패
