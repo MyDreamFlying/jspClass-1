@@ -2,9 +2,7 @@ package kr.or.ddit.prod.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.HttpRetryException;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -20,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.service.IProdService;
-import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
@@ -30,15 +26,6 @@ import kr.or.ddit.vo.ProdVO;
 public class ProdReadController{
 	@Inject
 	private IProdService service;
-	@Inject
-	private IOthersDAO othersDAO;
-	
-	private void addAttribute(Model model ) {
-		List<Map<String, Object>> lprodList = othersDAO.selectLprodList();
-		List<BuyerVO> buyerList = othersDAO.selectBuyerList(null);
-		model.addAttribute("lprodList", lprodList);
-		model.addAttribute("buyerList", buyerList);
-	}
 	
 	@RequestMapping("/prod/prodList.do")
 	public String list(
@@ -57,7 +44,6 @@ public class ProdReadController{
 				
 		List<ProdVO> prodList =  service.retrieveProdList(pagingVO);
 		pagingVO.setDataList(prodList);
-		addAttribute(model);
 
 		String accept = req.getHeader("Accept");
 		String view = null;
@@ -79,7 +65,7 @@ public class ProdReadController{
 	
 	@RequestMapping("/prod/prodView.do")
 	public String view(
-			@RequestParam(value="what", required=true, defaultValue="1") String prod_id
+			@RequestParam(value="what", required=true) String prod_id
 			, HttpServletRequest req){
 		
 		ProdVO prod = service.retrieveProd(prod_id);

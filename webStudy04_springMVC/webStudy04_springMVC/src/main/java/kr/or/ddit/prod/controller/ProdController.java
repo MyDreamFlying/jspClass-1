@@ -2,15 +2,12 @@ package kr.or.ddit.prod.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,18 +22,15 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.enumpkg.ServiceResult;
-import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.service.IProdService;
 import kr.or.ddit.validator.InsertGroup;
-import kr.or.ddit.vo.BuyerVO;
 import kr.or.ddit.vo.ProdVO;
 
 @Controller
 public class ProdController {
 	@Inject
 	private IProdService service;
-	@Inject
-	private IOthersDAO othersDAO;
+
 	
 	@Inject
 	private WebApplicationContext container;
@@ -47,21 +41,14 @@ public class ProdController {
 		application = container.getServletContext();
 	}
 	
-	private void addAttribute(HttpServletRequest req ) {
-		List<Map<String, Object>> lprodList = othersDAO.selectLprodList();
-		List<BuyerVO> buyerList = othersDAO.selectBuyerList(null);
-		req.setAttribute("lprodList", lprodList);
-		req.setAttribute("buyerList", buyerList);
-	}
-	
-	private void addCommandAttribute(HttpServletRequest req) {
-		req.setAttribute("command", "update");
+
+	private void addCommandAttribute(Model model) {
+		model.addAttribute("command", "update");
 	}
 	
 	@RequestMapping("/prod/prodInsert.do")
 	public String prodInsertForm(
-			HttpServletRequest req) throws ServletException, IOException {
-		addAttribute(req);
+			Model model) {
 		return "prod/prodForm";
 	}
 	
@@ -108,13 +95,12 @@ public class ProdController {
 	@RequestMapping("/prod/prodUpdate.do")
 	public String prodUpdateForm(
 			@RequestParam(value="what") String prodId 
-			,HttpServletRequest req
+			,Model model
 			) throws ServletException, IOException {
-		addCommandAttribute(req);
-		addAttribute(req);
+		addCommandAttribute(model);
 		
 		ProdVO prod = service.retrieveProd(prodId);
-		req.setAttribute("prod", prod);
+		model.addAttribute("prod", prod);
 				
 		return "prod/prodForm";
 	}

@@ -12,14 +12,12 @@
 		
 		<annotation-driven validator="validator"/>
 		
-		<beans:bean id="resourceBundleLocator" class="org.hibernate.validator.resourceloading.PlatformResourceBundleLocator"
-			c:bundleName="kr.or.ddit.messages.errorMessages"
+		<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" 
+			p:basenames="kr.or.ddit.messages.message, kr.or.ddit.messages.errorMessages"
 		/>
-		<beans:bean id="messageInterpolator" class="org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator"
-			c:userResourceBundleLocator-ref="resourceBundleLocator"
-		/>
+		
 		<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
-			p:messageInterpolator-ref="messageInterpolator"
+			p:validationMessageSource-ref="messageSource"
 		/>
 		
 		<resources location="/resources/" mapping="/resources/**" cache-period="0"></resources>
@@ -56,6 +54,27 @@
 		
 		<?xml-stylesheet type="text/xsl" href=""?><!-- The front controller of this Spring Web application, responsible for handling all application requests -->
 	
+	<!--  핸들러 인터셉터 설정 -->
+		<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
+			p:cookieName="langCookie"
+			p:cookiePath="/"
+			p:cookieMaxAge="#{60*60*24*3}"
+		/>
+		<interceptors>
+			<interceptor>
+				<mapping path="/**"/>
+				<exclude-mapping path="*.do"/>
+				<beans:bean class="org.springframework.web.servlet.mvc.WebContentInterceptor"
+					p:cacheSeconds="0"
+					p:useCacheControlHeader="true"
+					p:useCacheControlNoStore="true"
+					p:useExpiresHeader="true"
+				/>
+			</interceptor>
+			<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
+				p:paramName="lang"
+			/>
+		</interceptors>
 
 
 </beans:beans>

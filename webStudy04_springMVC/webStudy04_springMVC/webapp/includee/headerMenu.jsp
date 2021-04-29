@@ -13,4 +13,6 @@
 	<c:if test="${not empty menu }">
 	    <a class="py-2 d-none d-md-inline-block" href="<c:url value="${menu.menuURL}"/>">${menu.menuText}</a>
 	</c:if>
+	<a class="py-2 d-none d-md-inline-block" href="?lang=ko">한글</a>
+	<a class="py-2 d-none d-md-inline-block" href="?lang=en">English</a>
   </nav>

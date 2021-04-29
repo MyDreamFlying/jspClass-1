@@ -23,7 +23,10 @@
     <Logger name="jdbc.resultsettable" level="debug" additivity="false">
       <AppenderRef ref="Console"/>
     </Logger>
-    <Root level="error">
+    <Logger name="org.springframework.test.web.servlet.result" level="debug" additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <Root level="info">
       <AppenderRef ref="Console"/>
     </Root>
   </Loggers>

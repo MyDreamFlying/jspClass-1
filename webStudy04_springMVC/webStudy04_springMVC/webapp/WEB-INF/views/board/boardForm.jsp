@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <style>
 	th{
 		width : 150px;
@@ -19,7 +20,7 @@
 	<input type="hidden" name="bo_parent" value="${board.bo_parent }">
 	<table class="table table-bordered">
 		<tr>
-			<th>제목</th>
+			<th><spring:message code="board.bo_title"/> </th>
 			<td>
 				<input type="text" name="bo_title" value="${board.bo_title }" >
 				<form:errors path="bo_title" element="span" cssClass="error"/>
@@ -27,14 +28,14 @@
 		</tr>
 		<c:if test="${board.bo_type eq 'BOARD' }">
 		<tr>
-			<th>작성자</th>
+			<th><spring:message code="board.bo_writer"/></th>
 			<td>
 				<input type="text" name="bo_writer" value="${board.bo_writer }" >
 				<form:errors path="bo_writer" element="span" cssClass="error"/>
 			</td>
 		</tr>
 		<tr>
-			<th>비밀번호</th>
+			<th><spring:message code="board.bo_pass"/></th>
 			<td>
 				<input type="password" name="bo_pass" >
 				<form:errors path="bo_pass" element="span" cssClass="error"/>
@@ -42,7 +43,7 @@
 		</tr>
 		</c:if>
 		<tr>
-			<th>내용</th>
+			<th><spring:message code="board.bo_content"/></th>
 			<td>
 				<textarea id="bo_content" name="bo_content" rows="8" cols="50">${board.bo_content }</textarea>
 				<script>CKEDITOR.replace('bo_content',{
