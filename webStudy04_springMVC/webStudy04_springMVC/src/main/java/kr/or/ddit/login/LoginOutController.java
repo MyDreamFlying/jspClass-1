@@ -24,7 +24,7 @@ import kr.or.ddit.vo.MemberVO;
 public class LoginOutController{
 	
 	@Inject
-	private IAuthenticateService service = new AuthenticateServiceImpl();
+	private IAuthenticateService service;
 	private static final Logger logger = LoggerFactory.getLogger(LoginOutController.class);
 
 	@RequestMapping(value="/login/loginCheck.do", method=RequestMethod.POST)
