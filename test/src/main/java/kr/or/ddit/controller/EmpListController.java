@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
 import kr.or.ddit.service.EmpService;
@@ -39,6 +40,20 @@ public class EmpListController {
 		model.addAttribute("empList",list);
 		
 		return "empList";
+	}
+	
+	
+	@RequestMapping(value="/empView.do", method = RequestMethod.GET)
+	public String empView(
+			Model model
+			,@RequestParam String employee_id
+			) {
+		
+		EmployeeVO emp = service.selectEmp(employee_id);
+		
+		model.addAttribute("employee",emp);
+		
+		return "empView";
 	}
 
 }

@@ -56,6 +56,12 @@ public class EmpServiceImpl implements EmpService {
 	public List<EmployeeVO> selectEmpList() {
 		return dao.selectEmpList();
 	}
+
+	@Override
+	public EmployeeVO selectEmp(String employee_id) {
+		return dao.selectEmp(employee_id);
+	}
+	
 	
 
 }

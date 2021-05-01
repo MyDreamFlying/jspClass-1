@@ -10,5 +10,7 @@ public interface EmpService {
 	public ServiceResult authenticate(EmployeeVO emp);
 	
 	public List<EmployeeVO> selectEmpList();
+	
+	public EmployeeVO selectEmp(String employee_id);
 
 }

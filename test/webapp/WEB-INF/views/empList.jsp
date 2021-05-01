@@ -127,7 +127,7 @@
 		  	<c:forEach items="${empList}" var="employee" varStatus="vs" begin="0">
 		    <tr>
 		      <td>${vs.index+1}</td>
-		      <td>${employee['employee_id'] }</td>
+		      <td><a href="#" onClick="MyWindow=window.open('/test/empView.do?employee_id=${employee['employee_id'] }','MyWindow','width=600,height=600'); return false;">${employee['employee_id'] }</a></td>
 		      <td>${employee['employee_pwd']}</td>
 		      <td>${employee['employee_email']}</td>
 		      <td>${employee['employee_phone']}</td>
