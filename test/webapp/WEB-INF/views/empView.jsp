@@ -30,7 +30,7 @@
 	<button type="button" class="btn btn-warning">수정</button>
 	<button type="button" class="btn btn-danger">삭제</button>
 	<button type="button" class="btn btn-success">정지</button>
-	<button type="button" class="btn btn-Primary">닫기</button>
+	<button type="button" onclick="window.close();" class="btn btn-primary">닫기</button>
 </div>
 </body>
 </html>
