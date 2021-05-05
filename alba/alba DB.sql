@@ -15,7 +15,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-SET NAMES utf8mb4;
+SET NAMES utf8;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
@@ -27,24 +27,24 @@ SET NAMES utf8mb4;
 DROP TABLE IF EXISTS `alba`;
 
 CREATE TABLE `alba` (
-  `al_id` char(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT 'ex) ''A00000001''',
+  `al_id` char(8) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'ex) ''A00000001''',
   `al_name` varchar(20) NOT NULL DEFAULT '',
   `al_age` int NOT NULL,
   `al_zip` varchar(7) NOT NULL DEFAULT '',
-  `al_addr1` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `al_addr2` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `al_hp` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `gr_code` char(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `al_gen` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT 'ex) ''F'' / ''M''',
-  `al_mail` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `al_addr1` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `al_addr2` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `al_hp` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `gr_code` char(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `al_gen` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'ex) ''F'' / ''M''',
+  `al_mail` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `al_career` varchar(200) DEFAULT NULL,
-  `al_spec` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `al_spec` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `al_desc` varchar(500) DEFAULT NULL,
   `al_img` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`al_id`),
   KEY `gradeCode` (`gr_code`),
   CONSTRAINT `gradeCode` FOREIGN KEY (`gr_code`) REFERENCES `grade` (`gr_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 LOCK TABLES `alba` WRITE;
 /*!40000 ALTER TABLE `alba` DISABLE KEYS */;
@@ -78,10 +78,10 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `grade`;
 
 CREATE TABLE `grade` (
-  `gr_code` char(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `gr_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `gr_code` char(4) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `gr_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`gr_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 LOCK TABLES `grade` WRITE;
 /*!40000 ALTER TABLE `grade` DISABLE KEYS */;
@@ -113,7 +113,7 @@ CREATE TABLE `lic_alba` (
   KEY `lic` (`lic_code`),
   CONSTRAINT `alba_licAlba` FOREIGN KEY (`al_id`) REFERENCES `alba` (`al_id`) ON DELETE CASCADE,
   CONSTRAINT `lic` FOREIGN KEY (`lic_code`) REFERENCES `license` (`lic_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 LOCK TABLES `lic_alba` WRITE;
 /*!40000 ALTER TABLE `lic_alba` DISABLE KEYS */;
@@ -171,7 +171,7 @@ CREATE TABLE `license` (
   `lic_code` char(4) NOT NULL,
   `lic_name` varchar(50) NOT NULL,
   PRIMARY KEY (`lic_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 LOCK TABLES `license` WRITE;
 /*!40000 ALTER TABLE `license` DISABLE KEYS */;
