@@ -43,12 +43,12 @@
 			</trim>	
 		</trim>
 	</sql>
-	<select id="selectBoardCount" parameterType="PagingVO" resultType="int">
+	<select id="selectBoardCount" parameterType="kr.or.ddit.vo.PagingVO" resultType="int">
 		SELECT COUNT(*)
 		FROM BOARDVIEW
 		<include refid="searchFrag" />
 	</select>
-	<select id="selectBoardList" parameterType="PagingVO" resultType="BoardVO">
+	<select id="selectBoardList" parameterType="kr.or.ddit.vo.PagingVO" resultType="kr.or.ddit.vo.BoardVO">
 		SELECT B.*
 		FROM (
 		    SELECT ROWNUM-3 RNUM, A.*

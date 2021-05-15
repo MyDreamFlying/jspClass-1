@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.or.ddit.member.dao.IMemberDAO">
+<mapper namespace="kr.or.ddit.member.dao.IMemberDAO" >
 	<select id="selectMemberForAuth" parameterType="String" resultType="MemberVO">
 		SELECT MEM_ID, MEM_PASS, MEM_NAME, MEM_MAIL, MEM_ROLE, MEM_IMG
 		 FROM MEMBER

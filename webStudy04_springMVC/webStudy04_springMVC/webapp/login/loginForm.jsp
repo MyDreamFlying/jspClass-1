@@ -1,4 +1,3 @@
-<%@page import="kr.or.ddit.utils.CookieUtils"%>
 <%@page import="java.net.URLDecoder"%>
 <%@page import="java.util.Objects"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"

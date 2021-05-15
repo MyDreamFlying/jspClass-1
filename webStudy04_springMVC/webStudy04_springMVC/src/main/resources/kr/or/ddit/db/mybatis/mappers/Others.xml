@@ -5,7 +5,7 @@
 		SELECT LPROD_GU "lprod_gu", LPROD_NM "lprod_nm"
 		FROM LPROD
 	</select>
-	<select id="selectBuyerList" resultType="BuyerVO" parameterType="string">
+	<select id="selectBuyerList" resultType="kr.or.ddit.vo.BuyerVO" parameterType="string">
 		SELECT BUYER_ID, BUYER_NAME, BUYER_LGU
 		FROM BUYER
 		<where>

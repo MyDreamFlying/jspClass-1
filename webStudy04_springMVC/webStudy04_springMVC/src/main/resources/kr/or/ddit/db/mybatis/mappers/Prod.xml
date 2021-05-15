@@ -24,7 +24,7 @@
 		</trim>
 	</sql>
 	
-	<resultMap type="prodVO" id="prodMap" autoMapping="true">
+	<resultMap type="kr.or.ddit.vo.ProdVO" id="prodMap" autoMapping="true">
 		<id property="prod_id" column="PROD_ID"/>
 		<association property="buyer" javaType="BuyerVO" autoMapping="true"></association>
 		<collection property="userList" javaType="java.util.Set"
