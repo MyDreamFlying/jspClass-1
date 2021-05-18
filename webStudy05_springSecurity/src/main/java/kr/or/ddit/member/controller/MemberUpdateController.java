@@ -1,8 +1,9 @@
 package kr.or.ddit.member.controller;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.validator.UpdateGroup;
+import kr.or.ddit.vo.MemberUserDetails;
 import kr.or.ddit.vo.MemberVO;
 
 @Controller
@@ -26,11 +28,13 @@ public class MemberUpdateController{
 	}
 	
 	@RequestMapping("/member/memberUpdate.do")
-	public String updateForm(HttpSession session, Model model){
+	public String updateForm(
+			@AuthenticationPrincipal(expression = "username") String username 
+//			@AuthenticationPrincipal(expression = "adaptee") MemberVO member 
+			, Model model
+			){
 		addCommandAttribute(model);
-		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
-		String authId = authMember.getMem_id();
- 		MemberVO member = service.retrieveMember(authId);
+ 		MemberVO member = service.retrieveMember(username);
  		model.addAttribute("member", member);
  		return "member/memberForm";
 	}
@@ -39,15 +43,16 @@ public class MemberUpdateController{
 	public String doPost(
 			@Validated(UpdateGroup.class) @ModelAttribute("member") MemberVO member
 			, Errors errors
-			, HttpSession session
+//			, Authentication authentication
+			,@AuthenticationPrincipal(expression = "username") String authId 
 			, Model model
 	){
 		
 		addCommandAttribute(model);
 		
 //		1. 요청 접수
-		MemberVO authMember =  (MemberVO) session.getAttribute("authMember");
-		String authId = authMember.getMem_id();
+//		MemberVO authMember = ((MemberUserDetails)authentication.getPrincipal()).getAdaptee();
+//		String authId = authMember.getMem_id();
 		member.setMem_id(authId);
 		
 //		if(mem_image!=null && !mem_image.isEmpty()) {

@@ -7,15 +7,19 @@ import javax.inject.Inject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.member.dao.IMemberDAO;
 import kr.or.ddit.utils.CryptoUtil;
+import kr.or.ddit.vo.MemberUserDetails;
 import kr.or.ddit.vo.MemberVO;
 
-@Service
-public class AuthenticateServiceImpl implements IAuthenticateService {
+@Service("authService")
+public class AuthenticateServiceImpl implements IAuthenticateService, UserDetailsService {
 	private static final Logger logger =
 			LoggerFactory.getLogger(AuthenticateServiceImpl.class);
 	@Inject
@@ -48,6 +52,12 @@ public class AuthenticateServiceImpl implements IAuthenticateService {
 			result = ServiceResult.NOTEXIST;
 		}
 		return result;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		MemberVO savedMember = dao.selectMemberForAuth(username);
+		return new MemberUserDetails(savedMember);
 	}
 
 }

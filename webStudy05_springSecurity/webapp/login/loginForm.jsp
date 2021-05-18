@@ -15,6 +15,7 @@
 </style>
 </head>
 <body>
+${sessionScope }
 <c:if test="${not empty message }">
 	<span class="error">${message }</span>
 </c:if>

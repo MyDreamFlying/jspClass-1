@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <!-- Brand Logo -->
  <a href="${cPath }/" class="brand-link">
    <img src="${cPath }/theme/AdminLTE-3.1.0/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -10,7 +11,8 @@
 
  <!-- Sidebar -->
  <div class="sidebar">
-  <c:if test="${not empty sessionScope.authMember }">
+ 	<security:authorize access="isAuthenticated()">
+ 		<security:authentication property="principal.username" var="authUsername"/>
    <!-- Sidebar user (optional) -->
    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
      <div class="image">
@@ -24,7 +26,7 @@
      <div class="info">
 	   <form name="logoutForm" method="post" action="<%=request.getContextPath() %>/login/logout.do"></form>
        <a href="${cPath }/mypage.do" class="d-block">${authMember.mem_name }</a>
-	   <a href="#" onclick="clickHandler(event);" class="d-block">로그아웃</a>
+	   <a href="#" onclick="clickHandler(event);" class="d-block">${authUsername} 로그아웃</a>
    	   <script type="text/javascript">
 			function clickHandler(event){
 				event.preventDefault();
@@ -34,8 +36,8 @@
 	   </script>
      </div>
    </div>
-  </c:if> 
-   <c:if test="${empty sessionScope.authMember }">
+  </security:authorize>
+  <security:authorize access="isAnonymous()">
 	   <!-- Sidebar user (optional) -->
 	   <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 		   <div class="info">
@@ -43,7 +45,7 @@
 	       	<a href="${cPath }/login/loginForm.jsp" class="d-block">로그인</a>
 	       </div>
 	   </div>
-   </c:if>
+   </security:authorize>
 
    <!-- SidebarSearch Form -->
    <div class="form-inline">

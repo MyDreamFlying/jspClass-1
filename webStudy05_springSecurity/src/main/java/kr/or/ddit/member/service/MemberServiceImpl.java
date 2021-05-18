@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.or.ddit.enumpkg.ServiceResult;
@@ -19,6 +20,8 @@ public class MemberServiceImpl implements IMemberService {
 	private IMemberDAO dao;
 	@Inject
 	private IAuthenticateService authService;
+	@Inject
+	private PasswordEncoder encoder;
 	
 	@Override
 	public MemberVO retrieveMember(String mem_id){
@@ -36,7 +39,7 @@ public class MemberServiceImpl implements IMemberService {
 		if(dao.selectMemberDetail(member.getMem_id())==null) {
 			String inputPass = member.getMem_pass();
 			try {
-				String encodedPass = CryptoUtil.sha512(inputPass);
+				String encodedPass = encoder.encodePassword(inputPass, null);
 				member.setMem_pass(encodedPass);
 				int rowcnt = dao.insertMember(member);
 				if(rowcnt>0) {
